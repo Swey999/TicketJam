@@ -1,8 +1,8 @@
 # TicketJam
 
-![GitHub issues](https://img.shields.io/github/issues/yourusername/ticketjam)
-![GitHub license](https://img.shields.io/github/license/yourusername/ticketjam)
-![GitHub stars](https://img.shields.io/github/stars/yourusername/ticketjam)
+![GitHub issues](https://img.shields.io/github/issues/Swey999/ticketjam)
+![GitHub license](https://img.shields.io/github/license/Swey999/ticketjam)
+![GitHub stars](https://img.shields.io/github/stars/Swey999/ticketjam)
 
 TicketJam is a C# application developed in Visual Studio for managing ticket sales and orders. It provides a structured system for ticket availability, inventory control, and concurrency, supporting smooth ticket sales while preventing overselling and ensuring database integrity.
 
