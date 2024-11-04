@@ -1,6 +1,6 @@
 # TicketJam
 
-![GitHub issues](https://img.shields.io/github/issues/Swey999/ticketjam)
+![GitHub issues](https://img.shields.io/github/issues/Swey999/TicketJam)
 ![GitHub license](https://img.shields.io/github/license/Swey999/ticketjam)
 ![GitHub stars](https://img.shields.io/github/stars/Swey999/ticketjam)
 
