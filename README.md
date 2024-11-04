@@ -1,4 +1,4 @@
-#TicketJam
+TicketJam
 TicketJam is a C# ticket management and ordering system built in Visual Studio. It handles ticket creation, availability, and sale while enforcing rules for ticket availability, order validation, and inventory management to support seamless and reliable ticket sales.
 
 Table of Contents
