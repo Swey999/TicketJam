@@ -9,6 +9,7 @@ namespace TicketJam.DAL.Model;
 public class Event
 {
     public int Id { get; set; }
+    public int EventNo { get; set; }
     public string Description { get; set; }
     public int TotalAmount { get; set; }
     public DateTime StartDate { get; set; }
