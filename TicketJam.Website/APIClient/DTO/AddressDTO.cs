@@ -1,4 +1,4 @@
-﻿namespace TicketJam.Website.DTO
+﻿namespace TicketJam.Website.APIClient.DTO
 {
     public class AddressDTO
     {
