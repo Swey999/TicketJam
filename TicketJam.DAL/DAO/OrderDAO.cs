@@ -10,11 +10,11 @@ using TicketJam.DAL.Model;
 
 namespace TicketJam.DAL.DAO
 {
-    public class OrderDao : IDao<Order>
+    public class OrderDAO : IDAO<Order>
     {
         private string connectionString;
 
-        public OrderDao(String connectionStringns)
+        public OrderDAO(String connectionStringns)
         {
             this.connectionString = connectionStringns;
         }

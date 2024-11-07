@@ -34,15 +34,23 @@ namespace TicketJam.Website.Controllers
         public ActionResult Create()
         {
             // Fetch event, venue, and order lines from stubs
-            var order = new Order
+            Order order = new Order
             {
-                OrderNo = 0
+                OrderNo = 0,
+                OrderLines = new List<OrderLine>  // Initialize OrderLines as a List<OrderLine>
+                  {
+                     new OrderLine { Id = 1, Quantity = 1 }
+                  }
+
+            };
+            //{
+              //  OrderNo = 0,
                 // OrderNo = 1002, // Set an example order number
                 //Customer = OrderStub.customerDogStub.GetById(1), //Fetch CustomerDog
                 //Event = OrderStub.eventStub.GetById(1), // Fetch event
                 //Venue = OrderStub.venueStub.GetById(1), // Fetch venue
-                //OrderLines = OrderStub.orderline.GetAll().ToList() // Fetch order lines
-            };
+                //OrderLines =  // Fetch order lines
+            //};
 
 
             // Pass the fully populated order to the view
@@ -53,7 +61,7 @@ namespace TicketJam.Website.Controllers
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Order order)
+        public ActionResult Create(Order order) //SLET IFORMCOLLECTION !!!!!
         {
             try
             {

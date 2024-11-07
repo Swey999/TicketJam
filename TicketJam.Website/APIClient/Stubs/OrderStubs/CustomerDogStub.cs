@@ -4,25 +4,25 @@ namespace TicketJam.Website.APIClient.Stubs.OrderStubs
 {
     public class CustomerDogStub
     {
-        private static List<CustomerDog> _customerDog = new List<CustomerDog>()
+        private static List<CustomerDTO> _customerDog = new List<CustomerDTO>()
         {
-            new CustomerDog
+            new CustomerDTO
             () {
-            Id = 1,
+      
             FirstName = "Boxen",
             LastName = "Herning",
             PhoneNo = "1234567890",
             Email = "dog@hund.dk",
-            Password = "password",
+            
             }
         };
-        public IEnumerable<CustomerDog> GetAll()
+        public IEnumerable<CustomerDTO> GetAll()
         {
             return _customerDog;
         }
-        public CustomerDog GetById(int id)
-        {
-            return _customerDog.SingleOrDefault(e => e.Id == id);
-        }
+        //public CustomerDTO GetById(int id)
+        //{
+          //  return _customerDog.SingleOrDefault(e => e.Id == id);
+        //}
     }
 }

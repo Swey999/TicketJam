@@ -16,9 +16,9 @@ namespace TicketJam.Website.APIClient.Stubs.OrderStubs
             Id = 1, 
             OrderNo = 1001, 
             OrderLines = orderline.GetAll().ToList(),
-            Customer = customerDogStub.GetById(1),
-            Event = eventStub.GetById(1),
-            Venue = venueStub.GetById(1)
+            //Customer = customerDogStub.GetById(1),
+            //Event = eventStub.GetById(1),
+            //Venue = venueStub.GetById(1)
         }
     };
 
