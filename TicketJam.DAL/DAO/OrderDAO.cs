@@ -61,15 +61,34 @@ namespace TicketJam.DAL.DAO
 
         public Order GetById(int id)
         {
-            string commandText = "SELECT * FROM Orders WHERE Id = @Id";
-            IDbConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            return connection.QuerySingle<Order>(commandText, new { Id = id });
+
+            //string commandText = "Select Orders.*, OrderLine.* FROM Orders Left Join Orderline On Orders.Id = OrderLine.Order_ID_FK where orders.Id = @id";
+            //IDbConnection connection = new SqlConnection(connectionString);
+            //connection.Open();
+            //return connection.QuerySingle<Order>(commandText, new { Id = id });
+
+            string selectOrderSql = "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
+            string selectOrderlinesSql = "SELECT DISTINCT Orderline.*,Ticket.*,Section.*,Venue.*,Event.* FROM Orderline JOIN Ticket ON Ticket.Id = Orderline.Ticket_ID_FK JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Event ON Venue.Id = Event.Venue_ID_FK WHERE Orderline.Order_ID_FK = 1;";
+
+            using IDbConnection connection = new SqlConnection(connectionString);
+            Order order = connection.QuerySingle<Order>(selectOrderSql, new { Id = id });
+
+            order.OrderLines = connection.Query<OrderLine, Ticket, Section, Venue, Event, OrderLine>(selectOrderlinesSql, (ol, t, s, v, e) =>
+            {
+                ol.Ticket = t;
+                ol.Ticket.Section = s;
+                ol.Ticket.Section.Venue = v;
+               // ol.Ticket.Section.Venue.Event = e;
+                return ol;
+
+            }, new { OrderId = order.Id }).ToList();
+
+            return order;
         }
 
         public IEnumerable<Order> Read()
         {
-            String commandText = "Select Id FROM Orders";
+            String commandText = "Select Id, FROM Orders";
             IDbConnection connection = new SqlConnection(connectionString);
             return connection.Query<Order>(commandText);
 

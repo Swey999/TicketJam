@@ -9,7 +9,7 @@ namespace TicketJam.Website.Controllers
     {
         // GET: OrderController
         OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7280/api/v1/OrderControllerAPI");
-        OrderStub OrderStub;
+      
 
         public OrderController()
         {
@@ -20,7 +20,7 @@ namespace TicketJam.Website.Controllers
         public ActionResult Index()
         {
 
-            return View();
+            return View(OrderAPIConsumer.GetAll());
         }
 
         // GET: OrderController/Details/5
@@ -30,18 +30,20 @@ namespace TicketJam.Website.Controllers
         }
 
         // GET: OrderController/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
             // Fetch event, venue, and order lines from stubs
-            Order order = new Order
-            {
-                OrderNo = 0,
-                OrderLines = new List<OrderLine>  // Initialize OrderLines as a List<OrderLine>
-                  {
-                     new OrderLine { Id = 1, Quantity = 1 }
-                  }
+            Order order = OrderAPIConsumer.GetById(id);
+            
+            //Order order = new Order
+            //{
+             //   OrderNo = 0,
+            //    OrderLines = new List<OrderLine>  // Initialize OrderLines as a List<OrderLine>
+            //      {
+             //        new OrderLine { Id = 1, Quantity = 1 }
+           //       }
 
-            };
+           // };
             //{
               //  OrderNo = 0,
                 // OrderNo = 1002, // Set an example order number
@@ -65,10 +67,7 @@ namespace TicketJam.Website.Controllers
             try
             {
                 // Ensure OrderLines is initialized
-                if (order.OrderLines == null)
-                {
-                    order.OrderLines = new List<OrderLine>();
-                }
+        
 
                 // Save the order using the stub or service
                 //order.OrderNo = OrderStub.GetAll().Max(o => o.OrderNo) + 1;

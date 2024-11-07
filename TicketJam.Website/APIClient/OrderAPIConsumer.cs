@@ -39,6 +39,8 @@ namespace TicketJam.Website.APIClient
                 return response.Data;
             }
 
+            
+
             public bool DeleteOrder(int id)
             {
                 var request = new RestRequest($"{BaseURI}/{id}", RestSharp.Method.Delete);

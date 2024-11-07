@@ -22,7 +22,7 @@ namespace TicketJam.Website
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            builder.Services.AddScoped<IDAO<Customer>, CustomerDAO>();
+            //builder.Services.AddScoped<IDAO<Customer>, CustomerDAO>();
 
 
             builder.Services.AddControllersWithViews();
