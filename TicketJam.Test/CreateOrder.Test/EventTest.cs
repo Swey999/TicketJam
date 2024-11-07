@@ -6,45 +6,41 @@ using System.Threading.Tasks;
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
 
-namespace TicketJam.Test.CreateOrder.Test
+namespace TicketJam.Test.CreateOrder.Test;
+
+public class EventTest
 {
-    public class EventTest
+    private IEventDAO _eventDAO;
+
+    [SetUp]
+    public void SetUp()
     {
-        private EventDAO _eventDAO;
-        private Venue _venue;
-        private Event _newEvent;
-        private Organizer _organizer;
+        _eventDAO = new EventDAO();
+    }
 
-        [SetUp]
-        public void SetUp() 
-        { 
-            _eventDAO = new EventDAO();
-            _venue = new Venue(); 
-            _newEvent = new Event();
-            _organizer = new Organizer();
-        }
-        
-        [Test]
-        public void CreateEvent()
-        {
-            //ARRANGE
-            _newEvent.Organizer = _organizer;
-            _newEvent.Venue = _venue;
-            //ACT
+    [Test]
+    public void CreateEventTest()
+    {
+        //ARRANGE
+        Venue venue = new() { Id = 300};
+        Organizer organizer = new() { Id = 300};
+        Event Event = new() { EventNo = 2006, Description = "Beat up William", TotalAmount = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now, Venue = venue, Organizer = organizer };
+        //ACT
+        var test = _eventDAO.InsertEvent(Event);
+        //ASSERT
+        Assert.That(test, Is.GreaterThan(0));
 
-            //ASSERT
-            Assert.That(_newEvent.Id > 0, "Created EventID not returned");
-        }
 
-        [Test]
-        public void FindEventById()
-        {
-            //ARRANGE
-            //ACT
-            var Event = _eventDAO.GetEvent(_newEvent.Id);
-            //ASSERT
-            Assert.Equals(Event.Id, _newEvent.Id);
+    }
 
-        }
+    [Test]
+    public void FindEventById()
+    {
+        //ARRANGE
+        var test = _eventDAO.GetEvent(1);
+        //ACT
+        //ASSERT
+        Assert.That(test, Is.Not.Null);
+    
     }
 }

@@ -32,7 +32,7 @@ public class EventDAO : IEventDAO
     {
         IDbConnection connection = new SqlConnection(_connectionString);
         connection.Open();
-        return connection.QuerySingle<Event>(_connectionString, new { Id = id });
+        return connection.QuerySingle<Event>(GETBYID_SQL, new { Id = id });
     }
 
     public int InsertEvent(Event Event)
