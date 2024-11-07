@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TicketJam.Website.APIClient.Stubs.OrderStubs;
+using TicketJam.DAL.DAO;
+using TicketJam.DAL.Model;
+using TicketJam.Website.APIClient.DTO;
 using TicketJam.Website.Data;
 
 namespace TicketJam.Website
@@ -10,7 +12,6 @@ namespace TicketJam.Website
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddSingleton<OrderStub>();
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -20,6 +21,9 @@ namespace TicketJam.Website
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder.Services.AddScoped<IDAO<Customer>, CustomerDAO>();
+
 
             builder.Services.AddControllersWithViews();
 

@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using System;
-using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -11,18 +10,17 @@ using TicketJam.DAL.Model;
 
 namespace TicketJam.DAL.DAO
 {
-    public class CustomerDAO 
+    public class CustomerDAO : IDAO<Customer>
     {
         private readonly string _connectionString;
-        private string _insertCustomerSQL = "INSERT INTO Customer (FirstName, LastName, PhoneNo, Email) VALUES (@FirstName, @LastName, @PhoneNo, @Email); SELECT SCOPE_IDENTITY();";
+        private string _createCustomerSQL = "INSERT INTO Customer (FirstName, LastName, PhoneNo, Email) VALUES (@FirstName, @LastName, @PhoneNo, @Email); SELECT SCOPE_IDENTITY();";
 
         public CustomerDAO(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        #region Insert Customer Method
-        public int Insert(Customer customer)
+        public Customer Create(Customer entity)
         {
             //Using realses all resources
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -30,34 +28,32 @@ namespace TicketJam.DAL.DAO
 
             try
             {
-                //customer.Id = connection.ExecuteScalar<int>(_insertCustomerSQL, customer);
+                entity.Id = connection.ExecuteScalar<int>(_createCustomerSQL, entity);
             }
             catch (Exception ex)
             {
                 throw new Exception($"An error has occured while trying to insert customer into Customer table, the error reads: {ex.Message}", ex);
             }
 
-            return customer.Id;
-        } 
-        #endregion
+            return entity;
+        }
 
-        public bool Delete(Customer customer)
+        public bool Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Customer Get(int id)
+        public Customer GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Customer> GetAll()
+        public IEnumerable<Customer> Read()
         {
             throw new NotImplementedException();
         }
 
-
-        public bool Update(Customer customer)
+        public Customer Update(Customer entity)
         {
             throw new NotImplementedException();
         }
