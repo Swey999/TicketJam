@@ -10,16 +10,16 @@ namespace TicketJam.Website.Controllers
         // GET: OrderController
         OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7168/api/v1/OrderControllerAPI");
 
-        public OrderController(OrderStub orderStub)
+        public OrderController()
         {
-            OrderStub = orderStub;
+            
         }
 
 
         public ActionResult Index()
         {
 
-            return View(OrderStub.GetAll());
+            return View();
         }
 
         // GET: OrderController/Details/5

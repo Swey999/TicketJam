@@ -9,9 +9,9 @@ namespace TicketJam.WebAPI.Controllers
     public class CustomersController : Controller
     {
         const string baseURL = "api/v1/[controller]";
-        private IDao<Customer> _customerDao;
+        private IDAO<Customer> _customerDao;
 
-        public CustomersController(IDao<Customer> customerDao)
+        public CustomersController(IDAO<Customer> customerDao)
         {
             _customerDao = customerDao;
         }

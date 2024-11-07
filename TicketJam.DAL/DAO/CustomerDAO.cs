@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using System;
-using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -11,7 +10,7 @@ using TicketJam.DAL.Model;
 
 namespace TicketJam.DAL.DAO
 {
-    public class CustomerDAO : IDao<Customer>
+    public class CustomerDAO : IDAO<Customer>
     {
         private readonly string _connectionString;
         private string _createCustomerSQL = "INSERT INTO Customer (FirstName, LastName, PhoneNo, Email) VALUES (@FirstName, @LastName, @PhoneNo, @Email); SELECT SCOPE_IDENTITY();";
@@ -29,7 +28,7 @@ namespace TicketJam.DAL.DAO
 
             try
             {
-                customer.Id = connection.ExecuteScalar<int>(_insertCustomerSQL, customer);
+                entity.Id = connection.ExecuteScalar<int>(_createCustomerSQL, entity);
             }
             catch (Exception ex)
             {
