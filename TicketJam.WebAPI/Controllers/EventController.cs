@@ -17,11 +17,9 @@ namespace TicketJam.WebAPI.Controllers
         [HttpPost]
         public ActionResult<Event> AddEvent (Event Event)
         {
-            //skal ændres til returne int
-            _eventDAO.InsertEvent(Event);
-
-            //skal returnere int id og eventet når insertEvent er fixed
-            return Created();
+            int id = _eventDAO.InsertEvent(Event);
+            //returns 201 + account JSON as body
+            return Created($"/{Event.Id}", Event);
         }
 
     }
