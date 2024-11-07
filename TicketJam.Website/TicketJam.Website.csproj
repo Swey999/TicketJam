@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TicketJam.WebAPI\TicketJam.WebAPI.csproj" />
+    <ProjectReference Include="..\TicketJam.DAL\TicketJam.DAL.csproj" />
   </ItemGroup>
 
 </Project>

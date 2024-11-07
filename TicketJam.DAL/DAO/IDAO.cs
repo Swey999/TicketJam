@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicketJam.DAL.DAO
 {
-    public interface IDao<TEntity> where TEntity : class
+    public interface IDAO<TEntity> where TEntity : class
     {
         TEntity Create(TEntity entity);
         IEnumerable<TEntity> Read();

@@ -11,7 +11,7 @@ namespace TicketJam.DAL.DAO
     {
         IEnumerable<Venue> GetAllVenues();
 
-        void InsertEvent(Event Event);
+        int InsertEvent(Event Event);
 
         Event GetEvent(int id);
     }
