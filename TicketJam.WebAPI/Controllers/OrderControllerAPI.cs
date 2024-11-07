@@ -10,13 +10,13 @@ namespace TicketJam.WebAPI.Controllers
     [ApiController]
     public class OrderControllerAPI : ControllerBase
     {
-        public IDao<Order> _orderDAO;
+        public IDAO<Order> _orderDAO;
         private IConfiguration _configuration;
         public OrderControllerAPI(IConfiguration configuration)
         {
             _configuration = configuration;
             string connectionString = _configuration.GetConnectionString("DBConnectionString");
-            _orderDAO = new OrderDao(connectionString);
+            _orderDAO = new OrderDAO(connectionString);
 
         }
 

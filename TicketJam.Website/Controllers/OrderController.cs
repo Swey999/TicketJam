@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TicketJam.Website.APIClient;
 using TicketJam.Website.APIClient.DTO;
-using TicketJam.Website.APIClient.Stubs.OrderStubs;
 
 namespace TicketJam.Website.Controllers
 {
@@ -10,18 +9,17 @@ namespace TicketJam.Website.Controllers
     {
         // GET: OrderController
         OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7168/api/v1/OrderControllerAPI");
-        OrderStub OrderStub;
 
-        public OrderController(OrderStub orderStub)
-        {
-            OrderStub = orderStub;
-        }
-
-        
-        public ActionResult Index()
+        public OrderController()
         {
             
-            return View(OrderStub.GetAll());
+        }
+
+
+        public ActionResult Index()
+        {
+
+            return View();
         }
 
         // GET: OrderController/Details/5
@@ -34,15 +32,23 @@ namespace TicketJam.Website.Controllers
         public ActionResult Create()
         {
             // Fetch event, venue, and order lines from stubs
-            var order = new Order
+            Order order = new Order
             {
-                OrderNo = 0
+                OrderNo = 0,
+                OrderLines = new List<OrderLine>  // Initialize OrderLines as a List<OrderLine>
+                  {
+                     new OrderLine { Id = 1, Quantity = 1 }
+                  }
+
+            };
+            //{
+              //  OrderNo = 0,
                 // OrderNo = 1002, // Set an example order number
                 //Customer = OrderStub.customerDogStub.GetById(1), //Fetch CustomerDog
                 //Event = OrderStub.eventStub.GetById(1), // Fetch event
                 //Venue = OrderStub.venueStub.GetById(1), // Fetch venue
-                //OrderLines = OrderStub.orderline.GetAll().ToList() // Fetch order lines
-            };
+                //OrderLines =  // Fetch order lines
+            //};
 
 
             // Pass the fully populated order to the view
@@ -53,7 +59,7 @@ namespace TicketJam.Website.Controllers
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Order order)
+        public ActionResult Create(Order order) //SLET IFORMCOLLECTION !!!!!
         {
             try
             {
@@ -76,8 +82,8 @@ namespace TicketJam.Website.Controllers
             }
         }
 
-            // GET: OrderController/Edit/5
-            public ActionResult Edit(int id)
+        // GET: OrderController/Edit/5
+        public ActionResult Edit(int id)
         {
             return View();
         }

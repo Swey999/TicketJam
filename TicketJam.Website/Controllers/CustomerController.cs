@@ -1,10 +1,21 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TicketJam.DAL.DAO;
+using TicketJam.DAL.Model;
+using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.Controllers
 {
     public class CustomerController : Controller
     {
+        IDAO<CustomerDTO> _customerDAO;
+
+        public CustomerController(IDAO<CustomerDTO> customerDAO)
+        {
+            _customerDAO = customerDAO;
+        }
+
+
         // GET: CustomerController
         public ActionResult Index()
         {
@@ -26,15 +37,16 @@ namespace TicketJam.Website.Controllers
         // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CustomerDTO customer)
         {
             try
             {
+                _customerDAO.Create(customer);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(customer);
             }
         }
 
