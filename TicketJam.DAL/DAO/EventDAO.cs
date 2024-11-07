@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,6 +14,8 @@ namespace TicketJam.DAL.DAO;
 public class EventDAO : IEventDAO
 {
     private readonly string _connectionString;
+    private string GETALLVENUES_SQL = "SELECT * FROM Venue";
+    private string GETBYID_SQL = "SELECT * FROM Event WHERE Id = @Id";
     private string INSERT_SQL = "INSERT INTO Event (Description, TotalAmount, StartDate, EndDate) VALUES (@Description, @TotalAmount, @StartDate, @EndDate)";
     public EventDAO()
     {
@@ -21,26 +24,22 @@ public class EventDAO : IEventDAO
 
     public IEnumerable<Venue> GetAllVenues()
     {
-        throw new NotImplementedException();
+        IDbConnection connection = new SqlConnection(_connectionString);
+        return connection.Query<Venue>(GETALLVENUES_SQL);
     }
 
     public Event GetEvent(int id)
     {
-        throw new NotImplementedException();
+        IDbConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        return connection.QuerySingle<Event>(_connectionString, new { Id = id });
     }
-
-    //public void InsertEvent(Event Event)
-    //{
-    //    IDbConnection connection = new SqlConnection(_connectionString);
-    //    connection.Open();
-    //    connection.Execute(_insertEventSQL, Event);
-    //}
 
     public int InsertEvent(Event Event)
     {
-        using (IDbConnection connection = new SqlConnection(_connectionString))
+        IDbConnection connection = new SqlConnection(_connectionString);
         connection.Open();
-        return connection.(_insertEventSQL, Event);
+        return connection.QuerySingle<int>(GETBYID_SQL, new { Event.Description, Event.TotalAmount, Event.StartDate, Event.EndDate });
 
     }
 }
