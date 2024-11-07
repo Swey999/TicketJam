@@ -31,159 +31,170 @@ namespace TicketJam.WinForm
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            textBox1 = new TextBox();
-            button1 = new Button();
-            comboBox1 = new ComboBox();
+            txtVenueReadText = new TextBox();
+            btnCreateNewVenue = new Button();
+            comboBoxVenueList = new ComboBox();
             venueBindingSource1 = new BindingSource(components);
             venueBindingSource = new BindingSource(components);
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            textBox5 = new TextBox();
-            dateTimePicker1 = new DateTimePicker();
-            dateTimePicker2 = new DateTimePicker();
-            textBox6 = new TextBox();
-            textBox7 = new TextBox();
-            textBox8 = new TextBox();
-            textBox9 = new TextBox();
+            txtDescriptionWrite = new TextBox();
+            txtDescriptionRead = new TextBox();
+            txtTicketAmountRead = new TextBox();
+            txtTicketAmountWrite = new TextBox();
+            dateTimePickerStartDateWrite = new DateTimePicker();
+            dateTimePickerEndDateWrite = new DateTimePicker();
+            txtStartDateRead = new TextBox();
+            txtEndDateRead = new TextBox();
+            txtLoggedInAsRead = new TextBox();
+            txtLoggedInAsResult = new TextBox();
+            btnSubmitEvent = new Button();
             ((System.ComponentModel.ISupportInitialize)venueBindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)venueBindingSource).BeginInit();
             SuspendLayout();
             // 
-            // textBox1
+            // txtVenueReadText
             // 
-            textBox1.Location = new Point(12, 114);
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(50, 27);
-            textBox1.TabIndex = 0;
-            textBox1.Text = "Venue";
-            textBox1.TextChanged += textBox1_TextChanged;
+            txtVenueReadText.Location = new Point(12, 114);
+            txtVenueReadText.Name = "txtVenueReadText";
+            txtVenueReadText.ReadOnly = true;
+            txtVenueReadText.Size = new Size(50, 27);
+            txtVenueReadText.TabIndex = 0;
+            txtVenueReadText.Text = "Venue";
             // 
-            // button1
+            // btnCreateNewVenue
             // 
-            button1.Location = new Point(68, 113);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 1;
-            button1.Text = "Create new venue";
-            button1.UseVisualStyleBackColor = true;
+            btnCreateNewVenue.Location = new Point(68, 113);
+            btnCreateNewVenue.Name = "btnCreateNewVenue";
+            btnCreateNewVenue.Size = new Size(94, 29);
+            btnCreateNewVenue.TabIndex = 1;
+            btnCreateNewVenue.Text = "Create new venue";
+            btnCreateNewVenue.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // comboBoxVenueList
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Gigantium" });
-            comboBox1.Location = new Point(168, 114);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(151, 28);
-            comboBox1.TabIndex = 2;
-            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            comboBoxVenueList.FormattingEnabled = true;
+            comboBoxVenueList.Items.AddRange(new object[] { "Gigantium" });
+            comboBoxVenueList.Location = new Point(168, 114);
+            comboBoxVenueList.Name = "comboBoxVenueList";
+            comboBoxVenueList.Size = new Size(151, 28);
+            comboBoxVenueList.TabIndex = 2;
+            comboBoxVenueList.SelectedIndexChanged += comboBoxVenueList_SelectedIndexChanged;
+            comboBoxVenueList.DataSource = VenueStub.list;
             // 
-            // textBox2
+            // txtDescriptionWrite
             // 
-            textBox2.Location = new Point(104, 160);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(215, 27);
-            textBox2.TabIndex = 3;
+            txtDescriptionWrite.Location = new Point(104, 160);
+            txtDescriptionWrite.Name = "txtDescriptionWrite";
+            txtDescriptionWrite.Size = new Size(215, 27);
+            txtDescriptionWrite.TabIndex = 3;
             // 
-            // textBox3
+            // txtDescriptionRead
             // 
-            textBox3.Location = new Point(12, 160);
-            textBox3.Name = "textBox3";
-            textBox3.ReadOnly = true;
-            textBox3.Size = new Size(86, 27);
-            textBox3.TabIndex = 4;
-            textBox3.Text = "Description";
+            txtDescriptionRead.Location = new Point(12, 160);
+            txtDescriptionRead.Name = "txtDescriptionRead";
+            txtDescriptionRead.ReadOnly = true;
+            txtDescriptionRead.Size = new Size(86, 27);
+            txtDescriptionRead.TabIndex = 4;
+            txtDescriptionRead.Text = "Description";
             // 
-            // textBox4
+            // txtTicketAmountRead
             // 
-            textBox4.Location = new Point(12, 207);
-            textBox4.Name = "textBox4";
-            textBox4.ReadOnly = true;
-            textBox4.Size = new Size(165, 27);
-            textBox4.TabIndex = 5;
-            textBox4.Text = "Total Amount of Tickets";
+            txtTicketAmountRead.Location = new Point(12, 207);
+            txtTicketAmountRead.Name = "txtTicketAmountRead";
+            txtTicketAmountRead.ReadOnly = true;
+            txtTicketAmountRead.Size = new Size(165, 27);
+            txtTicketAmountRead.TabIndex = 5;
+            txtTicketAmountRead.Text = "Total Amount of Tickets";
             // 
-            // textBox5
+            // txtTicketAmountWrite
             // 
-            textBox5.Location = new Point(12, 240);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(125, 27);
-            textBox5.TabIndex = 6;
+            txtTicketAmountWrite.Location = new Point(12, 240);
+            txtTicketAmountWrite.Name = "txtTicketAmountWrite";
+            txtTicketAmountWrite.Size = new Size(125, 27);
+            txtTicketAmountWrite.TabIndex = 6;
             // 
-            // dateTimePicker1
+            // dateTimePickerStartDateWrite
             // 
-            dateTimePicker1.Location = new Point(12, 303);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(250, 27);
-            dateTimePicker1.TabIndex = 7;
+            dateTimePickerStartDateWrite.Location = new Point(12, 303);
+            dateTimePickerStartDateWrite.Name = "dateTimePickerStartDateWrite";
+            dateTimePickerStartDateWrite.Size = new Size(250, 27);
+            dateTimePickerStartDateWrite.TabIndex = 7;
             // 
-            // dateTimePicker2
+            // dateTimePickerEndDateWrite
             // 
-            dateTimePicker2.Location = new Point(12, 371);
-            dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(250, 27);
-            dateTimePicker2.TabIndex = 8;
+            dateTimePickerEndDateWrite.Location = new Point(12, 371);
+            dateTimePickerEndDateWrite.Name = "dateTimePickerEndDateWrite";
+            dateTimePickerEndDateWrite.Size = new Size(250, 27);
+            dateTimePickerEndDateWrite.TabIndex = 8;
             // 
-            // textBox6
+            // txtStartDateRead
             // 
-            textBox6.Location = new Point(12, 273);
-            textBox6.Name = "textBox6";
-            textBox6.ReadOnly = true;
-            textBox6.Size = new Size(125, 27);
-            textBox6.TabIndex = 9;
-            textBox6.Text = "Start Date";
+            txtStartDateRead.Location = new Point(12, 273);
+            txtStartDateRead.Name = "txtStartDateRead";
+            txtStartDateRead.ReadOnly = true;
+            txtStartDateRead.Size = new Size(125, 27);
+            txtStartDateRead.TabIndex = 9;
+            txtStartDateRead.Text = "Start Date";
             // 
-            // textBox7
+            // txtEndDateRead
             // 
-            textBox7.Location = new Point(12, 338);
-            textBox7.Name = "textBox7";
-            textBox7.ReadOnly = true;
-            textBox7.Size = new Size(125, 27);
-            textBox7.TabIndex = 10;
-            textBox7.Text = "End Date";
-            textBox7.UseWaitCursor = true;
+            txtEndDateRead.Location = new Point(12, 338);
+            txtEndDateRead.Name = "txtEndDateRead";
+            txtEndDateRead.ReadOnly = true;
+            txtEndDateRead.Size = new Size(125, 27);
+            txtEndDateRead.TabIndex = 10;
+            txtEndDateRead.Text = "End Date";
+            txtEndDateRead.UseWaitCursor = true;
             // 
-            // textBox8
+            // txtLoggedInAsRead
             // 
-            textBox8.Location = new Point(444, 12);
-            textBox8.Name = "textBox8";
-            textBox8.ReadOnly = true;
-            textBox8.Size = new Size(125, 27);
-            textBox8.TabIndex = 11;
-            textBox8.Text = "Logged in as: ";
+            txtLoggedInAsRead.Location = new Point(444, 12);
+            txtLoggedInAsRead.Name = "txtLoggedInAsRead";
+            txtLoggedInAsRead.ReadOnly = true;
+            txtLoggedInAsRead.Size = new Size(125, 27);
+            txtLoggedInAsRead.TabIndex = 11;
+            txtLoggedInAsRead.Text = "Logged in as: ";
             // 
-            // textBox9
+            // txtLoggedInAsResult
             // 
-            textBox9.Location = new Point(575, 12);
-            textBox9.Name = "textBox9";
-            textBox9.ReadOnly = true;
-            textBox9.Size = new Size(125, 27);
-            textBox9.TabIndex = 12;
-            textBox9.TextChanged += textBox9_TextChanged;
-            textBox9.Text = OrganizerStub.Organizer.Email;
+            txtLoggedInAsResult.Location = new Point(575, 12);
+            txtLoggedInAsResult.Name = "txtLoggedInAsResult";
+            txtLoggedInAsResult.ReadOnly = true;
+            txtLoggedInAsResult.Size = new Size(125, 27);
+            txtLoggedInAsResult.TabIndex = 12;
+            txtLoggedInAsResult.TextChanged += txtLoggedInAsResult_TextChanged;
+            txtLoggedInAsResult.Text = OrganizerStub.Organizer.ToString();
+            // 
+            // btnSubmitEvent
+            // 
+            btnSubmitEvent.Location = new Point(645, 359);
+            btnSubmitEvent.Name = "btnSubmitEvent";
+            btnSubmitEvent.Size = new Size(94, 29);
+            btnSubmitEvent.TabIndex = 13;
+            btnSubmitEvent.Text = "Submit";
+            btnSubmitEvent.UseVisualStyleBackColor = true;
+            btnSubmitEvent.Click += btnSubmitEvent_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(textBox9);
-            Controls.Add(textBox8);
-            Controls.Add(textBox7);
-            Controls.Add(textBox6);
-            Controls.Add(dateTimePicker2);
-            Controls.Add(dateTimePicker1);
-            Controls.Add(textBox5);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(comboBox1);
-            Controls.Add(button1);
-            Controls.Add(textBox1);
+            Controls.Add(btnSubmitEvent);
+            Controls.Add(txtLoggedInAsResult);
+            Controls.Add(txtLoggedInAsRead);
+            Controls.Add(txtEndDateRead);
+            Controls.Add(txtStartDateRead);
+            Controls.Add(dateTimePickerEndDateWrite);
+            Controls.Add(dateTimePickerStartDateWrite);
+            Controls.Add(txtTicketAmountWrite);
+            Controls.Add(txtTicketAmountRead);
+            Controls.Add(txtDescriptionRead);
+            Controls.Add(txtDescriptionWrite);
+            Controls.Add(comboBoxVenueList);
+            Controls.Add(btnCreateNewVenue);
+            Controls.Add(txtVenueReadText);
             Name = "Form1";
             Text = "Form1";
-            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)venueBindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)venueBindingSource).EndInit();
             ResumeLayout(false);
@@ -192,20 +203,21 @@ namespace TicketJam.WinForm
 
         #endregion
 
-        private TextBox textBox1;
-        private Button button1;
-        private ComboBox comboBox1;
+        private TextBox txtVenueReadText;
+        private Button btnCreateNewVenue;
+        private ComboBox comboBoxVenueList;
         private BindingSource venueBindingSource;
         private BindingSource venueBindingSource1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
-        private TextBox textBox5;
-        private DateTimePicker dateTimePicker1;
-        private DateTimePicker dateTimePicker2;
-        private TextBox textBox6;
-        private TextBox textBox7;
-        private TextBox textBox8;
-        private TextBox textBox9;
+        private TextBox txtDescriptionWrite;
+        private TextBox txtDescriptionRead;
+        private TextBox txtTicketAmountRead;
+        private TextBox txtTicketAmountWrite;
+        private DateTimePicker dateTimePickerStartDateWrite;
+        private DateTimePicker dateTimePickerEndDateWrite;
+        private TextBox txtStartDateRead;
+        private TextBox txtEndDateRead;
+        private TextBox txtLoggedInAsRead;
+        private TextBox txtLoggedInAsResult;
+        private Button btnSubmitEvent;
     }
 }
