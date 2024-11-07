@@ -9,7 +9,7 @@ namespace TicketJam.Website.Controllers
     public class OrderController : Controller
     {
         // GET: OrderController
-        OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7168/api/v1/OrderControllerAPI");
+        OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7280/api/v1/OrderControllerAPI");
         OrderStub OrderStub;
 
         public OrderController(OrderStub orderStub)
@@ -66,10 +66,10 @@ namespace TicketJam.Website.Controllers
             try
             {
                 // Ensure OrderLines is initialized
-                //if (order.OrderLines == null)
-                //{
-                  //  order.OrderLines = new List<OrderLine>();
-                //}
+                if (order.OrderLines == null)
+                {
+                    order.OrderLines = new List<OrderLine>();
+                }
 
                 // Save the order using the stub or service
                 //order.OrderNo = OrderStub.GetAll().Max(o => o.OrderNo) + 1;

@@ -69,7 +69,7 @@ namespace TicketJam.DAL.DAO
 
         public IEnumerable<Order> Read()
         {
-            String commandText = "Select Id, CustomerName, Discount, Date FROM Orders";
+            String commandText = "Select Id FROM Orders";
             IDbConnection connection = new SqlConnection(connectionString);
             return connection.Query<Order>(commandText);
 
