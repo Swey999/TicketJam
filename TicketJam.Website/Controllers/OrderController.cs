@@ -21,7 +21,7 @@ namespace TicketJam.Website.Controllers
         public ActionResult Index()
         {
             
-            return View(OrderStub.GetAll());
+            return View(OrderAPIConsumer.GetAll());
         }
 
         // GET: OrderController/Details/5
