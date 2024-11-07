@@ -37,7 +37,7 @@ namespace TicketJam.Test.CreateOrder.Test
         }
 
         [Test]
-        public Event FindEventById()
+        public void FindEventById()
         {
             //ARRANGE
             //ACT
