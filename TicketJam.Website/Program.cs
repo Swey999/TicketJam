@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TicketJam.Website.APIClient.Stubs.OrderStubs;
 using TicketJam.Website.Data;
 
 namespace TicketJam.Website
@@ -10,7 +9,6 @@ namespace TicketJam.Website
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddSingleton<OrderStub>();
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

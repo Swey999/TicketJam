@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TicketJam.Website.APIClient;
 using TicketJam.Website.APIClient.DTO;
-using TicketJam.Website.APIClient.Stubs.OrderStubs;
 
 namespace TicketJam.Website.Controllers
 {
@@ -10,17 +9,16 @@ namespace TicketJam.Website.Controllers
     {
         // GET: OrderController
         OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7168/api/v1/OrderControllerAPI");
-        OrderStub OrderStub;
 
         public OrderController(OrderStub orderStub)
         {
             OrderStub = orderStub;
         }
 
-        
+
         public ActionResult Index()
         {
-            
+
             return View(OrderStub.GetAll());
         }
 
@@ -71,8 +69,8 @@ namespace TicketJam.Website.Controllers
             }
         }
 
-            // GET: OrderController/Edit/5
-            public ActionResult Edit(int id)
+        // GET: OrderController/Edit/5
+        public ActionResult Edit(int id)
         {
             return View();
         }

@@ -17,4 +17,8 @@
     <PackageReference Include="RestSharp" Version="112.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TicketJam.WebAPI\TicketJam.WebAPI.csproj" />
+  </ItemGroup>
+
 </Project>

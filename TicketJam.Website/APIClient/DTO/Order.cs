@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public int OrderNo { get; set; }
-        public CustomerDog Customer { get; set; }
+        public CustomerDTO Customer { get; set; }
         public Event Event { get; set; }
         public Venue Venue { get; set; }
 
