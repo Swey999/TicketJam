@@ -1,0 +1,110 @@
+﻿@model TicketJam.Website.APIClient.DTO.Order
+
+@{
+    ViewData["Title"] = "Create Order";
+}
+
+<h1>Order Details</h1>
+
+<h4>Order</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Order ID -->
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" readonly />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+
+            <!-- Order Number -->
+            <div class="form-group">
+                <label asp-for="OrderNo" class="control-label"></label>
+                <input asp-for="OrderNo" class="form-control" />
+                <span asp-validation-for="OrderNo" class="text-danger"></span>
+            </div>
+
+            <!-- Event Details -->
+            <h4>Event Details</h4>
+            <div class="form-group">
+                <label>Event No:</label>
+                <span>@(Model.Event?.EventNo.ToString() ?? "N/A")</span>
+            </div>
+            <div class="form-group">
+                <label>Total Amount:</label>
+                <span>@(Model.Event?.TotalAmount.ToString() ?? "N/A")</span>
+            </div>
+            <div class="form-group">
+                <label>Start Date:</label>
+                <span>@(Model.Event?.StartDate.ToString("d") ?? "N/A")</span>
+            </div>
+            <div class="form-group">
+                <label>End Date:</label>
+                <span>@(Model.Event?.EndDate.ToString("d") ?? "N/A")</span>
+            </div>
+
+            <!-- Venue Details -->
+            <h4>Venue Details</h4>
+            <div class="form-group">
+                <label>Venue ID:</label>
+                <span>@(Model.Venue?.Id.ToString() ?? "N/A")</span>
+            </div>
+            <div>
+                <label>Venue Name:</label>
+                <span>@(Model.Venue?.Name.ToString() ?? "N/A")</span>
+            </div>
+
+            <!-- Display Order Lines -->
+            <h4>Order Lines</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>OrderLine ID</th>
+                        <th>Quantity</th>
+                        <th>Ticket Category</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.OrderLines != null && Model.OrderLines.Any())
+                    {
+                        @foreach (var line in Model.OrderLines)
+                        {
+                            <tr>
+                                <td>@line.Id</td>
+                                <td>@line.Quantity</td>
+                                <td>@(line.Ticket?.TicketCategory ?? "N/A")</td>
+                                <td>@(line.Ticket?.Price.ToString("C") ?? "0")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-muted">No order lines available.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <input type="submit" value="Create Order" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
