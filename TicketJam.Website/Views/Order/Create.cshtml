@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create Order";
 }
 
-<h1>Order Details</h1>
+<h1>Checkout</h1>
 
 <h4>Order</h4>
 <hr />
@@ -14,56 +14,57 @@
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Order ID -->
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" readonly />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-
             <!-- Order Number -->
             <div class="form-group">
-                <label asp-for="OrderNo" class="control-label"></label>
-                <input asp-for="OrderNo" class="form-control" />
-                <span asp-validation-for="OrderNo" class="text-danger"></span>
+                <label class="control-label" style="font-weight: bold">Order Number</label> <!-- Custom label text here -->
+                <span class="form-control-plaintext">@Model.OrderNo</span>
             </div>
+            <hr>
 
-            <!-- Event Details -->
+            <!-- Address Details -->
+            <h4>Venue Address</h4>
+            <div class="form-group">
+                <label style="font-weight: bold">Street</label>
+                <span class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Address?.StreetName</span>
+            </div>
+            <div class="form-group">
+                <label style="font-weight: bold">HouseNo</label>
+                <span class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Address?.HouseNo</span>
+            </div>
+            <div class="form-group">
+                <label style="font-weight: bold">City</label>
+                <span class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Address?.City</span>
+            </div>
+            <div class="form-group">
+                <label style="font-weight: bold">Postal Code</label>
+                <span class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Address?.Zip</span>
+            </div>
+            <hr>
+
+ @*            <!-- Event Details -->
             <h4>Event Details</h4>
             <div class="form-group">
                 <label>Event No:</label>
-               
+                <input type="text" value="@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Event?.EventNo ?? " N /A"" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label>Total Amount:</label>
-               
+                <input type="text" value="@Model.TotalAmount.ToString("C")" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label>Start Date:</label>
-               
+                <input type="text" value="@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Event?.StartDate.ToString("d") ?? " N /A"" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label>End Date:</label>
-             
-            </div>
-
-            <!-- Venue Details -->
-            <h4>Venue Details</h4>
-            <div class="form-group">
-                <label>Venue ID:</label>
-              
-            </div>
-            <div>
-                <label>Venue Name:</label>
-        
-            </div>
+                <input type="text" value="@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Event?.EndDate.ToString("d") ?? " N /A"" class="form-control" readonly />
+            </div> *@
 
             <!-- Display Order Lines -->
-            <h4>Order Lines</h4>
+            <h4>Tickets</h4>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>OrderLine ID</th>
                         <th>Quantity</th>
                         <th>Ticket Category</th>
                         <th>Price</th>
@@ -75,7 +76,6 @@
                         @foreach (var line in Model.OrderLines)
                         {
                             <tr>
-                                <td>@line.Id</td>
                                 <td>@line.Quantity</td>
                                 <td>@(line.Ticket?.TicketCategory ?? "N/A")</td>
                                 <td>@(line.Ticket?.Price.ToString("C") ?? "0")</td>
@@ -93,14 +93,10 @@
 
             <!-- Submit Button -->
             <div class="form-group">
-                <input type="submit" value="Create Order" class="btn btn-primary" />
+                <input type="submit" value="Confirm Order" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

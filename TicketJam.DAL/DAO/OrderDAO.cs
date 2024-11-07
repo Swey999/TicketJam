@@ -68,17 +68,18 @@ namespace TicketJam.DAL.DAO
             //return connection.QuerySingle<Order>(commandText, new { Id = id });
 
             string selectOrderSql = "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
-            string selectOrderlinesSql = "SELECT DISTINCT Orderline.*,Ticket.*,Section.*,Venue.*,Event.* FROM Orderline JOIN Ticket ON Ticket.Id = Orderline.Ticket_ID_FK JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Event ON Venue.Id = Event.Venue_ID_FK WHERE Orderline.Order_ID_FK = 1;";
+            string selectOrderlinesSql = "SELECT DISTINCT Orderline.*, Ticket.*, Section.*, Venue.*, Event.*, Address.* FROM Orderline JOIN Ticket ON Ticket.Id = Orderline.Ticket_ID_FK JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Event ON Venue.Id = Event.Venue_ID_FK JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Orderline.Order_ID_FK = 1;\r\n";
 
             using IDbConnection connection = new SqlConnection(connectionString);
             Order order = connection.QuerySingle<Order>(selectOrderSql, new { Id = id });
 
-            order.OrderLines = connection.Query<OrderLine, Ticket, Section, Venue, Event, OrderLine>(selectOrderlinesSql, (ol, t, s, v, e) =>
+            order.OrderLines = connection.Query<OrderLine, Ticket, Section, Venue, Event, Address, OrderLine>(selectOrderlinesSql, (ol, t, s, v, e, a) =>
             {
                 ol.Ticket = t;
                 ol.Ticket.Section = s;
                 ol.Ticket.Section.Venue = v;
                // ol.Ticket.Section.Venue.Event = e;
+                ol.Ticket.Section.Venue.Address = a;
                 return ol;
 
             }, new { OrderId = order.Id }).ToList();

@@ -7,6 +7,6 @@
         public float Price { get; set; }
         public string TicketCategory { get; set; }
        // public DateTime TicketCreated { get; set; }
-        //public Section Section { get; set; }
+        public Section Section { get; set; }
     }
 }
