@@ -18,13 +18,14 @@ public class EventTest
         _eventDAO = new EventDAO();
     }
 
+    //TODO create rollback so test can be run without manual interference
     [Test]
     public void CreateEventTest()
     {
         //ARRANGE
         Venue venue = new() { Id = 300};
         Organizer organizer = new() { Id = 300};
-        Event Event = new() { EventNo = 2006, Description = "Beat up William", TotalAmount = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now, Venue = venue, Organizer = organizer };
+        Event Event = new() { EventNo = 2988, Description = "Beat up William", TotalAmount = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now, Venue = venue, Organizer = organizer };
         //ACT
         var test = _eventDAO.InsertEvent(Event);
         //ASSERT
