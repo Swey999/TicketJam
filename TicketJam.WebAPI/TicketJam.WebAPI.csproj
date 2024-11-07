@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\TicketJam.DAL\TicketJam.DAL.csproj" />
   </ItemGroup>
 
 </Project>
