@@ -36,14 +36,17 @@ namespace TicketJam.Website.Controllers
             // Fetch event, venue, and order lines from stubs
             var order = new Order
             {
-                OrderNo = 1002, // Set an example order number
-                Customer = OrderStub.customerDogStub.GetById(1), //Fetch CustomerDog
-                Event = OrderStub.eventStub.GetById(1), // Fetch event
-                Venue = OrderStub.venueStub.GetById(1), // Fetch venue
-                OrderLines = OrderStub.orderline.GetAll().ToList() // Fetch order lines
+                OrderNo = 0
+                // OrderNo = 1002, // Set an example order number
+                //Customer = OrderStub.customerDogStub.GetById(1), //Fetch CustomerDog
+                //Event = OrderStub.eventStub.GetById(1), // Fetch event
+                //Venue = OrderStub.venueStub.GetById(1), // Fetch venue
+                //OrderLines = OrderStub.orderline.GetAll().ToList() // Fetch order lines
             };
 
+
             // Pass the fully populated order to the view
+
             return View(order);
         }
 
@@ -55,14 +58,16 @@ namespace TicketJam.Website.Controllers
             try
             {
                 // Ensure OrderLines is initialized
-                if (order.OrderLines == null)
-                {
-                    order.OrderLines = new List<OrderLine>();
-                }
+                //if (order.OrderLines == null)
+                //{
+                  //  order.OrderLines = new List<OrderLine>();
+                //}
 
                 // Save the order using the stub or service
-                order.OrderNo = OrderStub.GetAll().Max(o => o.OrderNo) + 1;
-                OrderStub.AddOrder(order);
+                //order.OrderNo = OrderStub.GetAll().Max(o => o.OrderNo) + 1;
+                //OrderStub.AddOrder(order);
+
+                OrderAPIConsumer.AddOrder(order);
                 return RedirectToAction(nameof(Index));
             }
             catch
