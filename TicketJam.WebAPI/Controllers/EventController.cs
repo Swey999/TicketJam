@@ -5,15 +5,13 @@ using TicketJam.DAL.Model;
 
 namespace TicketJam.WebAPI.Controllers
 {
-    public class EventController : Controller
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    public class EventController (IEventDAO eventDAO) : Controller
     {
-        private IEventDAO _eventDAO;
-        
 
-        public EventController()
-        {
-            _eventDAO = new EventDAO();
-        }
+        private readonly IEventDAO _eventDAO = eventDAO; 
+
 
         // GET api/<EventControllerAPI>/5
         [HttpGet("{id}")]
@@ -31,11 +29,11 @@ namespace TicketJam.WebAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Event> AddEvent (Event Event)
+        public ActionResult<Event> AddEvent (Event eventObject)
         {
-            int id = _eventDAO.InsertEvent(Event);
+            int id = _eventDAO.InsertEvent(eventObject);
             //returns 201 + account JSON as body
-            return Created($"/{Event.Id}", Event);
+            return Created($"/{eventObject.Id}", eventObject);
         }
 
     }
