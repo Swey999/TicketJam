@@ -11,11 +11,12 @@ namespace TicketJam.Test.CreateOrder.Test;
 public class EventTest
 {
     private IEventDAO _eventDAO;
+    private string s;
 
     [SetUp]
     public void SetUp()
     {
-        _eventDAO = new EventDAO();
+        _eventDAO = new EventDAO(s);
     }
 
     //TODO create rollback so test can be run without manual interference

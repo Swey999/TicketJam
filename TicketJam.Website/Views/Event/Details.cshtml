@@ -1,93 +1,91 @@
-﻿@model TicketJam.Website.APIClient.DTO.Ticket
+﻿@model TicketJam.Website.APIClient.DTO.Event
 
 @{
-    ViewData["Title"] = "Ticket Details";
+    ViewData["Title"] = "Event Details";
 }
 
 <h1>Ticket Details</h1>
 <hr />
 
-<!-- Ticket Information -->
-<div class="row">
-    <div class="col-md-6">
-        <h4>Ticket Information</h4>
-        <dl class="row">
-            <dt class="col-sm-4">Ticket Category</dt>
-            <dd class="col-sm-8">@Model.TicketCategory</dd>
-
-            <dt class="col-sm-4">Price</dt>
-            <dd class="col-sm-8">@Model.Price.ToString("C")</dd>
-        </dl>
-    </div>
-</div>
-
-<hr />
-
-<!-- Section Information -->
-<div class="row">
-    <div class="col-md-6">
-        <h4>Section Information</h4>
-        <dl class="row">
-            <dt class="col-sm-4">Section Description</dt>
-            <dd class="col-sm-8">@Model.Section.Description</dd>
-
-            <dt class="col-sm-4">Ticket Amount</dt>
-            <dd class="col-sm-8">@Model.Section.TicketAmount</dd>
-        </dl>
-    </div>
-</div>
-
-<hr />
-
-<!-- Venue Information -->
-<div class="row">
-    <div class="col-md-6">
-        <h4>Venue Information</h4>
-        <dl class="row">
-            <dt class="col-sm-4">Venue Name</dt>
-            <dd class="col-sm-8">@Model.Section.Venue.Name</dd>
-        </dl>
-    </div>
-</div>
-
-<hr />
-
-<!-- Address Information -->
-<div class="row">
-    <div class="col-md-6">
-        <h4>Address Information</h4>
-        <dl class="row">
-            <dt class="col-sm-4">Street Name</dt>
-            <dd class="col-sm-8">@Model.Section.Venue.Address.StreetName</dd>
-
-            <dt class="col-sm-4">City</dt>
-            <dd class="col-sm-8">@Model.Section.Venue.Address.City</dd>
-
-            <dt class="col-sm-4">Zip Code</dt>
-            <dd class="col-sm-8">@Model.Section.Venue.Address.Zip</dd>
-
-            <dt class="col-sm-4">House Number</dt>
-            <dd class="col-sm-8">@Model.Section.Venue.Address.HouseNo</dd>
-        </dl>
-    </div>
-</div>
-
-<hr />
-
 <!-- Event Information -->
- <div class="row">
+<div class="row">
     <div class="col-md-6">
         <h4>Event Information</h4>
         <dl class="row">
             <dt class="col-sm-4">Event Total Amount</dt>
-            <dd class="col-sm-8">@Model.Section.Venue.Event.TotalAmount.ToString("C")</dd>
+            <dd class="col-sm-8">@Model.TotalAmount.ToString()</dd>
 
             <dt class="col-sm-4">Start Date</dt>
-            <dd class="col-sm-8">@Model.Section.Venue.Event.StartDate.ToString("d")</dd>
-
+            <dd class="col-sm-8">@Model.StartDate.ToString("d")</dd>
+            
             <dt class="col-sm-4">End Date</dt>
-            <dd class="col-sm-8">@Model.Section.Venue.Event.EndDate.ToString("d")</dd>
+            <dd class="col-sm-8">@Model.EndDate.ToString("d")</dd>
+
+            <dt class="col-sm-4">Name</dt>
+            <dd class="col-sm-8">@Model.Name</dd>
         </dl>
+    </div>
+</div>
+
+<hr />
+
+<!-- Tickets Information -->
+<div class="row">
+    <div class="col-md-12">
+        @{
+            var ticketList = Model.TicketList;
+            if (ticketList != null && ticketList.Any())
+            {
+                foreach (var ticket in ticketList)
+                {
+                    <div class="ticket-section">
+                        <h5>Venue Information</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Venue Name</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Name</dd>
+                        </dl>
+
+                        <h5>Ticket Information</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Ticket Category</dt>
+                            <dd class="col-sm-8">@ticket?.TicketCategory</dd>
+
+                            <dt class="col-sm-4">Price</dt>
+                            <dd class="col-sm-8">@ticket?.Price.ToString("C")</dd>
+                        </dl>
+
+                        <h5>Section Information</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Section Description</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Description</dd>
+
+                            <dt class="col-sm-4">Ticket Amount</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.TicketAmount.ToString()</dd>
+                        </dl>
+
+                        <h5>Address Information</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Street Name</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.StreetName</dd>
+                            
+                            <dt class="col-sm-4">House Number</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.HouseNo</dd>
+
+                            <dt class="col-sm-4">City</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.City</dd>
+
+                            <dt class="col-sm-4">Zip Code</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.Zip</dd>
+                        </dl>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No tickets available.</p>
+            }
+        }
     </div>
 </div>
 

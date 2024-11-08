@@ -15,7 +15,7 @@ namespace TicketJam.WebAPI.Controllers
 
         // GET api/<EventControllerAPI>/5
         [HttpGet("{id}")]
-        public ActionResult<Event> GetById(int id)
+        public ActionResult<Event> GetEventAndJoinData(int id)
         {
             Event events = _eventDAO.GetEventAndJoinData(id);
             if (events == null)

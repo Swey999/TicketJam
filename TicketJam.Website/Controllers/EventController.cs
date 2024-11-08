@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TicketJam.Website.APIClient;
 
 namespace TicketJam.Website.Controllers
 {
     public class EventController : Controller
     {
+        EventAPIConsumer EventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/Event");
+
         // GET: EventController
         public ActionResult Index()
         {
@@ -14,7 +17,17 @@ namespace TicketJam.Website.Controllers
         // GET: EventController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            try
+            {
+                
+                return View(EventAPIConsumer.GetEventAndJoinData(id));
+            }
+            catch (Exception ex)
+            {
+                // Optionally, log the exception here if logging is available.
+                ViewBag.ErrorMessage = $"Error fetching event details: {ex.Message}";
+                return View("Error");
+            }
         }
 
         // GET: EventController/Create
