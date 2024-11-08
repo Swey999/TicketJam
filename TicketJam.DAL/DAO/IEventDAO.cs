@@ -14,5 +14,7 @@ namespace TicketJam.DAL.DAO
         int InsertEvent(Event Event);
 
         Event GetEvent(int id);
+
+        Event GetEventAndJoinData(int id);
     }
 }

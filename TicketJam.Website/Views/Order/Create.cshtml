@@ -5,8 +5,6 @@
 }
 
 <h1>Checkout</h1>
-
-<h4>Order</h4>
 <hr />
 
 <div class="row">
@@ -14,10 +12,23 @@
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Order Number -->
+             <!-- Event Details -->
+            <h4>Event Details</h4>
             <div class="form-group">
-                <label class="control-label" style="font-weight: bold">Order Number</label> <!-- Custom label text here -->
-                <span class="form-control-plaintext">@Model.OrderNo</span>
+                <label style="font-weight: bold">Name</label>
+                <span type="text" class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Event?.Name</span>
+            </div>
+            <div class="form-group">
+                <label style="font-weight: bold">Description</label>
+                <span type="text" class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Event?.Description</span>
+            </div>
+            <div class="form-group">
+                <label style="font-weight: bold">Start Date</label>
+                <span type="text" class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Event?.StartDate.ToString("d")</span>
+            </div>
+            <div class="form-group">
+                <label style="font-weight: bold">End Date</label>
+                <span type="text" class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Event?.EndDate.ToString("d")</span>
             </div>
             <hr>
 
@@ -40,25 +51,6 @@
                 <span class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Address?.Zip</span>
             </div>
             <hr>
-
- @*            <!-- Event Details -->
-            <h4>Event Details</h4>
-            <div class="form-group">
-                <label>Event No:</label>
-                <input type="text" value="@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Event?.EventNo ?? " N /A"" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label>Total Amount:</label>
-                <input type="text" value="@Model.TotalAmount.ToString("C")" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label>Start Date:</label>
-                <input type="text" value="@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Event?.StartDate.ToString("d") ?? " N /A"" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label>End Date:</label>
-                <input type="text" value="@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Event?.EndDate.ToString("d") ?? " N /A"" class="form-control" readonly />
-            </div> *@
 
             <!-- Display Order Lines -->
             <h4>Tickets</h4>

@@ -36,6 +36,26 @@ public class EventDAO : IEventDAO
         return connection.QuerySingle<Event>(GETBYID_SQL, new { Id = id });
     }
 
+    public Event GetEventAndJoinData(int id)
+    {
+        string selectEventSql = "SELECT Id, EventNo, TotalAmount, StartDate, EndDate FROM Event WHERE Id = @id";
+        string selectTicketSql = "SELECT Ticket.*, Section.*, Venue.*, Address.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Address ON Address.Id = Venue.Address_ID_FK WHERE Ticket.Event_ID_FK = @EventId";
+
+        using IDbConnection connection = new SqlConnection(_connectionString);
+        Event events = connection.QuerySingle<Event>(selectEventSql, new { Id = id });
+
+        events.TicketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(selectTicketSql, (t, s, v, a) =>
+        {
+            t.Section = s;
+            t.Section.Venue = v;
+            t.Section.Venue.Address = a;
+            return t;
+
+        }, new { EventId = events.Id }).ToList();
+
+        return events;
+    }
+
     public int InsertEvent(Event Event)
     {
         IDbConnection connection = new SqlConnection(_connectionString);

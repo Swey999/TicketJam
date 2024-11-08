@@ -14,4 +14,5 @@ public class Ticket
     public string TicketCategory { get; set; }
     public DateTime TicketCreated { get; set; }
     public Section Section { get; set; }
+    public Event Event { get; set; }
 }

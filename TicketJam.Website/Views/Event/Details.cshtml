@@ -1,0 +1,99 @@
+﻿@model TicketJam.Website.APIClient.DTO.Ticket
+
+@{
+    ViewData["Title"] = "Ticket Details";
+}
+
+<h1>Ticket Details</h1>
+<hr />
+
+<!-- Ticket Information -->
+<div class="row">
+    <div class="col-md-6">
+        <h4>Ticket Information</h4>
+        <dl class="row">
+            <dt class="col-sm-4">Ticket Category</dt>
+            <dd class="col-sm-8">@Model.TicketCategory</dd>
+
+            <dt class="col-sm-4">Price</dt>
+            <dd class="col-sm-8">@Model.Price.ToString("C")</dd>
+        </dl>
+    </div>
+</div>
+
+<hr />
+
+<!-- Section Information -->
+<div class="row">
+    <div class="col-md-6">
+        <h4>Section Information</h4>
+        <dl class="row">
+            <dt class="col-sm-4">Section Description</dt>
+            <dd class="col-sm-8">@Model.Section.Description</dd>
+
+            <dt class="col-sm-4">Ticket Amount</dt>
+            <dd class="col-sm-8">@Model.Section.TicketAmount</dd>
+        </dl>
+    </div>
+</div>
+
+<hr />
+
+<!-- Venue Information -->
+<div class="row">
+    <div class="col-md-6">
+        <h4>Venue Information</h4>
+        <dl class="row">
+            <dt class="col-sm-4">Venue Name</dt>
+            <dd class="col-sm-8">@Model.Section.Venue.Name</dd>
+        </dl>
+    </div>
+</div>
+
+<hr />
+
+<!-- Address Information -->
+<div class="row">
+    <div class="col-md-6">
+        <h4>Address Information</h4>
+        <dl class="row">
+            <dt class="col-sm-4">Street Name</dt>
+            <dd class="col-sm-8">@Model.Section.Venue.Address.StreetName</dd>
+
+            <dt class="col-sm-4">City</dt>
+            <dd class="col-sm-8">@Model.Section.Venue.Address.City</dd>
+
+            <dt class="col-sm-4">Zip Code</dt>
+            <dd class="col-sm-8">@Model.Section.Venue.Address.Zip</dd>
+
+            <dt class="col-sm-4">House Number</dt>
+            <dd class="col-sm-8">@Model.Section.Venue.Address.HouseNo</dd>
+        </dl>
+    </div>
+</div>
+
+<hr />
+
+<!-- Event Information -->
+ <div class="row">
+    <div class="col-md-6">
+        <h4>Event Information</h4>
+        <dl class="row">
+            <dt class="col-sm-4">Event Total Amount</dt>
+            <dd class="col-sm-8">@Model.Section.Venue.Event.TotalAmount.ToString("C")</dd>
+
+            <dt class="col-sm-4">Start Date</dt>
+            <dd class="col-sm-8">@Model.Section.Venue.Event.StartDate.ToString("d")</dd>
+
+            <dt class="col-sm-4">End Date</dt>
+            <dd class="col-sm-8">@Model.Section.Venue.Event.EndDate.ToString("d")</dd>
+        </dl>
+    </div>
+</div>
+
+<hr />
+
+<!-- Back Button -->
+<div class="form-group">
+    <a class="btn btn-secondary" href="@Url.Action("Index", "Ticket")">Back to List</a>
+</div>
