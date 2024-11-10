@@ -12,11 +12,11 @@
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-             <!-- Event Details -->
+            <!-- Event Details -->
             <h4>Event Details</h4>
             <div class="form-group">
                 <label style="font-weight: bold">Name</label>
-                <span type="text" class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Event?.Name</span>
+                <span class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Event?.Name</span>
             </div>
             <div class="form-group">
                 <label style="font-weight: bold">Description</label>
@@ -83,6 +83,11 @@
                 </tbody>
             </table>
 
+            <!-- Hidden Fields for OrderLines -->
+            <div id="hiddenOrderLines" style="display:none">
+                <!-- Hidden inputs for order lines will be appended here -->
+            </div>
+
             <!-- Submit Button -->
             <div class="form-group">
                 <input type="submit" value="Confirm Order" class="btn btn-primary" />
@@ -91,8 +96,75 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const storedOrder = JSON.parse(localStorage.getItem("pendingOrder"));
+        if (storedOrder) {
+            // Pre-populate the model data (this could be passed to the form dynamically)
+            const orderLines = storedOrder.orderLines || [];
+            const tableBody = document.querySelector("table tbody");
+
+            // Empty the current table content
+            tableBody.innerHTML = '';
+
+            // Populate the table with the order lines
+            orderLines.forEach(line => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                        <td>${line.quantity}</td>
+                        <td>${line.ticket.ticketCategory || 'N/A'}</td>
+                        <td>${line.ticket.price.toFixed(2)}</td>
+                    `;
+                tableBody.appendChild(row);
+
+                // Create hidden input fields for each order line to be submitted
+                const hiddenDiv = document.getElementById('hiddenOrderLines');
+
+                // Hidden input for Quantity
+                const hiddenQuantityInput = document.createElement('input');
+                hiddenQuantityInput.type = 'hidden';
+                hiddenQuantityInput.name = `OrderLines[${orderLines.indexOf(line)}].Quantity`;
+                hiddenQuantityInput.value = line.quantity;
+                hiddenDiv.appendChild(hiddenQuantityInput);
+
+                // Hidden input for Ticket ID
+                const hiddenTicketInputId = document.createElement('input');
+                hiddenTicketInputId.type = 'hidden';
+                hiddenTicketInputId.name = `OrderLines[${orderLines.indexOf(line)}].Ticket.Id`;
+                hiddenTicketInputId.value = line.ticket.id;
+                hiddenDiv.appendChild(hiddenTicketInputId);
+
+                // Hidden input for Ticket Category
+                const hiddenTicketInputCategory = document.createElement('input');
+                hiddenTicketInputCategory.type = 'hidden';
+                hiddenTicketInputCategory.name = `OrderLines[${orderLines.indexOf(line)}].Ticket.TicketCategory`;
+                hiddenTicketInputCategory.value = line.ticket.ticketCategory;
+                hiddenDiv.appendChild(hiddenTicketInputCategory);
+
+                // Hidden input for Ticket Price
+                const hiddenTicketInputPrice = document.createElement('input');
+                hiddenTicketInputPrice.type = 'hidden';
+                hiddenTicketInputPrice.name = `OrderLines[${orderLines.indexOf(line)}].Ticket.Price`;
+                hiddenTicketInputPrice.value = line.ticket.price.toFixed(2); // Ensure proper price formatting
+                hiddenDiv.appendChild(hiddenTicketInputPrice);
+
+                // Hidden input for Event Name
+                const hiddenEventNameInput = document.createElement('input');
+                hiddenEventNameInput.type = 'hidden';
+                hiddenEventNameInput.name = `OrderLines[${orderLines.indexOf(line)}].Ticket.Event.Name`;
+                hiddenEventNameInput.value = line.ticket.event.name;
+                hiddenDiv.appendChild(hiddenEventNameInput);
+
+                // Optionally, add other details like Event Description, StartDate, etc.
+            });
+
+            // Optionally, clear the localStorage to avoid re-submission
+            localStorage.removeItem("pendingOrder");
+        }
+    });
+</script>
+
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
