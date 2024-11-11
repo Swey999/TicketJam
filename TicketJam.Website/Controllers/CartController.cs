@@ -17,17 +17,31 @@ namespace TicketJam.Website.Controllers
 
         public ActionResult Add(int id, int quantity)
         {
-            OrderLine orderline = new OrderLine();
             Order order = GetCartFromCookie();
-            orderline.Ticket = _ticketAPIConsumer.GetById(id);
-            orderline.Quantity = quantity;
-            order.OrderLines.Add(orderline);
-           // order.ChangeQuantity(new ProductQuantity(product, quantity));
+            OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.Ticket.Id == id);
+            if (existingOrderLine != null)
+            {
+                existingOrderLine.Quantity += quantity;
+                if (existingOrderLine.Quantity <= 0)
+                {
+                    order.OrderLines.Remove(existingOrderLine);
+                }
+            }
+            else
+            {
+                OrderLine newOrderLine = new OrderLine
+                {
+                    Ticket = _ticketAPIConsumer.GetById(id),
+                    Quantity = quantity
+                };
+                order.OrderLines.Add(newOrderLine);
+            }
+            
             SaveCartToCookie(order);
             return View("Index", order);
         }
 
-        private Order GetCartFromCookie()
+        public Order GetCartFromCookie()
         {
             Request.Cookies.TryGetValue("Order", out string? cookie);
             if (cookie == null) { return new Order(); }

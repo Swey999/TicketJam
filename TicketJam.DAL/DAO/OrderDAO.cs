@@ -25,13 +25,13 @@ namespace TicketJam.DAL.DAO
             IDbTransaction transaction = connection.BeginTransaction();
             try
             {
-                string commandText = "INSERT INTO Orders (CustomerName, Discount, Date) VALUES (@CustomerName, @Discount, @Date)";
+                string commandText = "INSERT INTO Orders (OrderNo, Customer_ID_FK) VALUES (@OrderNo, 1)";
                 entity.Id = connection.ExecuteScalar<int>(commandText, entity, transaction);
 
-                string insertOrderlineSql = "INSERT INTO Orderlines (OrderId) VALUES (@OrderId);";
+                string insertOrderlineSql = "INSERT INTO Orderlines (Quantity, Ticket_ID_FK, Order_ID_FK) VALUES (@Quantity, @TicketId, @OrderId) SELECT CAST(SCOPE_IDENTITY() as int);";
                 foreach (OrderLine orderline in entity.OrderLines)
                 {
-                    connection.Execute(insertOrderlineSql, new { OrderId = entity.Id}, transaction);
+                    connection.Execute(insertOrderlineSql, new { OrderId = entity.Id, Quantity = orderline.Quantity , TicketId = orderline.Ticket.Id}, transaction);
                 }
             }
             catch (Exception)
@@ -89,7 +89,7 @@ namespace TicketJam.DAL.DAO
 
         public IEnumerable<Order> Read()
         {
-            String commandText = "Select Id, FROM Orders";
+            String commandText = "Select Id FROM Orders";
             IDbConnection connection = new SqlConnection(connectionString);
             return connection.Query<Order>(commandText);
 

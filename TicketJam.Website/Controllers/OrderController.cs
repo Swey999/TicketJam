@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using TicketJam.Website.APIClient;
 using TicketJam.Website.APIClient.DTO;
 
@@ -9,6 +10,7 @@ namespace TicketJam.Website.Controllers
     {
         // GET: OrderController
         OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7280/api/v1/OrderControllerAPI");
+        CartController cartController = new CartController();
 
 
         public OrderController()
@@ -20,7 +22,7 @@ namespace TicketJam.Website.Controllers
         public ActionResult Index()
         {
 
-            return View(OrderAPIConsumer.GetAll());
+            return View();
         }
 
         // GET: OrderController/Details/5
@@ -32,30 +34,8 @@ namespace TicketJam.Website.Controllers
         // GET: OrderController/Create
         public ActionResult Create()
         {
-            // Fetch event, venue, and order lines from stubs
-
-
-            //Order order = new Order
-            //{
-            //   OrderNo = 0,
-            //    OrderLines = new List<OrderLine>  // Initialize OrderLines as a List<OrderLine>
-            //      {
-            //        new OrderLine { Id = 1, Quantity = 1 }
-            //       }
-
-            // };
-            //{
-            //  OrderNo = 0,
-            // OrderNo = 1002, // Set an example order number
-            //Customer = OrderStub.customerDogStub.GetById(1), //Fetch CustomerDog
-            //Event = OrderStub.eventStub.GetById(1), // Fetch event
-            //Venue = OrderStub.venueStub.GetById(1), // Fetch venue
-            //OrderLines =  // Fetch order lines
-            //};
-
-
-            // Pass the fully populated order to the view
-            Order order = new Order();
+            Request.Cookies.TryGetValue("Order", out string? cookie);
+            Order order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
 
             return View(order);
         }
@@ -67,13 +47,9 @@ namespace TicketJam.Website.Controllers
         {
             try
             {
-                // Ensure OrderLines is initialized
-
-
-                // Save the order using the stub or service
-                //order.OrderNo = OrderStub.GetAll().Max(o => o.OrderNo) + 1;
-                //OrderStub.AddOrder(order);
-
+                Request.Cookies.TryGetValue("Order", out string? cookie);
+                order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
+                order.OrderNo = 1292;
                 OrderAPIConsumer.AddOrder(order);
                 return RedirectToAction(nameof(Index));
             }
