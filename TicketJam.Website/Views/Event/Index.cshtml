@@ -16,7 +16,7 @@
                 <p class="event-totalAmount"><strong>Tickets for sale:</strong> @eventItem.TotalAmount</p>
                 <p class="event-location"><strong>Location:</strong> @eventItem.Venue?.Address?.StreetName?</p>
             </div>  
-            <a asp-action="Details" asp-route-id="Id" class="details-button">Køb Billet</a>
+            <a asp-action="Details" asp-route-id="@eventItem.Id" class="details-button">Køb Billet</a>
         </div>
     }
 

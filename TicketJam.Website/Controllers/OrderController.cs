@@ -32,29 +32,6 @@ namespace TicketJam.Website.Controllers
         // GET: OrderController/Create
         public ActionResult Create()
         {
-            // Fetch event, venue, and order lines from stubs
-
-
-            //Order order = new Order
-            //{
-            //   OrderNo = 0,
-            //    OrderLines = new List<OrderLine>  // Initialize OrderLines as a List<OrderLine>
-            //      {
-            //        new OrderLine { Id = 1, Quantity = 1 }
-            //       }
-
-            // };
-            //{
-            //  OrderNo = 0,
-            // OrderNo = 1002, // Set an example order number
-            //Customer = OrderStub.customerDogStub.GetById(1), //Fetch CustomerDog
-            //Event = OrderStub.eventStub.GetById(1), // Fetch event
-            //Venue = OrderStub.venueStub.GetById(1), // Fetch venue
-            //OrderLines =  // Fetch order lines
-            //};
-
-
-            // Pass the fully populated order to the view
             Order order = new Order();
 
             return View(order);
