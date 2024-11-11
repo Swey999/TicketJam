@@ -42,10 +42,12 @@ namespace TicketJam.WinForm
             _Event.Description = txtDescriptionWrite.Text;
             _Event.TotalAmount = int.Parse(txtTicketAmountWrite.Text);
             _Event.Name = txtNameWrite.Text;
-            _Event.Venue = (VenueDto)comboBoxVenueList.SelectedItem;
+            VenueDto tempObject = (VenueDto)comboBoxVenueList.SelectedItem;
+            _Event.VenueId = tempObject.VenueId;
+
             //TODO
             //FIX THIS SO NOT HARD CODED
-            _Event.Organizer = OrganizerStub.Organizer;
+            _Event.OrganizerId = OrganizerStub.Organizer.OrganizerId;
 
             _eventAPIConsumer.AddEvent(_Event);
         }

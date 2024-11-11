@@ -17,7 +17,7 @@ public class EventDAO : IEventDAO
     private readonly string _connectionString;
     private string GETALLVENUES_SQL = "SELECT * FROM Venue";
     private string GETBYID_SQL = "SELECT * FROM Event WHERE Id = @Id";
-    private string INSERT_SQL = "INSERT INTO Event (Description, Name, TotalAmount, StartDate, EndDate, EventNo) VALUES (@Description, @Name, @TotalAmount, @StartDate, @EndDate, @EventNo) SELECT CAST(SCOPE_IDENTITY() as int)";
+    private string INSERT_SQL = "INSERT INTO Event (Description, Name, TotalAmount, StartDate, EndDate, EventNo, Organizer_ID_FK, Venue_ID_FK) VALUES (@Description, @Name, @TotalAmount, @StartDate, @EndDate, @EventNo, @OrganizerId, @VenueId) SELECT CAST(SCOPE_IDENTITY() as int)";
     public EventDAO(string connectionString)
     {
         _connectionString = connectionString;

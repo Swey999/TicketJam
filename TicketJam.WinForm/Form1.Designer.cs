@@ -82,6 +82,9 @@ namespace TicketJam.WinForm
             venue1.Name = "Gigantium";
             venue2.Name = "Elgiganten";
             venue3.Name = "Bilka";
+            venue1.VenueId = 1;
+            venue2.VenueId = 2;
+            venue3.VenueId = 3;
             comboBoxVenueList.Items.AddRange(new object[] { venue1, venue2, venue3 });
             comboBoxVenueList.Location = new Point(168, 114);
             comboBoxVenueList.Name = "comboBoxVenueList";
