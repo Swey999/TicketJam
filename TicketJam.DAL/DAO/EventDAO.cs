@@ -74,4 +74,10 @@ public class EventDAO : IEventDAO
 
         return Event.Id;
     }
+    public IEnumerable<Event> Read()
+    {
+        string commandtext = "SELECT * FROM Event";
+        IDbConnection connection = new SqlConnection(_connectionString);
+        return connection.Query<Event>(commandtext);
+    }
 }
