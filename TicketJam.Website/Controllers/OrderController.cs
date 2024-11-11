@@ -9,7 +9,7 @@ namespace TicketJam.Website.Controllers
     {
         // GET: OrderController
         OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7280/api/v1/OrderControllerAPI");
-        
+
 
         public OrderController()
         {
@@ -32,9 +32,30 @@ namespace TicketJam.Website.Controllers
         // GET: OrderController/Create
         public ActionResult Create()
         {
-            //Maybe i should have Order in parameter (and then the order isnt in the database yet).
-            //Order order = OrderAPIConsumer.GetById(id);
-            var order = new Order();
+            // Fetch event, venue, and order lines from stubs
+
+
+            //Order order = new Order
+            //{
+            //   OrderNo = 0,
+            //    OrderLines = new List<OrderLine>  // Initialize OrderLines as a List<OrderLine>
+            //      {
+            //        new OrderLine { Id = 1, Quantity = 1 }
+            //       }
+
+            // };
+            //{
+            //  OrderNo = 0,
+            // OrderNo = 1002, // Set an example order number
+            //Customer = OrderStub.customerDogStub.GetById(1), //Fetch CustomerDog
+            //Event = OrderStub.eventStub.GetById(1), // Fetch event
+            //Venue = OrderStub.venueStub.GetById(1), // Fetch venue
+            //OrderLines =  // Fetch order lines
+            //};
+
+
+            // Pass the fully populated order to the view
+            Order order = new Order();
 
             return View(order);
         }
@@ -42,18 +63,23 @@ namespace TicketJam.Website.Controllers
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Order order)
+        public ActionResult Create(Order order) //SLET IFORMCOLLECTION !!!!!
         {
             try
             {
-                // OrderAPIConsumer will save the order with associated order lines
-                order.OrderNo = 20;
+                // Ensure OrderLines is initialized
+
+
+                // Save the order using the stub or service
+                //order.OrderNo = OrderStub.GetAll().Max(o => o.OrderNo) + 1;
+                //OrderStub.AddOrder(order);
+
                 OrderAPIConsumer.AddOrder(order);
-                return Ok(); // Respond with 200 OK
+                return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating order");
+                return View();
             }
         }
 

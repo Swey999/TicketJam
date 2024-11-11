@@ -1,87 +1,97 @@
 ﻿@model TicketJam.Website.APIClient.DTO.Event
 
 @{
-    var ticketList = Model.TicketList;
+    ViewData["Title"] = "Event Details";
 }
 
-<h1>Event Details</h1>
+<h1>Ticket Details</h1>
 <hr />
 
-@if (ticketList != null && ticketList.Any())
-{
-    @* Ticket Dropdown *@
-    <div class="form-group">
-        <label for="ticketDropdown">Select a Ticket</label>
-        <select id="ticketDropdown" class="form-control">
-            <option value="">-- Select Ticket --</option>
-            @for (int i = 0; i < ticketList.Count; i++)
+<!-- Event Information -->
+<div class="row">
+    <div class="col-md-6">
+        <h4>Event Information</h4>
+        <dl class="row">
+            <dt class="col-sm-4">Event Total Amount</dt>
+            <dd class="col-sm-8">@Model.TotalAmount.ToString()</dd>
+
+            <dt class="col-sm-4">Start Date</dt>
+            <dd class="col-sm-8">@Model.StartDate.ToString("d")</dd>
+
+            <dt class="col-sm-4">End Date</dt>
+            <dd class="col-sm-8">@Model.EndDate.ToString("d")</dd>
+
+            <dt class="col-sm-4">Name</dt>
+            <dd class="col-sm-8">@Model.Name</dd>
+        </dl>
+    </div>
+</div>
+
+<hr />
+
+<!-- Tickets Information -->
+<div class="row">
+    <div class="col-md-12">
+        @{
+            var ticketList = Model.TicketList;
+            if (ticketList != null && ticketList.Any())
             {
-                <option value="@i">Ticket @ticketList[i].TicketCategory - @ticketList[i].Price.ToString("C")</option>
+                foreach (var ticket in ticketList)
+                {
+                    <div class="ticket-section">
+                        <h5>Venue Information</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Venue Name</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Name</dd>
+                        </dl>
+
+                        <h5>Ticket Information</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Ticket Category</dt>
+                            <dd class="col-sm-8">@ticket?.TicketCategory</dd>
+
+                            <dt class="col-sm-4">Price</dt>
+                            <dd class="col-sm-8">@ticket?.Price.ToString("C")</dd>
+                        </dl>
+
+                        <h5>Section Information</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Section Description</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Description</dd>
+
+                            <dt class="col-sm-4">Ticket Amount</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.TicketAmount.ToString()</dd>
+                        </dl>
+
+                        <h5>Address Information</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Street Name</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.StreetName</dd>
+
+                            <dt class="col-sm-4">House Number</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.HouseNo</dd>
+
+                            <dt class="col-sm-4">City</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.City</dd>
+
+                            <dt class="col-sm-4">Zip Code</dt>
+                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.Zip</dd>
+                        </dl>
+
+                    </div>
+                }
             }
-        </select>
-    </div>
-
-    <div class="form-group mt-3">
-        <label for="ticketQuantity">Select Quantity</label>
-        <input id="ticketQuantity" type="number" class="form-control" min="1" value="1" />
-    </div>
-
-    <button class="btn btn-primary mt-3" onclick="addToBasket()">Add to Basket</button>
-
-    <hr />
-
-    @* Basket Display *@
-    <div>
-        <h4>Basket</h4>
-        <ul id="basketList" class="list-group"></ul>
-        <button class="btn btn-success mt-" onclick="ConfirmOrder()">Checkout</button>
-    </div>
-
-    <script>
-        const ticketDetails = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ticketList));
-        const basket = [];
-
-        function addToBasket() {
-            const dropdown = document.getElementById("ticketDropdown");
-            const quantityInput = document.getElementById("ticketQuantity");
-            const selectedIndex = dropdown.value;
-
-            if (selectedIndex === "") return alert("Please select a ticket");
-
-            const ticket = ticketDetails[selectedIndex];
-            const quantity = parseInt(quantityInput.value, 10);
-
-            // Add selected ticket to basket
-            basket.push({
-                ticket: { id: ticket.Id, ticketCategory: ticket.TicketCategory, price: ticket.Price },
-                quantity: quantity
-            });
-
-            // Update basket display
-            const basketList = document.getElementById("basketList");
-            const listItem = document.createElement("li");
-            listItem.textContent = `${quantity} x ${ticket.TicketCategory} at ${ticket.Price.toFixed(2)}`;
-            basketList.appendChild(listItem);
+            else
+            {
+                <p>No tickets available.</p>
+            }
         }
+    </div>
+</div>
 
-        function ConfirmOrder() {
-            const order = {
-                customer: null, // Add customer data if needed
-                orderLines: basket.map(item => ({
-                    quantity: item.quantity,
-                    ticket: item.ticket
-                }))
-            };
+<hr />
 
-            // Save order data to local storage
-            localStorage.setItem("pendingOrder", JSON.stringify(order));
-
-            // Redirect to Order/Create page for final confirmation
-            window.location.href = '@Url.Action("Create", "Order")';
-        }
-    </script>
-}
-else
-{
-    <p>No tickets available.</p>
-}
+<!-- Back Button -->
+<div class="form-group">
+    <a class="btn btn-secondary" href="@Url.Action("Index", "Ticket")">Back to List</a>
+</div>
