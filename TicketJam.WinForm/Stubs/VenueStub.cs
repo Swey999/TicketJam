@@ -9,10 +9,10 @@ namespace TicketJam.WinForm.Stubs
 {
     public static class VenueStub
     {
-        public static List<Venue> list { get; } = new List<Venue>() { new Venue() { Name = "Gigantium" }, new Venue() { Name = "Elgiganten" }, new Venue() { Name = "Bilka" } };
-        public static Venue Venue { get; set; } = new Venue() { Name = "Gigantium" };
+        public static List<VenueDto> list { get; } = new List<VenueDto>() { new VenueDto() { Name = "Gigantium" }, new VenueDto() { Name = "Elgiganten" }, new VenueDto() { Name = "Bilka" } };
+        public static VenueDto Venue { get; set; } = new VenueDto() { Name = "Gigantium" };
 
-        public static IEnumerable<Venue> GetAll()
+        public static IEnumerable<VenueDto> GetAll()
         {
             return list;
         }

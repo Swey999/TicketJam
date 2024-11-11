@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace TicketJam.WinForm.DTO
 {
-    public class Venue
+    public class OrganizerDto
     {
-        public string Name { get; set; }
-
-        public override string ToString()
-        {
-            return Name;
-        }
+        public string PhoneNo { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

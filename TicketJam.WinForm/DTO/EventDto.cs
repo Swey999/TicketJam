@@ -7,14 +7,15 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TicketJam.WinForm.DTO
 {
-    public class Event
+    public class EventDto
     {
         public string Description { get; set; }
+        public string Name { get; set; }
         public int TotalAmount { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public Venue Venue { get; set; }
-        public Organizer Organizer { get; set; }
+        public VenueDto Venue { get; set; }
+        public OrganizerDto Organizer { get; set; }
 
     }
 }

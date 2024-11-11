@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TicketJam.WinForm.DTO
 {
-    public class Address
+    public class AddressDto
     {
         public string StreetName { get; set; }
         public string City { get; set; }
