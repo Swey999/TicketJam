@@ -77,7 +77,9 @@
                             <dt class="col-sm-4">Zip Code</dt>
                             <dd class="col-sm-8">@ticket?.Section?.Venue.Address.Zip</dd>
                         </dl>
-
+                        <td>
+                            <a class="btn-sm btn-primary" href="@Url.Action("Add", "Cart", new { id = ticket.Id, quantity = 1 })">Add to basket<span class="bi-cart-plus" style="margin-left:10px;"></span></a>
+                        </td>
                     </div>
                 }
             }

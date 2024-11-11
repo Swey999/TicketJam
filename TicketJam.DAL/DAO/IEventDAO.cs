@@ -16,5 +16,7 @@ namespace TicketJam.DAL.DAO
         Event GetEvent(int id);
 
         Event GetEventAndJoinData(int id);
+
+        public IEnumerable<Event> Read();
     }
 }

@@ -11,8 +11,9 @@ namespace TicketJam.Website.Controllers
         // GET: EventController
         public ActionResult Index()
         {
-            return View();
+            return View(EventAPIConsumer.GetAll());
         }
+
 
         // GET: EventController/Details/5
         public ActionResult Details(int id)

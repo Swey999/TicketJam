@@ -38,5 +38,11 @@ namespace TicketJam.WebAPI.Controllers
             return Ok(eventObject);
         }
 
+        [HttpGet]
+        public ActionResult<IEnumerable<Event>> GetAll()
+        {
+            return Ok(_eventDAO.Read());
+        }
+
     }
 }
