@@ -6,10 +6,10 @@ namespace TicketJam.WinForm
 {
     public partial class Form1 : Form
     {
-        private DTO.Event _Event = new DTO.Event();
-        private List<Venue> list = VenueStub.list;
+        private EventDto _Event = new EventDto();
+        private List<VenueDto> list = VenueStub.list;
         //Insert dependency injection for baseuri
-        private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("");
+        private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/Event");
 
         public Form1()
         {
@@ -41,10 +41,13 @@ namespace TicketJam.WinForm
             _Event.EndDate = dateTimePickerEndDateWrite.Value.Date;
             _Event.Description = txtDescriptionWrite.Text;
             _Event.TotalAmount = int.Parse(txtTicketAmountWrite.Text);
+            _Event.Name = txtNameWrite.Text;
+            VenueDto tempObject = (VenueDto)comboBoxVenueList.SelectedItem;
+            _Event.VenueId = tempObject.VenueId;
+
             //TODO
             //FIX THIS SO NOT HARD CODED
-            _Event.Organizer = OrganizerStub.Organizer;
-            _Event.Venue = VenueStub.Venue;
+            _Event.OrganizerId = OrganizerStub.Organizer.OrganizerId;
 
             _eventAPIConsumer.AddEvent(_Event);
         }

@@ -1,4 +1,5 @@
-﻿using TicketJam.WinForm.Stubs;
+﻿using TicketJam.WinForm.DTO;
+using TicketJam.WinForm.Stubs;
 
 namespace TicketJam.WinForm
 {
@@ -31,6 +32,10 @@ namespace TicketJam.WinForm
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            VenueDto venue1 = new VenueDto();
+            VenueDto venue2 = new VenueDto();
+            VenueDto venue3 = new VenueDto();
             txtVenueReadText = new TextBox();
             btnCreateNewVenue = new Button();
             comboBoxVenueList = new ComboBox();
@@ -47,6 +52,8 @@ namespace TicketJam.WinForm
             txtLoggedInAsRead = new TextBox();
             txtLoggedInAsResult = new TextBox();
             btnSubmitEvent = new Button();
+            txtNameReadOnly = new TextBox();
+            txtNameWrite = new TextBox();
             ((System.ComponentModel.ISupportInitialize)venueBindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)venueBindingSource).BeginInit();
             SuspendLayout();
@@ -72,13 +79,18 @@ namespace TicketJam.WinForm
             // comboBoxVenueList
             // 
             comboBoxVenueList.FormattingEnabled = true;
-            comboBoxVenueList.Items.AddRange(new object[] { "Gigantium" });
+            venue1.Name = "Gigantium";
+            venue2.Name = "Elgiganten";
+            venue3.Name = "Bilka";
+            venue1.VenueId = 1;
+            venue2.VenueId = 2;
+            venue3.VenueId = 3;
+            comboBoxVenueList.Items.AddRange(new object[] { venue1, venue2, venue3 });
             comboBoxVenueList.Location = new Point(168, 114);
             comboBoxVenueList.Name = "comboBoxVenueList";
             comboBoxVenueList.Size = new Size(151, 28);
             comboBoxVenueList.TabIndex = 2;
             comboBoxVenueList.SelectedIndexChanged += comboBoxVenueList_SelectedIndexChanged;
-            comboBoxVenueList.DataSource = VenueStub.list;
             // 
             // txtDescriptionWrite
             // 
@@ -161,8 +173,8 @@ namespace TicketJam.WinForm
             txtLoggedInAsResult.ReadOnly = true;
             txtLoggedInAsResult.Size = new Size(125, 27);
             txtLoggedInAsResult.TabIndex = 12;
+            txtLoggedInAsResult.Text = OrganizerStub.Organizer.Email;
             txtLoggedInAsResult.TextChanged += txtLoggedInAsResult_TextChanged;
-            txtLoggedInAsResult.Text = OrganizerStub.Organizer.ToString();
             // 
             // btnSubmitEvent
             // 
@@ -174,11 +186,29 @@ namespace TicketJam.WinForm
             btnSubmitEvent.UseVisualStyleBackColor = true;
             btnSubmitEvent.Click += btnSubmitEvent_Click;
             // 
+            // txtNameReadOnly
+            // 
+            txtNameReadOnly.Location = new Point(12, 28);
+            txtNameReadOnly.Name = "txtNameReadOnly";
+            txtNameReadOnly.ReadOnly = true;
+            txtNameReadOnly.Size = new Size(150, 27);
+            txtNameReadOnly.TabIndex = 14;
+            txtNameReadOnly.Text = "Name of your event";
+            // 
+            // txtNameWrite
+            // 
+            txtNameWrite.Location = new Point(12, 61);
+            txtNameWrite.Name = "txtNameWrite";
+            txtNameWrite.Size = new Size(125, 27);
+            txtNameWrite.TabIndex = 15;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(txtNameWrite);
+            Controls.Add(txtNameReadOnly);
             Controls.Add(btnSubmitEvent);
             Controls.Add(txtLoggedInAsResult);
             Controls.Add(txtLoggedInAsRead);
@@ -219,5 +249,7 @@ namespace TicketJam.WinForm
         private TextBox txtLoggedInAsRead;
         private TextBox txtLoggedInAsResult;
         private Button btnSubmitEvent;
+        private TextBox txtNameReadOnly;
+        private TextBox txtNameWrite;
     }
 }

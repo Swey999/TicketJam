@@ -9,11 +9,11 @@ namespace TicketJam.WinForm.ApiClient
 {
     public interface IRestClient
     {
-        IEnumerable<Venue> GetAllVenues();
+        IEnumerable<VenueDto> GetAllVenues();
         
-        void CreateEvent(Event Event);
+        void CreateEvent(EventDto Event);
 
-        void AddVenue(Venue venue);
+        void AddVenue(VenueDto venue);
 
         }
     }

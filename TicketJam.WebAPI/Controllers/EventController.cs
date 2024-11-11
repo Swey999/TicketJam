@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
+using TicketJam.WebAPI.DTOs;
+using TicketJam.WebAPI.DTOs.Converters;
 
 namespace TicketJam.WebAPI.Controllers
 {
@@ -29,11 +31,11 @@ namespace TicketJam.WebAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Event> AddEvent (Event eventObject)
+        public ActionResult<Event> AddEvent (EventDto eventObject)
         {
-            int id = _eventDAO.InsertEvent(eventObject);
+            int id = _eventDAO.InsertEvent(eventObject.FromDto());
             //returns 201 + account JSON as body
-            return Created($"/{eventObject.Id}", eventObject);
+            return Ok(eventObject);
         }
 
         [HttpGet]
