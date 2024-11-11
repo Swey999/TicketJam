@@ -20,12 +20,12 @@ namespace TicketJam.WinForm.ApiClient
             this.restClient = new RestSharp.RestClient(baseURI);
         }
 
-        public Event AddEvent (Event Event)
+        public EventDto AddEvent (EventDto Event)
         {
             var request = new RestRequest().AddJsonBody(Event);
             var client = new RestClient(BaseURI);
 
-            var response = client.ExecutePost<Event>(request);
+            var response = client.ExecutePost<EventDto>(request);
 
             if (!response.IsSuccessful)
             {

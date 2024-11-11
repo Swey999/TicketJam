@@ -10,17 +10,17 @@ namespace TicketJam.WinForm.ApiClient
 {
     public class RestApiClient : IRestClient
     {
-        public void AddVenue(Venue venue)
+        public void AddVenue(VenueDto venue)
         {
             throw new NotImplementedException();
         }
 
-        public void CreateEvent(Event Event)
+        public void CreateEvent(EventDto Event)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Venue> GetAllVenues()
+        public IEnumerable<VenueDto> GetAllVenues()
         {
             return VenueStub.GetAll();
         }

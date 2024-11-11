@@ -17,7 +17,7 @@ public class EventDAO : IEventDAO
     private readonly string _connectionString;
     private string GETALLVENUES_SQL = "SELECT * FROM Venue";
     private string GETBYID_SQL = "SELECT * FROM Event WHERE Id = @Id";
-    private string INSERT_SQL = "INSERT INTO Event (Description, TotalAmount, StartDate, EndDate, EventNo) VALUES (@Description, @TotalAmount, @StartDate, @EndDate, @EventNo) SELECT CAST(SCOPE_IDENTITY() as int)";
+    private string INSERT_SQL = "INSERT INTO Event (Description, Name, TotalAmount, StartDate, EndDate, EventNo, Organizer_ID_FK, Venue_ID_FK) VALUES (@Description, @Name, @TotalAmount, @StartDate, @EndDate, @EventNo, @OrganizerId, @VenueId) SELECT CAST(SCOPE_IDENTITY() as int)";
     public EventDAO(string connectionString)
     {
         _connectionString = connectionString;
@@ -59,6 +59,9 @@ public class EventDAO : IEventDAO
     public int InsertEvent(Event Event)
     {
         IDbConnection connection = new SqlConnection(_connectionString);
+        //TODO, make with less chance of duplicate, probably uuid ish
+        Random random = new Random();
+        Event.EventNo = random.Next();
         connection.Open();
         IDbTransaction transaction = connection.BeginTransaction();
         try
@@ -73,5 +76,11 @@ public class EventDAO : IEventDAO
         transaction.Commit();
 
         return Event.Id;
+    }
+    public IEnumerable<Event> Read()
+    {
+        string commandtext = "SELECT * FROM Event";
+        IDbConnection connection = new SqlConnection(_connectionString);
+        return connection.Query<Event>(commandtext);
     }
 }

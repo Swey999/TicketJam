@@ -15,8 +15,8 @@ public class Event
     public int TotalAmount { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public Venue Venue { get; set; }
-    public Organizer Organizer { get; set; }
+    public int VenueId { get; set; }
+    public int OrganizerId { get; set; }
 
     public List<Ticket> TicketList { get; set; } = new List<Ticket>();
 }

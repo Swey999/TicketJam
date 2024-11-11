@@ -1,0 +1,88 @@
+﻿@model IEnumerable<TicketJam.Website.APIClient.DTO.Event>
+
+@{
+    ViewData["Title"] = "Upcoming Events";
+}
+
+<h1>Upcoming Events</h1>
+
+<div class="event-list">
+    @foreach (var eventItem in Model)
+    {
+        <div class="event-card">
+            <div class="event-info">
+                <h2 class="event-title">@eventItem.Name</h2>
+                <p class="event-date"><strong>Date:</strong> @eventItem.StartDate.ToString("D")</p>
+                <p class="event-totalAmount"><strong>Tickets for sale:</strong> @eventItem.TotalAmount</p>
+                <p class="event-location"><strong>Location:</strong> @eventItem.Venue?.Address?.StreetName?</p>
+            </div>  
+            <a asp-action="Details" asp-route-id="@eventItem.Id" class="details-button">Køb Billet</a>
+        </div>
+    }
+
+</div>
+
+<!-- Inline CSS within the Razor view -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .event-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .event-card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .event-title {
+        font-size: 1.6em;
+        color: #333;
+        margin: 0;
+    }
+
+    .event-date,
+    .event-location {
+        color: #777;
+        font-size: 1em;
+    }
+
+    .details-button {
+        padding: 10px 20px;
+        background-color: blue;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-weight: bold;
+        text-decoration: none;
+        align-self: flex-start; /* Align the button to the left */
+    }
+
+        .details-button:hover {
+            background-color: #45a049;
+        }
+</style>

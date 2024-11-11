@@ -27,6 +27,18 @@ namespace TicketJam.Website.APIClient
 
             return response.Data;
         }
+        public IEnumerable<Event> GetAll()
+        {
+            var request = new RestRequest("", Method.Get);
+
+            var response = restClient.Execute<IEnumerable<Event>>(new RestRequest());
+
+            if (!response.IsSuccessful || response == null)
+            {
+                throw new Exception("Unable to call something something");
+            }
+            return response.Data;
+        }
 
     }
 }
