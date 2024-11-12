@@ -25,6 +25,18 @@ namespace TicketJam.WebAPI.Controllers
             return Created($"{baseURL}/{customer.Id}", customer);
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<Customer> Get([FromRoute] int id)
+        {
+            var customer = _customerDao.GetById(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return Ok(customer);
+        }
+
+
 
     }
 }
