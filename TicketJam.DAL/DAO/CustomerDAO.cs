@@ -14,7 +14,7 @@ namespace TicketJam.DAL.DAO
     {
         private readonly string _connectionString;
         private string _createCustomerSQL = "INSERT INTO Customer (FirstName, LastName, PhoneNo, Email) VALUES (@FirstName, @LastName, @PhoneNo, @Email); SELECT SCOPE_IDENTITY();";
-        private string _findCustomerByIdSQL = "SELECT * FROM BlogPost WHERE Id=@Id";
+        private string _findCustomerByIdSQL = "SELECT * FROM Customer WHERE Id=@Id";
 
         public CustomerDAO(string connectionString)
         {

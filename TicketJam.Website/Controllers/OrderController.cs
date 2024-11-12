@@ -10,6 +10,7 @@ namespace TicketJam.Website.Controllers
     {
         // GET: OrderController
         OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7280/api/v1/OrderControllerAPI");
+        CustomerAPIConsumer customerAPIConsumer = new CustomerAPIConsumer("https://localhost:7280/api/CustomersController");
         CartController cartController = new CartController();
 
 
@@ -51,18 +52,9 @@ namespace TicketJam.Website.Controllers
                 order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
                 order.OrderNo = 1292;
 
-                CustomerDTO Customer = new CustomerDTO
-                {
-                    id = 1,
-                    FirstName = "Nicolaj",
-                    LastName = "Lort",
-                    PhoneNo = "123323",
-                    Email = "nil",
-                    CustomerNo = 1,
-                    Password = "1232"
-                };
+               
 
-                order.Customer = Customer;
+                order.Customer = customerAPIConsumer.GetCustomerFromId(1);
                 OrderAPIConsumer.AddOrder(order);
                 return View(order);
             }
