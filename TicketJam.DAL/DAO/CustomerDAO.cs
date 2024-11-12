@@ -14,6 +14,7 @@ namespace TicketJam.DAL.DAO
     {
         private readonly string _connectionString;
         private string _createCustomerSQL = "INSERT INTO Customer (FirstName, LastName, PhoneNo, Email) VALUES (@FirstName, @LastName, @PhoneNo, @Email); SELECT SCOPE_IDENTITY();";
+        private string _findCustomerByIdSQL = "SELECT * FROM BlogPost WHERE Id=@Id";
 
         public CustomerDAO(string connectionString)
         {
@@ -45,7 +46,9 @@ namespace TicketJam.DAL.DAO
 
         public Customer GetById(int id)
         {
-            throw new NotImplementedException();
+            IDbConnection connection = new SqlConnection(_connectionString);
+            connection.Open();
+            return connection.QuerySingle<Customer>(_findCustomerByIdSQL, new { Id = id });
         }
 
         public IEnumerable<Customer> Read()
