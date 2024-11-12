@@ -54,18 +54,24 @@ namespace TicketJam.Website.APIClient
 
             public Order AddOrder(Order OrderToAdd)
             {
+
+            try
+            {
                 var request = new RestRequest().AddJsonBody(OrderToAdd);
 
                 var client = new RestClient(BaseURI);
 
                 var response = client.ExecutePost<Order>(request);
 
-                if (!response.IsSuccessful)
-                {
-                    throw new Exception("Fail");
-                }
-
                 return response.Data;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"The Order failed to Post{ex.Message}", ex);
+            }
+            
+
 
             }
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using TicketJam.Website.APIClient;
 using TicketJam.Website.APIClient.DTO;
@@ -51,11 +50,11 @@ namespace TicketJam.Website.Controllers
                 order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
                 order.OrderNo = 1292;
                 OrderAPIConsumer.AddOrder(order);
-                return RedirectToAction(nameof(Index));
+                return View(order);
             }
             catch
             {
-                return View();
+                return View(order);
             }
         }
 

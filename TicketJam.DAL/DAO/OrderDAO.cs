@@ -25,10 +25,10 @@ namespace TicketJam.DAL.DAO
             IDbTransaction transaction = connection.BeginTransaction();
             try
             {
-                string commandText = "INSERT INTO Orders (OrderNo, Customer_ID_FK) VALUES (@OrderNo, 1)";
+                string commandText = "INSERT INTO Orders (OrderNo, Customer_ID_FK) VALUES (@OrderNo, 4)";
                 entity.Id = connection.ExecuteScalar<int>(commandText, entity, transaction);
 
-                string insertOrderlineSql = "INSERT INTO Orderlines (Quantity, Ticket_ID_FK, Order_ID_FK) VALUES (@Quantity, @TicketId, @OrderId) SELECT CAST(SCOPE_IDENTITY() as int);";
+                string insertOrderlineSql = "INSERT INTO Orderline (Quantity, Ticket_ID_FK, Order_ID_FK) VALUES (@Quantity, @TicketId, @OrderId); SELECT CAST(SCOPE_IDENTITY() as int)";
                 foreach (OrderLine orderline in entity.OrderLines)
                 {
                     connection.Execute(insertOrderlineSql, new { OrderId = entity.Id, Quantity = orderline.Quantity , TicketId = orderline.Ticket.Id}, transaction);

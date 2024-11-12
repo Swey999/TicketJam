@@ -4,21 +4,21 @@ namespace TicketJam.WebAPI.DTOs.Converters
 {
     public static class DtoConverter
     {
-        public static EventDto ToDto(this Event eventToConvert)
+        public static EventDto ToDto(this DAL.Model.Event eventToConvert)
         {
             var EventDto = new EventDto();
             eventToConvert.CopyPropertiesTo(EventDto);
             return EventDto;
         }
 
-        public static Event FromDto(this EventDto eventDtoToConvert)
+        public static DAL.Model.Event FromDto(this EventDto eventDtoToConvert)
         {
-            var Event = new Event();
+            var Event = new DAL.Model.Event();
             eventDtoToConvert.CopyPropertiesTo(Event);
             return Event;
         }
 
-        public static IEnumerable<EventDto> ToDtos(this IEnumerable<Event> eventToConvert)
+        public static IEnumerable<EventDto> ToDtos(this IEnumerable<DAL.Model.Event> eventToConvert)
         {
             foreach (var Event in eventToConvert)
             {
@@ -26,7 +26,7 @@ namespace TicketJam.WebAPI.DTOs.Converters
             }
         }
 
-        public static IEnumerable<Event> FromDtos(this IEnumerable<EventDto> eventDtosToConvert)
+        public static IEnumerable<DAL.Model.Event> FromDtos(this IEnumerable<EventDto> eventDtosToConvert)
         {
             foreach (var eventDtos in eventDtosToConvert)
             {
