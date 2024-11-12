@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Text.Json;
 using TicketJam.Website.APIClient;
 using TicketJam.Website.APIClient.DTO;
@@ -49,6 +50,19 @@ namespace TicketJam.Website.Controllers
                 Request.Cookies.TryGetValue("Order", out string? cookie);
                 order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
                 order.OrderNo = 1292;
+
+                CustomerDTO Customer = new CustomerDTO
+                {
+                    id = 1,
+                    FirstName = "Nicolaj",
+                    LastName = "Lort",
+                    PhoneNo = "123323",
+                    Email = "nil",
+                    CustomerNo = 1,
+                    Password = "1232"
+                };
+
+                order.Customer = Customer;
                 OrderAPIConsumer.AddOrder(order);
                 return View(order);
             }
