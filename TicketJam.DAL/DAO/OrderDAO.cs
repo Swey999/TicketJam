@@ -31,7 +31,7 @@ namespace TicketJam.DAL.DAO
                 var parameters = new
                 {
                     OrderNo = entity.OrderNo,
-                    CustomerId = entity.Customer.Id // Directly access Customer.Id here
+                    CustomerId = entity.CustomerId// Directly access Customer.Id here
                 };
 
                 // Execute the command with the anonymous object
@@ -40,7 +40,7 @@ namespace TicketJam.DAL.DAO
                 string insertOrderlineSql = "INSERT INTO Orderline (Quantity, Ticket_ID_FK, Order_ID_FK) VALUES (@Quantity, @TicketId, @OrderId); SELECT CAST(SCOPE_IDENTITY() as int)";
                 foreach (OrderLine orderline in entity.OrderLines)
                 {
-                    connection.Execute(insertOrderlineSql, new { OrderId = entity.Id, Quantity = orderline.Quantity , TicketId = orderline.Ticket.Id}, transaction);
+                    connection.Execute(insertOrderlineSql, new { OrderId = entity.Id, Quantity = orderline.Quantity , TicketId = orderline.TicketId}, transaction);
                 }
             }
             catch (Exception)
@@ -82,16 +82,7 @@ namespace TicketJam.DAL.DAO
             using IDbConnection connection = new SqlConnection(connectionString);
             Order order = connection.QuerySingle<Order>(selectOrderSql, new { Id = id });
 
-            order.OrderLines = connection.Query<OrderLine, Ticket, Section, Venue, Event, Address, OrderLine>(selectOrderlinesSql, (ol, t, s, v, e, a) =>
-            {
-                ol.Ticket = t;
-                ol.Ticket.Event = e;
-                ol.Ticket.Section = s;
-                ol.Ticket.Section.Venue = v;
-                ol.Ticket.Section.Venue.Address = a;
-                return ol;
-
-            }, new { OrderId = order.Id }).ToList();
+            order.OrderLines = connection.Query<OrderLine>(selectOrderlinesSql, new { OrderId = order.Id }).ToList();
 
             return order;
         }

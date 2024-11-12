@@ -12,7 +12,7 @@
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Event Details -->
+@*             <!-- Event Details -->
             <h4>Event Details</h4>
             <div class="form-group">
                 <label style="font-weight: bold">Name</label>
@@ -30,9 +30,9 @@
                 <label style="font-weight: bold">End Date</label>
                 <span type="text" class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Event?.EndDate.ToString("d")</span>
             </div>
-            <hr>
+            <hr> *@
 
-            <!-- Address Details -->
+@*             <!-- Address Details -->
             <h4>Venue Address</h4>
             <div class="form-group">
                 <label style="font-weight: bold">Street</label>
@@ -49,8 +49,8 @@
             <div class="form-group">
                 <label style="font-weight: bold">Postal Code</label>
                 <span class="form-control-plaintext">@Model.OrderLines.FirstOrDefault()?.Ticket?.Section?.Venue?.Address?.Zip</span>
-            </div>
-            <hr>
+            </div> *@
+@*             <hr>
 
             <!-- Display Order Lines -->
             <h4>Tickets</h4>
@@ -81,7 +81,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table> *@
 
             <!-- Submit Button -->
             <div class="form-group">

@@ -51,10 +51,8 @@ namespace TicketJam.Website.Controllers
                 Request.Cookies.TryGetValue("Order", out string? cookie);
                 order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
                 order.OrderNo = 1292;
-
-               
-
-                order.Customer = customerAPIConsumer.GetCustomerFromId(1);
+                
+                order.CustomerId = 1;
                 OrderAPIConsumer.AddOrder(order);
                 return View(order);
             }
