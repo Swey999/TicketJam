@@ -39,7 +39,7 @@ namespace TicketJam.DAL.DAO
 
         public IEnumerable<Section> Read()
         {
-            IDbConnection connection = new SqlConnection(_connectionString);
+            using IDbConnection connection = new SqlConnection(_connectionString);
             return connection.Query<Section>(GETALLSECTIONS_SQL);
         }
 

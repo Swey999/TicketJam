@@ -1,35 +1,55 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
-using TicketJam.WebAPI.DTOs;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TicketJam.WebAPI.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class VenueControllerAPI : Controller
+    public class VenueControllerAPI : ControllerBase
     {
-        public IDAO<Venue> _VenueDAO;
- 
-        // GET: VenueControllerAPI
-        public ActionResult<IEnumerable<Venue>> GetAll()
+        public IDAO<Venue> _venueDAO;
+        // GET: api/<VenueControllerAPI>
+        [HttpGet]
+        public ActionResult<IEnumerable<Venue>> Get()
         {
-            return Ok(_VenueDAO.Read());
+            return Ok(_venueDAO.Read());
         }
 
-        // GET: VenueControllerAPI/Details/5
+        // GET api/<VenueControllerAPI>/5
+        [HttpGet("{id}")]
         public ActionResult<Venue> GetById(int id)
         {
-            Venue venue = _VenueDAO.GetById(id);
+            Venue venue = _venueDAO.GetById(id);
             if (venue == null)
             {
                 return NotFound();
             }
             else
             {
+
                 return Ok(venue);
             }
+        }
+
+        // POST api/<VenueControllerAPI>
+        [HttpPost]
+        public void Post([FromBody] string value)
+        {
+        }
+
+        // PUT api/<VenueControllerAPI>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/<VenueControllerAPI>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
         }
     }
 }

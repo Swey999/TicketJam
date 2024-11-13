@@ -1,35 +1,29 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
-using TicketJam.WebAPI.DTOs;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TicketJam.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SectionControllerAPI : Controller
+    public class SectionControllerAPI : ControllerBase
     {
-        public IDAO<Section> _SectionDAO;
-        private IConfiguration _configuration;
-        public SectionControllerAPI(IConfiguration configuration)
-        {
-            _configuration = configuration;
-            string connectionString = _configuration.GetConnectionString("DBConnectionString");
-            _SectionDAO = new SectionDAO(connectionString);
+        public IDAO<Section> _sectionDAO;
 
+        // GET: api/<SectionControllerAPI>
+        [HttpGet]
+        public ActionResult<IEnumerable<Section>> Get()
+        {
+            return Ok(_sectionDAO.Read());
         }
 
-        // GET: SectionControllerAPI
-        public ActionResult<IEnumerable<Section>> GetAll()
-        {
-            return Ok(_SectionDAO.Read());
-        }
-
-        // GET: SectionControllerAPI/Details/5
+        // GET api/<SectionControllerAPI>/5
+        [HttpGet("{id}")]
         public ActionResult<Section> GetById(int id)
         {
-            Section section = _SectionDAO.GetById(id);
+            Section section = _sectionDAO.GetById(id);
             if (section == null)
             {
                 return NotFound();
@@ -40,67 +34,22 @@ namespace TicketJam.WebAPI.Controllers
             }
         }
 
-        // GET: SectionControllerAPI/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SectionControllerAPI/Create
+        // POST api/<SectionControllerAPI>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public void Post([FromBody] string value)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
-        // GET: SectionControllerAPI/Edit/5
-        public ActionResult Edit(int id)
+        // PUT api/<SectionControllerAPI>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
         {
-            return View();
         }
 
-        // POST: SectionControllerAPI/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        // DELETE api/<SectionControllerAPI>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SectionControllerAPI/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: SectionControllerAPI/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
