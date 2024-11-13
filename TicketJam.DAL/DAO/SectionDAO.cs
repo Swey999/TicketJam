@@ -10,17 +10,17 @@ using Dapper;
 
 namespace TicketJam.DAL.DAO
 {
-    public class TicketDAO : IDAO<Ticket>
+    public class SectionDAO : IDAO<Section>
     {
         private string _connectionString;
-        private string _GET_BY_ID = "SELECT * FROM Ticket WHERE Id = @Id";
+        private string GETALLSECTIONS_SQL = "SELECT * FROM Section";
+        private string GETSECTIONBYID_SQL = "SELECT * FROM Section WHERE Id = @Id";
 
-        public TicketDAO(String connectionStringns)
+        public SectionDAO(String connectionStringns)
         {
             this._connectionString = connectionStringns;
         }
-
-        public Ticket Create(Ticket entity)
+        public Section Create(Section entity)
         {
             throw new NotImplementedException();
         }
@@ -30,23 +30,22 @@ namespace TicketJam.DAL.DAO
             throw new NotImplementedException();
         }
 
-        public Ticket GetById(int id)
+        public Section GetById(int id)
         {
             IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
-            return connection.QuerySingle<Ticket>(_GET_BY_ID, new { Id = id });
-
+            return connection.QuerySingle<Section>(GETSECTIONBYID_SQL, new { Id = id });
         }
 
-        public IEnumerable<Ticket> Read()
+        public IEnumerable<Section> Read()
+        {
+            IDbConnection connection = new SqlConnection(_connectionString);
+            return connection.Query<Section>(GETALLSECTIONS_SQL);
+        }
+
+        public Section Update(Section entity)
         {
             throw new NotImplementedException();
         }
-
-        public Ticket Update(Ticket entity)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

@@ -12,48 +12,57 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TicketJam.DAL.DAO;
 
-public class EventDAO : IEventDAO
+public class EventDAO : IEventDAO, IDAO<Event>
 {
     private readonly string _connectionString;
-    private string GETALLVENUES_SQL = "SELECT * FROM Venue";
-    private string GETBYID_SQL = "SELECT * FROM Event WHERE Id = @Id";
-    private string INSERT_SQL = "INSERT INTO Event (Name, Description, TotalAmount, EventNo, StartDate, EndDate, Venue_ID_FK, Organizer_ID_FK) VALUES (@Name, @Description, @TotalAmount, @EventNo, @StartDate, @EndDate, @OrganizerId, @VenueId); SELECT CAST(SCOPE_IDENTITY() as int)";
+    private string _INSERT_SQL = "INSERT INTO Event (Description, Name, TotalAmount, StartDate, EndDate, EventNo, Organizer_ID_FK, Venue_ID_FK) VALUES (@Description, @Name, @TotalAmount, @StartDate, @EndDate, @EventNo, @OrganizerId, @VenueId) SELECT CAST(SCOPE_IDENTITY() as int)";
+
+    private string _GETBYID_SQL = "SELECT * FROM Event WHERE Id = @id";
+    private string _GET_EVENT_FROM_ID_SQL = "SELECT Id, EventNo, TotalAmount, StartDate, EndDate, Name FROM Event WHERE Id = @id";
+    private string _GET_EVENT_SQL = "SELECT * FROM Event";
+
+    private string _JOIN_SQL = "SELECT DISTINCT Ticket.*, Section.*, Venue.*, Address.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Address ON Address.Id = Venue.Address_ID_FK WHERE Ticket.Event_ID_FK = @EventId";
+
+
     public EventDAO(string connectionString)
     {
         _connectionString = connectionString;
     }
 
-    public IEnumerable<Venue> GetAllVenues()
+    public Event Create(Event entity)
     {
-        IDbConnection connection = new SqlConnection(_connectionString);
-        return connection.Query<Venue>(GETALLVENUES_SQL);
+        throw new NotImplementedException();
     }
 
-    public Event GetEvent(int id)
+    public bool Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Event GetById(int id)
     {
         IDbConnection connection = new SqlConnection(_connectionString);
         connection.Open();
-        return connection.QuerySingle<Event>(GETBYID_SQL, new { Id = id });
+        return connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
     }
+
 
     public Event GetEventAndJoinData(int id)
     {
-        string selectEventSql = "SELECT Id, EventNo, TotalAmount, StartDate, EndDate, Name FROM Event WHERE Id = @id";
-        string selectTicketSql = "SELECT DISTINCT Ticket.*, Section.*, Venue.*, Address.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Address ON Address.Id = Venue.Address_ID_FK WHERE Ticket.Event_ID_FK = @EventId";
 
         using IDbConnection connection = new SqlConnection(_connectionString);
-        Event events = connection.QuerySingle<Event>(selectEventSql, new { Id = id });
+        Event Event = connection.QuerySingle<Event>(_GET_EVENT_SQL, new { id = id });
 
-        events.TicketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(selectTicketSql, (t, s, v, a) =>
+        Event.ticketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(_JOIN_SQL, (t, s, v, a) =>
         {
-            t.Section = s;
-            t.Section.Venue = v;
-            t.Section.Venue.Address = a;
+            t.section = s;
+            t.section.venue = v;
+            t.section.venue.address = a;
             return t;
 
-        }, new { EventId = events.Id }).ToList();
+        }, new { EventId = Event.id }).ToList();
 
-        return events;
+        return Event;
     }
 
     public int InsertEvent(Event Event)
@@ -61,12 +70,12 @@ public class EventDAO : IEventDAO
         IDbConnection connection = new SqlConnection(_connectionString);
         //TODO, make with less chance of duplicate, probably uuid ish
         Random random = new Random();
-        Event.EventNo = random.Next();
+        Event.eventNo = random.Next();
         connection.Open();
         IDbTransaction transaction = connection.BeginTransaction();
         try
         {
-            Event.Id = connection.ExecuteScalar<int>(INSERT_SQL, Event, transaction);
+            Event.id = connection.ExecuteScalar<int>(_INSERT_SQL, Event, transaction);
         }
         catch (Exception)
         {
@@ -75,12 +84,16 @@ public class EventDAO : IEventDAO
         }
         transaction.Commit();
 
-        return Event.Id;
+        return Event.id;
     }
     public IEnumerable<Event> Read()
     {
-        string commandtext = "SELECT * FROM Event";
         IDbConnection connection = new SqlConnection(_connectionString);
-        return connection.Query<Event>(commandtext);
+        return connection.Query<Event>(_GET_EVENT_SQL);
+    }
+
+    public Event Update(Event entity)
+    {
+        throw new NotImplementedException();
     }
 }

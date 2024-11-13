@@ -1,48 +1,52 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TicketJam.Website.APIClient;
+using TicketJam.DAL.DAO;
+using TicketJam.DAL.Model;
+using TicketJam.WebAPI.DTOs;
 
-namespace TicketJam.Website.Controllers
+namespace TicketJam.WebAPI.Controllers
 {
-    public class EventController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SectionControllerAPI : Controller
     {
-        EventAPIConsumer EventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/Event");
-        VenueAPIConsumer _VenueAPIConsumer = new VenueAPIConsumer("https://localhost:7280/api/v1/Event");
-
-        // GET: EventController
-        public ActionResult Index()
+        public IDAO<Section> _SectionDAO;
+        private IConfiguration _configuration;
+        public SectionControllerAPI(IConfiguration configuration)
         {
-            var events = EventAPIConsumer.GetAll();
-            var venues = _VenueAPIConsumer.GetAll();
+            _configuration = configuration;
+            string connectionString = _configuration.GetConnectionString("DBConnectionString");
+            _SectionDAO = new SectionDAO(connectionString);
 
-
-            return View();
         }
 
-
-        // GET: EventController/Details/5
-        public ActionResult Details(int id)
+        // GET: SectionControllerAPI
+        public ActionResult<IEnumerable<Section>> GetAll()
         {
-            try
-            {
+            return Ok(_SectionDAO.Read());
+        }
 
-                return View(EventAPIConsumer.GetEventAndJoinData(id));
-            }
-            catch (Exception ex)
+        // GET: SectionControllerAPI/Details/5
+        public ActionResult<Section> GetById(int id)
+        {
+            Section section = _SectionDAO.GetById(id);
+            if (section == null)
             {
-                // Optionally, log the exception here if logging is available.
-                ViewBag.ErrorMessage = $"Error fetching event details: {ex.Message}";
-                return View("Error");
+                return NotFound();
+            }
+            else
+            {
+                return Ok(section);
             }
         }
 
-        // GET: EventController/Create
+        // GET: SectionControllerAPI/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: EventController/Create
+        // POST: SectionControllerAPI/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -57,13 +61,13 @@ namespace TicketJam.Website.Controllers
             }
         }
 
-        // GET: EventController/Edit/5
+        // GET: SectionControllerAPI/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: EventController/Edit/5
+        // POST: SectionControllerAPI/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -78,13 +82,13 @@ namespace TicketJam.Website.Controllers
             }
         }
 
-        // GET: EventController/Delete/5
+        // GET: SectionControllerAPI/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: EventController/Delete/5
+        // POST: SectionControllerAPI/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

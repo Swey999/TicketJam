@@ -29,7 +29,7 @@ namespace TicketJam.DAL.DAO
 
             try
             {
-                entity.Id = connection.ExecuteScalar<int>(_createCustomerSQL, entity);
+                entity.id = connection.ExecuteScalar<int>(_createCustomerSQL, entity);
             }
             catch (Exception ex)
             {
@@ -48,7 +48,7 @@ namespace TicketJam.DAL.DAO
         {
             IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
-            return connection.QuerySingle<Customer>(_findCustomerByIdSQL, new { Id = id });
+            return connection.QuerySingle<Customer>(_findCustomerByIdSQL, new { id = id });
         }
 
         public IEnumerable<Customer> Read()

@@ -6,20 +6,13 @@ using TicketJam.DAL.Model;
 
 namespace TicketJam.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class TicketControllerAPI : ControllerBase
     {
 
         public IDAO<Ticket> _ticketDAO;
-        private IConfiguration _configuration;
-        public TicketControllerAPI(IConfiguration configuration)
-        {
-            _configuration = configuration;
-            string connectionString = _configuration.GetConnectionString("DBConnectionString");
-            _ticketDAO = new TicketDAO(connectionString);
 
-        }
         // GET: api/<TicketController>
         [HttpGet]
         public IEnumerable<string> Get()
