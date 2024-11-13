@@ -1,43 +1,51 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TicketJam.Website.APIClient;
+using TicketJam.DAL.DAO;
+using TicketJam.DAL.Model;
+using TicketJam.WebAPI.DTOs;
 
-namespace TicketJam.Website.Controllers
+namespace TicketJam.WebAPI.Controllers
 {
-    public class EventController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class VenueControllerAPI : Controller
     {
-        EventAPIConsumer EventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/Event");
-
-        // GET: EventController
-        public ActionResult Index()
+        public IDAO<Venue> _VenueDAO;
+        private IConfiguration _configuration;
+        public VenueControllerAPI(IConfiguration configuration)
         {
-            return View(EventAPIConsumer.GetAll());
+            _configuration = configuration;
+            string connectionString = _configuration.GetConnectionString("DBConnectionString");
+            _VenueDAO = new VenueDAO(connectionString);
+
+        }
+        // GET: VenueControllerAPI
+        public ActionResult<IEnumerable<Venue>> GetAll()
+        {
+            return Ok(_VenueDAO.Read());
         }
 
-
-        // GET: EventController/Details/5
-        public ActionResult Details(int id)
+        // GET: VenueControllerAPI/Details/5
+        public ActionResult<Venue> GetById(int id)
         {
-            try
+            Venue venue = _VenueDAO.GetById(id);
+            if (venue == null)
             {
-
-                return View(EventAPIConsumer.GetEventAndJoinData(id));
+                return NotFound();
             }
-            catch (Exception ex)
+            else
             {
-                // Optionally, log the exception here if logging is available.
-                ViewBag.ErrorMessage = $"Error fetching event details: {ex.Message}";
-                return View("Error");
+                return Ok(venue);
             }
         }
 
-        // GET: EventController/Create
+        // GET: VenueControllerAPI/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: EventController/Create
+        // POST: VenueControllerAPI/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -52,13 +60,13 @@ namespace TicketJam.Website.Controllers
             }
         }
 
-        // GET: EventController/Edit/5
+        // GET: VenueControllerAPI/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: EventController/Edit/5
+        // POST: VenueControllerAPI/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -73,13 +81,13 @@ namespace TicketJam.Website.Controllers
             }
         }
 
-        // GET: EventController/Delete/5
+        // GET: VenueControllerAPI/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: EventController/Delete/5
+        // POST: VenueControllerAPI/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TicketJam.DAL\TicketJam.DAL.csproj" />
+    <ProjectReference Include="..\TicketJam.WinForm\TicketJam.WinForm.csproj" />
   </ItemGroup>
 
 </Project>
