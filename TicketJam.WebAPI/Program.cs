@@ -14,8 +14,10 @@ namespace TicketJam.WebAPI
 
             string connectionString = builder.Configuration.GetConnectionString("DBConnectionString") ?? throw new Exception("Connectionstring not found");
 
-            builder.Services.AddSingleton<IEventDAO>((_) => new EventDAO(connectionString));
+            builder.Services.AddSingleton<IDAO<Event>>((_) => new EventDAO(connectionString));
             builder.Services.AddSingleton<IDAO<Order>>((_) => new OrderDAO(connectionString));
+            builder.Services.AddSingleton<IDAO<Ticket>>((_) => new TicketDAO(connectionString));
+            builder.Services.AddSingleton<IDAO<Customer>>((_) => new CustomerDAO(connectionString));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

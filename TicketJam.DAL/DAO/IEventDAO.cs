@@ -9,14 +9,7 @@ namespace TicketJam.DAL.DAO
 {
     public interface IEventDAO
     {
-        IEnumerable<Venue> GetAllVenues();
-
         int InsertEvent(Event Event);
-
-        Event GetEvent(int id);
-
         Event GetEventAndJoinData(int id);
-
-        public IEnumerable<Event> Read();
     }
 }

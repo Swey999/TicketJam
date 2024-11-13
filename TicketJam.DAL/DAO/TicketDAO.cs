@@ -12,11 +12,12 @@ namespace TicketJam.DAL.DAO
 {
     public class TicketDAO : IDAO<Ticket>
     {
-        private string connectionString;
+        private string _connectionString;
+        private string _GET_BY_ID = "SELECT * FROM Ticket WHERE Id = @Id";
 
         public TicketDAO(String connectionStringns)
         {
-            this.connectionString = connectionStringns;
+            this._connectionString = connectionStringns;
         }
 
         public Ticket Create(Ticket entity)
@@ -31,11 +32,9 @@ namespace TicketJam.DAL.DAO
 
         public Ticket GetById(int id)
         {
-
-            string commandText = "SELECT * FROM Ticket WHERE Id = @Id";
-            IDbConnection connection = new SqlConnection(connectionString);
+            IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
-            return connection.QuerySingle<Ticket>(commandText, new { Id = id });
+            return connection.QuerySingle<Ticket>(_GET_BY_ID, new { Id = id });
 
         }
 
