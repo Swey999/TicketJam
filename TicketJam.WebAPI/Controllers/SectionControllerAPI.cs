@@ -6,7 +6,7 @@ using TicketJam.DAL.Model;
 
 namespace TicketJam.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class SectionControllerAPI : ControllerBase
     {

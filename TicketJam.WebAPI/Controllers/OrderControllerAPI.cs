@@ -12,6 +12,10 @@ namespace TicketJam.WebAPI.Controllers
     {
         public IDAO<Order> _orderDAO;
 
+        public OrderControllerAPI(IDAO<Order> iDAO) {
+            _orderDAO = iDAO;
+        }
+
         // GET: api/<OrderControllerAPI>
         [HttpGet]
         public ActionResult<IEnumerable<Order>> GetAll()

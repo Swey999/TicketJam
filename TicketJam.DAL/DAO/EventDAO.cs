@@ -41,7 +41,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
 
     public Event GetById(int id)
     {
-        IDbConnection connection = new SqlConnection(_connectionString);
+        using IDbConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         return connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
     }
@@ -67,7 +67,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
 
     public int InsertEvent(Event Event)
     {
-        IDbConnection connection = new SqlConnection(_connectionString);
+        using IDbConnection connection = new SqlConnection(_connectionString);
         //TODO, make with less chance of duplicate, probably uuid ish
         Random random = new Random();
         Event.eventNo = random.Next();
@@ -88,7 +88,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
     }
     public IEnumerable<Event> Read()
     {
-        IDbConnection connection = new SqlConnection(_connectionString);
+        using IDbConnection connection = new SqlConnection(_connectionString);
         return connection.Query<Event>(_GET_EVENT_SQL);
     }
 

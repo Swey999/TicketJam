@@ -6,12 +6,15 @@ namespace TicketJam.Website.Controllers
 {
     public class EventController : Controller
     {
-        EventAPIConsumer EventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/Event");
+        EventAPIConsumer EventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/EventControllerAPI");
 
 
         // GET: EventController
         public ActionResult Index()
         {
+            var events = EventAPIConsumer.GetAll();
+            var venues = _VenueAPIConsumer.GetAll();
+
 
             return View(EventAPIConsumer.GetAll());
         }
@@ -23,7 +26,7 @@ namespace TicketJam.Website.Controllers
             try
             {
 
-                return View(EventAPIConsumer.GetEventAndJoinData(id));
+                return View(EventAPIConsumer.GetById(id));
             }
             catch (Exception ex)
             {
