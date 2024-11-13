@@ -23,7 +23,7 @@ namespace TicketJam.Test.Orders.Test
         {
 
             // Arrange
-            Order order = new() { orderNo = 42231, customerId = 1};
+            Order order = new() { orderNo = 3654, customerId = 1};
             order.orderLines = new List<OrderLine>();
             OrderLine line = new() { quantity = 1, ticketId = 1 };
             order.orderLines.Add(line);
@@ -36,24 +36,24 @@ namespace TicketJam.Test.Orders.Test
         }
 
         [Test]
-        public void ReadOrderTestSucces()
+        public void ReadOrderTestSuccess()
         {
             // Arrange
 
             // Act
-            var orderRead = _orderDao.GetById(1);
+            var orderRead = _orderDao.GetById(2);
             // Assert
             Assert.That(orderRead, Is.Not.Null);
 
         }
 
         [Test]
-        public void DeleteOrderSucces()
+        public void DeleteOrderTestSuccess()
         {
             // Arrange
 
             // Act
-            var deletedOrderId = _orderDao.Delete(1);
+            var deletedOrderId = _orderDao.Delete(2);
             // Assert
             Assert.That(deletedOrderId, Is.False);
 

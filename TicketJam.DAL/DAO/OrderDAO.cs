@@ -2,11 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using TicketJam.DAL.Model;
+using static Dapper.SqlMapper;
 
 namespace TicketJam.DAL.DAO
 {
@@ -17,6 +20,7 @@ namespace TicketJam.DAL.DAO
         private string _INSERT_ORDERLINE_QUERY = "INSERT INTO Orderline (Quantity, Ticket_ID_FK, Order_ID_FK) VALUES (@Quantity, @TicketId, @OrderId); SELECT CAST(SCOPE_IDENTITY() as int)";
 
         private string _DELETE_ORDER_QUERY = "DELETE FROM Orders WHERE Id = @id";
+        private string _DELETE_ORDERLINES_QUERY = "DELETE FROM OrderLines WHERE OrderId = @id";
 
         private string _GET_ORDER_FROM_ID_QUERY = "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
         private string _GET_ID_FROM_ORDER_QUERY = "SELECT Id FROM Orders";
@@ -58,13 +62,26 @@ namespace TicketJam.DAL.DAO
 
         public bool Delete(int id)
         {
-            using (IDbConnection connection = new SqlConnection(_connectionString))
+            
+            // Using = releases all resources
+            using DbConnection connection = new SqlConnection(_connectionString);
+            connection.Open();
+            var transaction = connection.BeginTransaction();
+
+            try
             {
-                connection.Open();
+                connection.Execute(_DELETE_ORDERLINES_QUERY, new { Id = id }, transaction);
+                connection.Execute(_DELETE_ORDER_QUERY, new { Id = id }, transaction);
 
-                int rowsAffected = connection.Execute(_DELETE_ORDER_QUERY, new { id = id });
-
+                transaction.Commit();
                 return true;
+            }
+
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                return false;
+                throw new Exception($"Couldn't delete Order on ID: {id}, the error was: {ex.Message}", ex);
             }
         }
 
