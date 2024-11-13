@@ -32,14 +32,14 @@ namespace TicketJam.DAL.DAO
 
         public Venue GetById(int id)
         {
-            IDbConnection connection = new SqlConnection(_connectionString);
+            using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             return connection.QuerySingle<Venue>(GETVENUEBYID_SQL, new { Id = id });
         }
 
         public IEnumerable<Venue> Read()
         {
-            IDbConnection connection = new SqlConnection(_connectionString);
+            using IDbConnection connection = new SqlConnection(_connectionString);
             return connection.Query<Venue>(GETALLVENUES_SQL);
         }
 

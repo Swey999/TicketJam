@@ -32,7 +32,7 @@ namespace TicketJam.DAL.DAO
 
         public Ticket GetById(int id)
         {
-            IDbConnection connection = new SqlConnection(_connectionString);
+            using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             return connection.QuerySingle<Ticket>(_GET_BY_ID, new { Id = id });
 
