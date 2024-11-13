@@ -12,35 +12,38 @@ namespace TicketJam.DAL.DAO
 {
     public class OrderDAO : IDAO<Order>
     {
-        private string connectionString;
+        private string _connectionString;
+        private string _INSERT_ORDER_QUERY = "INSERT INTO Orders (OrderNo, Customer_ID_FK) VALUES (@OrderNo, @CustomerId); SELECT CAST(SCOPE_IDENTITY() as int)";
+        private string _INSERT_ORDERLINE_QUERY = "INSERT INTO Orderline (Quantity, Ticket_ID_FK, Order_ID_FK) VALUES (@Quantity, @TicketId, @OrderId); SELECT CAST(SCOPE_IDENTITY() as int)";
+
+        private string _DELETE_ORDER_QUERY = "DELETE FROM Orders WHERE Id = @id";
+
+        private string _GET_ORDER_FROM_ID_QUERY = "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
+        private string _GET_ID_FROM_ORDER_QUERY = "SELECT Id FROM Orders";
+        private string _ORDERLINE_JOIN_QUERY = "SELECT DISTINCT Orderline.*, Ticket.*, Section.*, Venue.*, Event.*, Address.* FROM Orderline JOIN Ticket ON Ticket.Id = Orderline.Ticket_ID_FK JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Event ON Venue.Id = Event.Venue_ID_FK JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Orderline.Order_ID_FK = @orderId";
+
 
         public OrderDAO(String connectionStringns)
         {
-            this.connectionString = connectionStringns;
+            this._connectionString = connectionStringns;
         }
         public Order Create(Order entity)
         {
-            IDbConnection connection = new SqlConnection(connectionString);
+            IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             IDbTransaction transaction = connection.BeginTransaction();
             try
             {
-                string commandText = "INSERT INTO Orders (OrderNo, Customer_ID_FK) VALUES (@OrderNo, @CustomerId); SELECT CAST(SCOPE_IDENTITY() as int)";
-
-                // Create an anonymous object for parameters
                 var parameters = new
                 {
-                    OrderNo = entity.OrderNo,
-                    CustomerId = entity.CustomerId// Directly access Customer.Id here
+                    orderNo = entity.orderNo,
+                    customerId = entity.customerId
                 };
 
-                // Execute the command with the anonymous object
-                entity.Id = connection.ExecuteScalar<int>(commandText, parameters, transaction);
-
-                string insertOrderlineSql = "INSERT INTO Orderline (Quantity, Ticket_ID_FK, Order_ID_FK) VALUES (@Quantity, @TicketId, @OrderId); SELECT CAST(SCOPE_IDENTITY() as int)";
-                foreach (OrderLine orderline in entity.OrderLines)
+                entity.id = connection.ExecuteScalar<int>(_INSERT_ORDER_QUERY, parameters, transaction);
+                foreach (OrderLine orderline in entity.orderLines)
                 {
-                    connection.Execute(insertOrderlineSql, new { OrderId = entity.Id, Quantity = orderline.Quantity , TicketId = orderline.TicketId}, transaction);
+                    connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = entity.id, quantity = orderline.quantity , ticketId = orderline.ticketId}, transaction);
                 }
             }
             catch (Exception)
@@ -55,13 +58,11 @@ namespace TicketJam.DAL.DAO
 
         public bool Delete(int id)
         {
-            string commandText = "DELETE FROM Orders WHERE Id = @id";
-
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (IDbConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
-                int rowsAffected = connection.Execute(commandText, new { Id = id });
+                int rowsAffected = connection.Execute(_DELETE_ORDER_QUERY, new { id = id });
 
                 return true;
             }
@@ -70,38 +71,21 @@ namespace TicketJam.DAL.DAO
 
         public Order GetById(int id)
         {
-
-            //string commandText = "Select Orders.*, OrderLine.* FROM Orders Left Join Orderline On Orders.Id = OrderLine.Order_ID_FK where orders.Id = @id";
-            //IDbConnection connection = new SqlConnection(connectionString);
-            //connection.Open();
-            //return connection.QuerySingle<Order>(commandText, new { Id = id });
-
-            string selectOrderSql = "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
-            string selectOrderlinesSql = "SELECT DISTINCT Orderline.*, Ticket.*, Section.*, Venue.*, Event.*, Address.* FROM Orderline JOIN Ticket ON Ticket.Id = Orderline.Ticket_ID_FK JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Event ON Venue.Id = Event.Venue_ID_FK JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Orderline.Order_ID_FK = @OrderId";
-
-            using IDbConnection connection = new SqlConnection(connectionString);
-            Order order = connection.QuerySingle<Order>(selectOrderSql, new { Id = id });
-
-            order.OrderLines = connection.Query<OrderLine>(selectOrderlinesSql, new { OrderId = order.Id }).ToList();
-
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            Order order = connection.QuerySingle<Order>(_GET_ORDER_FROM_ID_QUERY, new { id = id });
+            order.orderLines = connection.Query<OrderLine>(_ORDERLINE_JOIN_QUERY, new { orderId = order.id }).ToList();
             return order;
         }
 
         public IEnumerable<Order> Read()
         {
-            String commandText = "Select Id FROM Orders";
-            IDbConnection connection = new SqlConnection(connectionString);
-            return connection.Query<Order>(commandText);
-
+            IDbConnection connection = new SqlConnection(_connectionString);
+            return connection.Query<Order>(_GET_ID_FROM_ORDER_QUERY);
         }
 
         public Order Update(Order entity)
         {
-            String commandText = "UPDATE Orders SET CustomerName = @CustomerName, Discount = @Discount, Date = @Date WHERE Id = @Id";
-            IDbConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            connection.Execute(commandText, entity);
-            return entity;
+            return null;
         }
     }
 }

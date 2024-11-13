@@ -9,10 +9,10 @@ namespace TicketJam.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class EventController (IEventDAO eventDAO) : Controller
+    public class EventControllerAPI : Controller
     {
-
-        private readonly IEventDAO _eventDAO = eventDAO; 
+        private readonly IEventDAO _eventDAO;
+        private readonly IDAO<Event> _iDAO;
 
 
         // GET api/<EventControllerAPI>/5
@@ -34,14 +34,13 @@ namespace TicketJam.WebAPI.Controllers
         public ActionResult<Event> AddEvent (EventDto eventObject)
         {
             int id = _eventDAO.InsertEvent(eventObject.FromDto());
-            //returns 201 + account JSON as body
             return Ok(eventObject);
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<Event>> GetAll()
         {
-            return Ok(_eventDAO.Read());
+            return Ok(_iDAO.Read());
         }
 
     }

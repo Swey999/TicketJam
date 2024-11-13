@@ -2,8 +2,8 @@
 
 public class OrderLine
 {
-    public int Id { get; set; }
-    public int Quantity { get; set; }
-    public int TicketId { get; set; }
+    public int id { get; set; }
+    public int quantity { get; set; }
+    public int ticketId { get; set; }
 
 }

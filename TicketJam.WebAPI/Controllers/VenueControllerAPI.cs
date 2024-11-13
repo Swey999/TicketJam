@@ -6,19 +6,12 @@ using TicketJam.WebAPI.DTOs;
 
 namespace TicketJam.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class VenueControllerAPI : Controller
     {
         public IDAO<Venue> _VenueDAO;
-        private IConfiguration _configuration;
-        public VenueControllerAPI(IConfiguration configuration)
-        {
-            _configuration = configuration;
-            string connectionString = _configuration.GetConnectionString("DBConnectionString");
-            _VenueDAO = new VenueDAO(connectionString);
-
-        }
+ 
         // GET: VenueControllerAPI
         public ActionResult<IEnumerable<Venue>> GetAll()
         {
@@ -36,69 +29,6 @@ namespace TicketJam.WebAPI.Controllers
             else
             {
                 return Ok(venue);
-            }
-        }
-
-        // GET: VenueControllerAPI/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: VenueControllerAPI/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: VenueControllerAPI/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: VenueControllerAPI/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: VenueControllerAPI/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: VenueControllerAPI/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
             }
         }
     }

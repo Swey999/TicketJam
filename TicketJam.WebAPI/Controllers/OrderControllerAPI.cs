@@ -11,14 +11,6 @@ namespace TicketJam.WebAPI.Controllers
     public class OrderControllerAPI : ControllerBase
     {
         public IDAO<Order> _orderDAO;
-        private IConfiguration _configuration;
-        public OrderControllerAPI(IConfiguration configuration)
-        {
-            _configuration = configuration;
-            string connectionString = _configuration.GetConnectionString("DBConnectionString");
-            _orderDAO = new OrderDAO(connectionString);
-
-        }
 
         // GET: api/<OrderControllerAPI>
         [HttpGet]
@@ -44,10 +36,10 @@ namespace TicketJam.WebAPI.Controllers
 
         // POST api/<OrderControllerAPI>
         [HttpPost]
-        public ActionResult<Order> Post(Order Order)
+        public ActionResult<Order> Post(Order order)
         {
-            _orderDAO.Create(Order);
-            return Ok(Order);
+            _orderDAO.Create(order);
+            return Ok(order);
         }
 
         // PUT api/<OrderControllerAPI>/5
