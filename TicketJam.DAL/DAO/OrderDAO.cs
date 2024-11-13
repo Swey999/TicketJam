@@ -96,7 +96,7 @@ namespace TicketJam.DAL.DAO
 
         public IEnumerable<Order> Read()
         {
-            IDbConnection connection = new SqlConnection(_connectionString);
+            using IDbConnection connection = new SqlConnection(_connectionString);
             return connection.Query<Order>(_GET_ID_FROM_ORDER_QUERY);
         }
 

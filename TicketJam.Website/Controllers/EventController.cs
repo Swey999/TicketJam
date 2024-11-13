@@ -12,9 +12,6 @@ namespace TicketJam.Website.Controllers
         // GET: EventController
         public ActionResult Index()
         {
-            var events = EventAPIConsumer.GetAll();
-            var venues = _VenueAPIConsumer.GetAll();
-
 
             return View(EventAPIConsumer.GetAll());
         }
