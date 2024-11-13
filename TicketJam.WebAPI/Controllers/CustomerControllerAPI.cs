@@ -10,6 +10,10 @@ namespace TicketJam.WebAPI.Controllers
     public class CustomerControllerAPI : Controller
     {
         public IDAO<Customer> _customerDAO;
+        public CustomerControllerAPI(IDAO<Customer> customerDAO)
+        {
+            _customerDAO = customerDAO;
+        }
 
         [HttpGet("{id}")]
         public ActionResult<Customer> GetById(int id)

@@ -14,19 +14,6 @@ namespace TicketJam.Website.APIClient
             this.restClient = new RestSharp.RestClient(baseURI);
         }
 
-        public Event GetEventAndJoinData(int id)
-        {
-            var client = new RestClient($"{BaseURI}/{id}");
-
-            var response = client.ExecuteGet<Event>(new RestRequest());
-
-            if (!response.IsSuccessful || response == null)
-            {
-                throw new Exception("Unable to call that thing that thing");
-            }
-
-            return response.Data;
-        }
         public IEnumerable<Event> GetAll()
         {
             var request = new RestRequest("", Method.Get);
@@ -42,7 +29,16 @@ namespace TicketJam.Website.APIClient
 
         public Event GetById(int id)
         {
-            throw new NotImplementedException();
+            var client = new RestClient($"{BaseURI}/{id}");
+
+            var response = client.ExecuteGet<Event>(new RestRequest());
+
+            if (!response.IsSuccessful || response == null)
+            {
+                throw new Exception("Unable to call that thing that thing");
+            }
+
+            return response.Data;
         }
 
         public bool Delete(int id)

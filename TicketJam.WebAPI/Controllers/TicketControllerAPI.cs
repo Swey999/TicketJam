@@ -13,6 +13,11 @@ namespace TicketJam.WebAPI.Controllers
 
         public IDAO<Ticket> _ticketDAO;
 
+        public TicketControllerAPI(IDAO<Ticket> iDAO)
+        {
+            this._ticketDAO = iDAO;
+        }
+
         // GET: api/<TicketController>
         [HttpGet]
         public IEnumerable<string> Get()

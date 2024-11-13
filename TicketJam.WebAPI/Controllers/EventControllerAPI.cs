@@ -14,10 +14,18 @@ namespace TicketJam.WebAPI.Controllers
         private readonly IEventDAO _eventDAO;
         private readonly IDAO<Event> _iDAO;
 
+        public EventControllerAPI(IEventDAO eventDAO, IDAO<Event> iDAO)
+        {
+            _eventDAO = eventDAO;
+            _iDAO = iDAO;
+        }
+
+
+
 
         // GET api/<EventControllerAPI>/5
         [HttpGet("{id}")]
-        public ActionResult<Event> GetEventAndJoinData(int id)
+        public ActionResult<Event> GetById(int id)
         {
             Event events = _eventDAO.GetEventAndJoinData(id);
             if (events == null)
