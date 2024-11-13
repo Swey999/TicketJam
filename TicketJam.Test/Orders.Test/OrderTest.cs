@@ -53,10 +53,10 @@ namespace TicketJam.Test.Orders.Test
             // Arrange
 
             // Act
-            var deletedOrderId = _orderDao.Delete(2);
+            var deletedOrder = _orderDao.Delete(28);
+            var getDeletedOrder = _orderDao.GetById(28);
             // Assert
-            Assert.That(deletedOrderId, Is.False);
-
+            Assert.That(getDeletedOrder, Is.EqualTo(null));
         }
 
     }
