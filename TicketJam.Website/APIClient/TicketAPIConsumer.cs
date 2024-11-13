@@ -5,7 +5,7 @@ using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.APIClient
 {
-    public class TicketAPIConsumer : Controller
+    public class TicketAPIConsumer : IRestClient<Ticket>
     {
         private string BaseURI;
         private RestClient restClient;
@@ -14,6 +14,22 @@ namespace TicketJam.Website.APIClient
             restClient = new RestClient(baseURI);
             BaseURI = baseURI;
         }
+
+        public Ticket Add(Ticket orderToAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Ticket> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
         public Ticket GetById(int id)
         {
             var client = new RestClient($"{BaseURI}/{id}");
@@ -26,6 +42,11 @@ namespace TicketJam.Website.APIClient
             }
 
             return response.Data;
+        }
+
+        public Ticket Update(Ticket orderToUpdate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

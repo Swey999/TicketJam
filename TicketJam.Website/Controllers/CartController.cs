@@ -9,7 +9,7 @@ namespace TicketJam.Website.Controllers
     public class CartController : Controller
     {
         // GET: CartController
-        TicketAPIConsumer _ticketAPIConsumer = new TicketAPIConsumer("https://localhost:7280/api/TicketControllerAPI");
+        TicketAPIConsumer _ticketAPIConsumer = new TicketAPIConsumer("https://localhost:7280/api/v1/TicketControllerAPI");
         public ActionResult Index()
         {
             return View(GetCartFromCookie());
@@ -18,23 +18,23 @@ namespace TicketJam.Website.Controllers
         public ActionResult Add(int id, int quantity)
         {
             Order order = GetCartFromCookie();
-            OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == id);
+            OrderLine existingOrderLine = order.orderLines.FirstOrDefault(ol => ol.ticketId == id);
             if (existingOrderLine != null)
             {
-                existingOrderLine.Quantity += quantity;
-                if (existingOrderLine.Quantity <= 0)
+                existingOrderLine.quantity += quantity;
+                if (existingOrderLine.quantity <= 0)
                 {
-                    order.OrderLines.Remove(existingOrderLine);
+                    order.orderLines.Remove(existingOrderLine);
                 }
             }
             else
             {
                 OrderLine newOrderLine = new OrderLine
                 {
-                    TicketId = _ticketAPIConsumer.GetById(id).Id,
-                    Quantity = quantity
+                    ticketId = _ticketAPIConsumer.GetById(id).id,
+                    quantity = quantity
                 };
-                order.OrderLines.Add(newOrderLine);
+                order.orderLines.Add(newOrderLine);
             }
             
             SaveCartToCookie(order);
@@ -59,7 +59,7 @@ namespace TicketJam.Website.Controllers
         public ActionResult EmptyCart()
         {
             Order order = GetCartFromCookie();
-            order.OrderLines = new List<OrderLine>(); //Check om det virker nyt shit
+            order.orderLines = new List<OrderLine>(); //Check om det virker nyt shit
             SaveCartToCookie(order);
             return View("Index", order);
         }

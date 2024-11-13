@@ -4,7 +4,7 @@ using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.APIClient
 {
-    public class OrderAPIConsumer
+    public class OrderAPIConsumer : IRestClient<Order>
     {
             private string BaseURI;
             private RestClient restClient;
@@ -41,7 +41,7 @@ namespace TicketJam.Website.APIClient
 
             
 
-            public bool DeleteOrder(int id)
+            public bool Delete(int id)
             {
                 var request = new RestRequest($"{BaseURI}/{id}", RestSharp.Method.Delete);
 
@@ -52,12 +52,12 @@ namespace TicketJam.Website.APIClient
                 return response.IsSuccessful;
             }
 
-            public Order AddOrder(Order OrderToAdd)
+            public Order Add(Order orderToAdd)
             {
 
             try
             {
-                var request = new RestRequest().AddJsonBody(OrderToAdd);
+                var request = new RestRequest().AddJsonBody(orderToAdd);
 
                 var client = new RestClient(BaseURI);
 
@@ -75,9 +75,9 @@ namespace TicketJam.Website.APIClient
 
             }
 
-            public Order UpdateOrder(Order OrderToUpdate)
+            public Order Update(Order orderToUpdate)
             {
-                var request = new RestRequest().AddJsonBody(OrderToUpdate);
+                var request = new RestRequest().AddJsonBody(orderToUpdate);
 
                 var client = new RestClient(BaseURI);
 
@@ -85,7 +85,7 @@ namespace TicketJam.Website.APIClient
                 {
                     throw new Exception("Failed to update account");
                 }
-                return OrderToUpdate;
+                return orderToUpdate;
 
             }
         }

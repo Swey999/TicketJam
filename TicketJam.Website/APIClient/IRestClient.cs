@@ -1,14 +1,15 @@
 ﻿using TicketJam.Website.APIClient.DTO;
+using static Dapper.SqlMapper;
 
 namespace TicketJam.Website.APIClient
 {
-    public interface IRestClient
+    public interface IRestClient<TEntity> where TEntity : class
     {
-        IEnumerable<Order> GetAll();
-        Order GetById(int id);
-        bool DeleteOrder(int id);
-        Order AddOrder(Order OrderToAdd);
-        Order UpdateOrder(Order OrderToUpdate);
+        IEnumerable<TEntity> GetAll();
+        TEntity GetById(int id);
+        bool Delete(int id);
+        TEntity Add(TEntity orderToAdd);
+        TEntity Update(TEntity orderToUpdate);
 
     }
 }

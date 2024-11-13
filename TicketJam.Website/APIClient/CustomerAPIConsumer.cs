@@ -3,7 +3,7 @@ using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.APIClient
 {
-    public class CustomerAPIConsumer
+    public class CustomerAPIConsumer : IRestClient<Customer>
     {
         private string BaseURI;
         private RestClient restClient;
@@ -13,13 +13,30 @@ namespace TicketJam.Website.APIClient
             BaseURI = baseURI;
         }
 
-        public CustomerDTO GetCustomerFromId(int id)
+        public Customer Add(Customer OrderToAdd)
         {
-            var request = new RestRequest($"Customer/{id}", RestSharp.Method.Get);
-            var response = restClient.Execute<CustomerDTO>(request);
-            return response.Data;
+            throw new NotImplementedException();
         }
 
+        public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
 
+        public IEnumerable<Customer> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Customer GetById(int id)
+        {
+            var request = new RestRequest($"Customer/{id}", RestSharp.Method.Get);
+            var response = restClient.Execute<Customer>(request);
+            return response.Data;
+        }
+        public Customer Update(Customer OrderToUpdate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

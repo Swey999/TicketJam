@@ -8,9 +8,9 @@ namespace TicketJam.Website.Controllers
 {
     public class CustomerController : Controller
     {
-        IDAO<CustomerDTO> _customerDAO;
+        IDAO<APIClient.DTO.Customer> _customerDAO;
 
-        public CustomerController(IDAO<CustomerDTO> customerDAO)
+        public CustomerController(IDAO<APIClient.DTO.Customer> customerDAO)
         {
             _customerDAO = customerDAO;
         }
@@ -37,7 +37,7 @@ namespace TicketJam.Website.Controllers
         // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CustomerDTO customer)
+        public ActionResult Create(APIClient.DTO.Customer customer)
         {
             try
             {

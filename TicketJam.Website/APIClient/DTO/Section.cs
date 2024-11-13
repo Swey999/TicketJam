@@ -2,9 +2,9 @@
 {
     public class Section
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public int TicketAmount { get; set; }
-        public Venue Venue { get; set; }
+        public int id { get; set; }
+        public string description { get; set; }
+        public int ticketAmount { get; set; }
+        public Venue venue { get; set; }
     }
 }

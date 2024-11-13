@@ -3,7 +3,7 @@ using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.APIClient
 {
-    public class EventAPIConsumer
+    public class EventAPIConsumer : IRestClient<Event>
     {
         private string BaseURI;
         private RestSharp.RestClient restClient;
@@ -40,5 +40,24 @@ namespace TicketJam.Website.APIClient
             return response.Data;
         }
 
+        public Event GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Event Add(Event orderToAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Event Update(Event orderToUpdate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

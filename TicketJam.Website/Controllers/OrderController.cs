@@ -10,7 +10,7 @@ namespace TicketJam.Website.Controllers
     {
         // GET: OrderController
         OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7280/api/v1/OrderControllerAPI");
-        CustomerAPIConsumer customerAPIConsumer = new CustomerAPIConsumer("https://localhost:7280/api/CustomersController");
+        CustomerAPIConsumer customerAPIConsumer = new CustomerAPIConsumer("https://localhost:7280/api/v1/CustomersController");
         CartController cartController = new CartController();
 
 
@@ -50,10 +50,10 @@ namespace TicketJam.Website.Controllers
             {
                 Request.Cookies.TryGetValue("Order", out string? cookie);
                 order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
-                order.OrderNo = 1292;
+                order.orderNo = 1292;
                 
-                order.CustomerId = 1;
-                OrderAPIConsumer.AddOrder(order);
+                order.customerId = 1;
+                OrderAPIConsumer.Add(order);
                 return View(order);
             }
             catch

@@ -3,7 +3,7 @@ using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.APIClient
 {
-    public class VenueAPIConsumer
+    public class VenueAPIConsumer : IRestClient<Venue>
     {
         private string BaseURI;
         private RestClient restClient;
@@ -34,6 +34,21 @@ namespace TicketJam.Website.APIClient
                 throw new Exception("Unable to call something something");
             }
             return response.Data;
+        }
+
+        public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Venue Add(Venue orderToAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Venue Update(Venue orderToUpdate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

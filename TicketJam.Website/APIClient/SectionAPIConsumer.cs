@@ -3,7 +3,7 @@ using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.APIClient
 {
-    public class SectionAPIConsumer
+    public class SectionAPIConsumer : IRestClient<Section>
     {
         private string BaseURI;
         private RestClient restClient;
@@ -35,6 +35,21 @@ namespace TicketJam.Website.APIClient
                 throw new Exception("Unable to call something something");
             }
             return response.Data;
+        }
+
+        public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Section Add(Section OrderToAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Section Update(Section OrderToUpdate)
+        {
+            throw new NotImplementedException();
         }
     }
 }
