@@ -33,7 +33,7 @@ namespace TicketJam.DAL.DAO
         }
         public Order Create(Order entity)
         {
-            IDbConnection connection = new SqlConnection(_connectionString);
+            using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             IDbTransaction transaction = connection.BeginTransaction();
             try
@@ -64,7 +64,7 @@ namespace TicketJam.DAL.DAO
         {
             
             // Using = releases all resources
-            using DbConnection connection = new SqlConnection(_connectionString);
+            using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             var transaction = connection.BeginTransaction();
 
