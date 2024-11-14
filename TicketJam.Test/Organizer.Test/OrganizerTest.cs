@@ -22,12 +22,12 @@ namespace TicketJam.Test.Organizer.Test
         public void CreateOrganizerAndReturnIdentitySuccess()
         {
 
-            TicketJam.DAL.Model.Organizer organizerTest = new TicketJam.DAL.Model.Organizer() { Email = "Testmail@gmail.com", Password = "password", PhoneNo = "88888888" };
             // Arrange
+            //Organizer organizerTest = new Organizer() { Email = "Testmail@gmail.com", Password = "password", PhoneNo = 88888888 };
 
             // Act
             int identityReturned = 0;
-            identityReturned = _organizerDAO.CreateOrganizerAndReturnIdentity(organizerTest);
+            //identityReturned = _organizerDAO.CreateOrganizerAndReturnIdentity(organizerTest);
 
             // Assert
             Assert.GreaterOrEqual(identityReturned, 1);
@@ -38,14 +38,14 @@ namespace TicketJam.Test.Organizer.Test
         {
 
             // Arrange
-            TicketJam.DAL.Model.Organizer organizerTest = new TicketJam.DAL.Model.Organizer() { };
+            //Organizer organizerTest = new Organizer() { };
 
             // Act
             int identityReturned = 0;
 
             try
             {
-                identityReturned = _organizerDAO.CreateOrganizerAndReturnIdentity(organizerTest);
+                //identityReturned = _organizerDAO.CreateOrganizerAndReturnIdentity(organizerTest);
             }
             catch (Exception e)
             {

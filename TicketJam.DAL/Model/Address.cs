@@ -8,9 +8,9 @@ namespace TicketJam.DAL.Model;
 
 public class Address
 {
-    public int id { get; set; }
-    public string streetName { get; set; }
-    public string city { get; set; }
-    public string zip { get; set; }
-    public string houseNo { get; set; }
+    public int Id { get; set; }
+    public string StreetName { get; set; }
+    public string City { get; set; }
+    public string Zip { get; set; }
+    public string HouseNo { get; set; }
 }

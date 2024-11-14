@@ -18,23 +18,23 @@ namespace TicketJam.Website.Controllers
         public ActionResult Add(int id, int quantity)
         {
             Order order = GetCartFromCookie();
-            OrderLine existingOrderLine = order.orderLines.FirstOrDefault(ol => ol.ticketId == id);
+            OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == id);
             if (existingOrderLine != null)
             {
-                existingOrderLine.quantity += quantity;
-                if (existingOrderLine.quantity <= 0)
+                existingOrderLine.Quantity += quantity;
+                if (existingOrderLine.Quantity <= 0)
                 {
-                    order.orderLines.Remove(existingOrderLine);
+                    order.OrderLines.Remove(existingOrderLine);
                 }
             }
             else
             {
                 OrderLine newOrderLine = new OrderLine
                 {
-                    ticketId = _ticketAPIConsumer.GetById(id).id,
-                    quantity = quantity
+                    TicketId = _ticketAPIConsumer.GetById(id).Id,
+                    Quantity = quantity
                 };
-                order.orderLines.Add(newOrderLine);
+                order.OrderLines.Add(newOrderLine);
             }
             
             SaveCartToCookie(order);
@@ -43,10 +43,30 @@ namespace TicketJam.Website.Controllers
 
         public Order GetCartFromCookie()
         {
+            // Retrieve the order from the cookie
             Request.Cookies.TryGetValue("Order", out string? cookie);
-            if (cookie == null) { return new Order(); }
-            return JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
+            Order order = cookie != null
+                ? JsonSerializer.Deserialize<Order>(cookie) ?? new Order()
+                : new Order();
+
+            // Fetch ticket details for each order line
+            var ticketDetails = new List<Ticket>();
+            foreach (var orderLine in order.OrderLines)
+            {
+                // Fetch ticket from the API based on the ticketId
+                var ticket = _ticketAPIConsumer.GetById(orderLine.TicketId);    
+                if (ticket != null && !ticketDetails.Any(t => t.Id == ticket.TicketId))
+                {
+                    ticketDetails.Add(ticket);
+                }
+            }
+
+            // Store ticket details in ViewBag so the view has access to them
+            ViewBag.TicketDetails = ticketDetails;
+
+            return order;
         }
+
 
         private void SaveCartToCookie(Order order)
         {
@@ -59,7 +79,7 @@ namespace TicketJam.Website.Controllers
         public ActionResult EmptyCart()
         {
             Order order = GetCartFromCookie();
-            order.orderLines = new List<OrderLine>(); //Check om det virker nyt shit
+            order.OrderLines = new List<OrderLine>(); //Check om det virker nyt shit
             SaveCartToCookie(order);
             return View("Index", order);
         }

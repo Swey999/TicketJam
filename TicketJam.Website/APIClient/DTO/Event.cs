@@ -2,15 +2,15 @@
 {
     public class Event
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int eventNo { get; set; }
-        public string description { get; set; }
-        public int totalAmount { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }
-        public Venue Venue { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int EventNo { get; set; }
+        public string Description { get; set; }
+        public int TotalAmount { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public Venue VenueId { get; set; }
 
-        public List<Ticket> ticketList { get; set; } = new List<Ticket>();
+        public List<Ticket> TicketList { get; set; } = new List<Ticket>();
     }
 }

@@ -23,10 +23,10 @@ namespace TicketJam.Test.Orders.Test
         {
 
             // Arrange
-            Order order = new() { orderNo = 3654, customerId = 1};
-            order.orderLines = new List<OrderLine>();
-            OrderLine line = new() { quantity = 1, ticketId = 1 };
-            order.orderLines.Add(line);
+            Order order = new() { OrderNo = 3654, CustomerId = 1};
+            order.OrderLines = new List<OrderLine>();
+            OrderLine line = new() { Quantity = 1, TicketId = 1 };
+            order.OrderLines.Add(line);
 
             // Act
             var insertIntoDatabase = _orderDao.Create(order);
