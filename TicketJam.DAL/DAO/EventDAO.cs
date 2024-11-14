@@ -51,7 +51,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
     {
 
         using IDbConnection connection = new SqlConnection(_connectionString);
-        Event Event = connection.QuerySingle<Event>(_GET_EVENT_SQL, new { id = id });
+        Event Event = connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
 
         Event.ticketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(_JOIN_SQL, (t, s, v, a) =>
         {

@@ -1,11 +1,12 @@
-﻿@model TicketJam.Website.APIClient.DTO.Order;
+﻿@using TicketJam.Website.APIClient.DTO
+@model TicketJam.Website.APIClient.DTO.Order;
 @{
     ViewData["Title"] = "Cart";
 }
 
 <div class="text-center" style="width:800px; margin:0px auto;">
     <h1 class="display-4">Cart</h1>
-    @if (Model == null || Model.orderLines.Count == 0) //Har ændret dette
+    @if (Model == null || Model.orderLines.Count == 0)
     {
         <div class="row">
             <div class="col-12 text-center">
@@ -15,26 +16,38 @@
     }
     else
     {
+        var tickets = ViewBag.TicketDetails as List<Ticket>;
         @foreach (var orderLine in Model.orderLines)
         {
-            <div class="row" style="padding-top:2px;">
-     @*            <div class="col-6">
-                    @orderLine.Quantity @orderLine.Ticket.TicketCategory     at $@orderLine.Ticket.Price each
+            var ticket = tickets?.FirstOrDefault(t => t.id == orderLine.ticketId);
+            if (ticket != null)
+            {
+                <div class="row" style="padding-top:2px;">
+                    <div class="col-6">
+                        @orderLine.quantity x @ticket.description (Category: @ticket.ticketCategory) at $@ticket.price each
+                    </div>
+                    <div class="col-3">
+                        total $@(orderLine.quantity * ticket.price)
+                    </div>
+                    <div class="col-3">
+                        <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = orderLine.ticketId, quantity = -1 })" title="remove one">-1</a>
+                        <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = orderLine.ticketId, quantity = 1 })" title="add one">+1</a>
+                        <a class="btn btn-danger" href="@Url.Action("Delete", "Cart", new { id = orderLine.ticketId })" title="delete product"><span class="bi-trash"></span>Delete</a>
+                    </div>
                 </div>
-                <div class="col-3">
-                    total $@(orderLine.Quantity * orderLine.Ticket.Price)
-                </div> *@
-                <div class="col-3">
-                    <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = orderLine.ticketId, quantity = -1 })" title="remove one">-1</a>
-                    <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = orderLine.ticketId, quantity = 1 })" title="add one">+1</a>
-                    <a class="btn btn-danger" href="@Url.Action("Delete", "Cart", new { id = orderLine.ticketId })" title="delete product"><span class="bi-trash"></span></a>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <p>Details not available for ticket ID: @orderLine.ticketId</p>
+                    </div>
                 </div>
-            </div>
+            }
         }
     }
     <p></p>
-    @* <h3 class="display-6">Total: $@Model.GetTotal()</h3> *@
     <a class="btn btn-danger" href="@Url.Action("EmptyCart", "Cart")">Empty entire cart <span class="bi bi-trash"></span></a>
-
     <a class="btn btn-success" href="@Url.Action("Create", "Order")">Checkout</a>
 </div>
+
