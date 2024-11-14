@@ -14,7 +14,7 @@
                 <h2 class="event-title">@eventItem.name</h2>
                 <p class="event-date"><strong>Date:</strong> @eventItem.startDate.ToString("D")</p>
                 <p class="event-totalAmount"><strong>Tickets for sale:</strong> @eventItem.totalAmount</p>
-                <p class="event-location"><strong>Location:</strong> @eventItem.venueId?</p>
+                <p class="event-location"><strong>Location:</strong> @eventItem.Venue?</p>
             </div>  
             <a asp-action="Details" asp-route-id="@eventItem.id" class="details-button">Køb Billet</a>
         </div>

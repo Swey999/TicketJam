@@ -16,6 +16,7 @@ namespace TicketJam.DAL.DAO
         private string GETALLSECTIONS_SQL = "SELECT * FROM Section";
         private string GETSECTIONBYID_SQL = "SELECT * FROM Section WHERE Id = @Id";
 
+
         public SectionDAO(String connectionStringns)
         {
             this._connectionString = connectionStringns;
@@ -47,5 +48,6 @@ namespace TicketJam.DAL.DAO
         {
             throw new NotImplementedException();
         }
+
     }
 }

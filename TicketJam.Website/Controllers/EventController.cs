@@ -21,10 +21,7 @@ namespace TicketJam.Website.Controllers
         public ActionResult Details(int id)
         {
             try
-            
-            
             {
-
                 return View(EventAPIConsumer.GetById(id));
             }
             catch (Exception ex)

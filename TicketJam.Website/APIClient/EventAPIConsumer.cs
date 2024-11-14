@@ -33,6 +33,7 @@ namespace TicketJam.Website.APIClient
 
             var response = client.ExecuteGet<Event>(new RestRequest());
 
+
             if (!response.IsSuccessful || response == null)
             {
                 throw new Exception("Unable to call that thing that thing");
