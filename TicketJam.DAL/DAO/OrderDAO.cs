@@ -40,7 +40,7 @@ namespace TicketJam.DAL.DAO
 
             //TODO: Change random to something more unique.
             Random random = new Random();
-            entity.orderNo = random.Next();
+            entity.OrderNo = random.Next();
 
 
             try

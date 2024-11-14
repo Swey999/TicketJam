@@ -28,10 +28,10 @@ public class TransactionTest
     public void PurchaseTicketsFromSectionCantGoBelowZeroTestSuccess()
     {
         // Arrange
-        Venue venue = new Venue() { id = 2 };
-        Section section = new Section() { description = "Ny sektion med Transaction, wow", ticketAmount = 250, venue = venue };
+        Venue venue = new Venue() { Id = 2 };
+        Section section = new Section() { Description = "Ny sektion med Transaction, wow", TicketAmount = 250, Venue = venue };
 
-        int startTicket = section.ticketAmount;
+        int startTicket = section.TicketAmount;
 
         Console.WriteLine($"Start mængde af tickets: {startTicket}");
 
@@ -45,10 +45,10 @@ public class TransactionTest
             int amountTaken = 300;
 
 
-            if(section.ticketAmount >= amountTaken)
+            if(section.TicketAmount >= amountTaken)
             {
-                section.ticketAmount -= amountTaken;
-                Console.WriteLine($"Mængden af ticket efter der er taget 300 tickets: {section.ticketAmount}");
+                section.TicketAmount -= amountTaken;
+                Console.WriteLine($"Mængden af ticket efter der er taget 300 tickets: {section.TicketAmount}");
                 transaction.Commit();
             } 
         }
@@ -56,11 +56,11 @@ public class TransactionTest
         catch (Exception ex)
         {
             transaction.Rollback();
-            throw new Exception($"Der er ikke flere billetter tilbage. Nuværende mængde billetter: {section.ticketAmount} - transaction rolledback", ex);
+            throw new Exception($"Der er ikke flere billetter tilbage. Nuværende mængde billetter: {section.TicketAmount} - transaction rolledback", ex);
         }
 
         // Assert
-        Assert.AreEqual(startTicket, section.ticketAmount, "Billetterne er de samme efter rollback");
+        Assert.AreEqual(startTicket, section.TicketAmount, "Billetterne er de samme efter rollback");
     }
     
 
@@ -70,8 +70,8 @@ public class TransactionTest
 
         // Arrange
         Venue venue = new Venue();
-        Section section = new Section() { description = "Ny sektion med Transaction, wow", ticketAmount = 250, venue = venue };
-        int startTicket = section.ticketAmount;
+        Section section = new Section() { Description = "Ny sektion med Transaction, wow", TicketAmount = 250, Venue = venue };
+        int startTicket = section.TicketAmount;
 
         Console.WriteLine($"Start mængde af tickets: {startTicket}");
 
@@ -85,10 +85,10 @@ public class TransactionTest
             int amountTaken = 300;
 
 
-            if (section.ticketAmount < amountTaken)
+            if (section.TicketAmount < amountTaken)
             {
-                section.ticketAmount -= amountTaken;
-                Console.WriteLine($"Mængden af ticket efter der er taget 300 tickets: {section.ticketAmount}");
+                section.TicketAmount -= amountTaken;
+                Console.WriteLine($"Mængden af ticket efter der er taget 300 tickets: {section.TicketAmount}");
                 transaction.Commit();
             }
         }
@@ -96,11 +96,11 @@ public class TransactionTest
         catch (Exception ex)
         {
             transaction.Rollback();
-            throw new Exception($"Der er ikke flere billetter tilbage. Nuværende mængde billetter: {section.ticketAmount} - transaction rolledback", ex);
+            throw new Exception($"Der er ikke flere billetter tilbage. Nuværende mængde billetter: {section.TicketAmount} - transaction rolledback", ex);
         }
 
         // Assert
-        Assert.AreEqual(startTicket, section.ticketAmount, "Billetterne er de samme efter rollback");
+        Assert.AreEqual(startTicket, section.TicketAmount, "Billetterne er de samme efter rollback");
     }
 
 

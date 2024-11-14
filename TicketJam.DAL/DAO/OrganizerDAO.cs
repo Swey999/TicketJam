@@ -26,7 +26,7 @@ namespace TicketJam.DAL.DAO
             connection.Open();
             try
             {
-                organizer.Id = connection.ExecuteScalar<int>(_insertOrganizer_SQL, organizer, transaction);
+                organizer.Id = connection.ExecuteScalar<int>(_insertOrganizer_SQL, organizer);
                 return organizer.Id;
             }
             catch (SqlException e)
