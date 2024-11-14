@@ -9,7 +9,7 @@
         public int totalAmount { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
-        public Venue Venue { get; set; }
+        public Venue venueId { get; set; }
 
         public List<Ticket> ticketList { get; set; } = new List<Ticket>();
     }

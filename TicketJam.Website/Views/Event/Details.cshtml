@@ -56,10 +56,8 @@
 
                         <h5>Section Information</h5>
                         <dl class="row">
-                            @Html.DropDownList("Section",
-                                 new SelectList(ticket.Event.Venue.sections, "Description"),
-                                 "Select Section",
-                                 new { @class = "form-control" })
+                            <dt class="col-sm-4">Section Description</dt>
+                            <dd class="col-sm-8">@ticket?.section?.description</dd>
 
                             <dt class="col-sm-4">Ticket Amount</dt>
                             <dd class="col-sm-8">@ticket?.section?.ticketAmount.ToString()</dd>
