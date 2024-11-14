@@ -9,14 +9,14 @@ namespace TicketJam.DAL.Model;
 public class Event
 {
     public int id { get; set; }
-    public string name { get; set; }
-    public int eventNo { get; set; }
-    public string description { get; set; }
-    public int totalAmount { get; set; }
-    public DateTime startDate { get; set; }
-    public DateTime endDate { get; set; }
-    public int venueId { get; set; }
-    public int organizerId { get; set; }
+    public string Name { get; set; }
+    public int EventNo { get; set; }
+    public string Description { get; set; }
+    public int TotalAmount { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public int VenueId { get; set; }
+    public int OrganizerId { get; set; }
 
     public List<Ticket> ticketList { get; set; } = new List<Ticket>();
 }

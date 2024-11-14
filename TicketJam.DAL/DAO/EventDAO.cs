@@ -70,7 +70,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
         using IDbConnection connection = new SqlConnection(_connectionString);
         //TODO, make with less chance of duplicate, probably uuid ish
         Random random = new Random();
-        Event.eventNo = random.Next();
+        Event.EventNo = random.Next();
         connection.Open();
         IDbTransaction transaction = connection.BeginTransaction();
         try

@@ -33,5 +33,19 @@ namespace TicketJam.WebAPI.DTOs.Converters
                 yield return eventDtos.FromDto();
             }
         }
+
+        public static OrganizerDto ToDto(this DAL.Model.Organizer organizerToConvert)
+        {
+            var OrganizerDto = new OrganizerDto();
+            organizerToConvert.CopyPropertiesTo(OrganizerDto);
+            return OrganizerDto;
+        }
+
+        public static DAL.Model.Organizer FromDto(this OrganizerDto organizerDtoToConvert)
+        {
+            var Organizer = new DAL.Model.Organizer();
+            organizerDtoToConvert.CopyPropertiesTo(Organizer);
+            return Organizer;
+        }
     }
 }
