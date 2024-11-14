@@ -44,8 +44,26 @@ namespace TicketJam.Website.Controllers
         public Order GetCartFromCookie()
         {
             Request.Cookies.TryGetValue("Order", out string? cookie);
-            if (cookie == null) { return new Order(); }
-            return JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
+            Order order = cookie != null
+                ? JsonSerializer.Deserialize<Order>(cookie) ?? new Order()
+                : new Order();
+
+            // Fetch ticket details for each order line
+            var ticketDetails = new List<Ticket>();
+            foreach (var orderLine in order.orderLines)
+            {
+                // Fetch ticket from the API based on the ticketId
+                var ticket = _ticketAPIConsumer.GetById(orderLine.ticketId);    
+                if (ticket != null && !ticketDetails.Any(t => t.id == ticket.ticketId))
+                {
+                    ticketDetails.Add(ticket);
+                }
+            }
+
+            // Store ticket details in ViewBag so the view has access to them
+            ViewBag.TicketDetails = ticketDetails;
+
+            return order;
         }
 
         private void SaveCartToCookie(Order order)
