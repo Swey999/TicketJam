@@ -40,14 +40,14 @@ namespace TicketJam.DAL.DAO
             {
                 var parameters = new
                 {
-                    orderNo = entity.orderNo,
-                    customerId = entity.customerId
+                    orderNo = entity.OrderNo,
+                    customerId = entity.CustomerId
                 };
 
-                entity.id = connection.ExecuteScalar<int>(_INSERT_ORDER_QUERY, parameters, transaction);
-                foreach (OrderLine orderline in entity.orderLines)
+                entity.Id = connection.ExecuteScalar<int>(_INSERT_ORDER_QUERY, parameters, transaction);
+                foreach (OrderLine orderline in entity.OrderLines)
                 {
-                    connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = entity.id, quantity = orderline.quantity , ticketId = orderline.ticketId}, transaction);
+                    connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = entity.Id, quantity = orderline.Quantity , ticketId = orderline.TicketId}, transaction);
                 }
             }
             catch (Exception)
@@ -90,7 +90,7 @@ namespace TicketJam.DAL.DAO
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
             Order order = connection.QuerySingle<Order>(_GET_ORDER_FROM_ID_QUERY, new { id = id });
-            order.orderLines = connection.Query<OrderLine>(_ORDERLINE_JOIN_QUERY, new { orderId = order.id }).ToList();
+            order.OrderLines = connection.Query<OrderLine>(_ORDERLINE_JOIN_QUERY, new { orderId = order.Id }).ToList();
             return order;
         }
 

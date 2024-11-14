@@ -29,7 +29,7 @@ namespace TicketJam.DAL.DAO
 
             try
             {
-                entity.id = connection.ExecuteScalar<int>(_createCustomerSQL, entity);
+                entity.Id = connection.ExecuteScalar<int>(_createCustomerSQL, entity);
             }
             catch (Exception ex)
             {

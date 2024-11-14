@@ -27,7 +27,7 @@ namespace TicketJam.DAL.DAO
             IDbTransaction transaction = connection.BeginTransaction();
             try
             {
-                organizer.id = connection.ExecuteScalar<int>(_insertOrganizer_SQL, organizer, transaction);
+                organizer.Id = connection.ExecuteScalar<int>(_insertOrganizer_SQL, organizer, transaction);
             }
             catch (Exception)
             {
@@ -36,7 +36,7 @@ namespace TicketJam.DAL.DAO
             }
             transaction.Commit();
 
-            return organizer.id;
+            return organizer.Id;
         }
     }
 }

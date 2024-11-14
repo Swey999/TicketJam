@@ -53,14 +53,14 @@ public class EventDAO : IEventDAO, IDAO<Event>
         using IDbConnection connection = new SqlConnection(_connectionString);
         Event Event = connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
 
-        Event.ticketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(_JOIN_SQL, (t, s, v, a) =>
+        Event.TicketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(_JOIN_SQL, (t, s, v, a) =>
         {
-            t.section = s;
-            t.section.venue = v;
-            t.section.venue.address = a;
+            t.Section = s;
+            t.Section.Venue = v;
+            t.Section.Venue.Address = a;
             return t;
 
-        }, new { EventId = Event.id }).ToList();
+        }, new { EventId = Event.Id }).ToList();
 
         return Event;
     }
@@ -75,7 +75,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
         IDbTransaction transaction = connection.BeginTransaction();
         try
         {
-            Event.id = connection.ExecuteScalar<int>(_INSERT_SQL, Event, transaction);
+            Event.Id = connection.ExecuteScalar<int>(_INSERT_SQL, Event, transaction);
         }
         catch (Exception)
         {
@@ -84,7 +84,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
         }
         transaction.Commit();
 
-        return Event.id;
+        return Event.Id;
     }
     public IEnumerable<Event> Read()
     {

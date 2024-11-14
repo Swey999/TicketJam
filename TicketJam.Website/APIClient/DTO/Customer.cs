@@ -2,13 +2,13 @@
 {
     public class Customer
     {
-        public int id {  get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public Address address { get; set; }
-        public string phoneNo { get; set; }
-        public string email { get; set; }
-        public int customerNo { get; set; }
-        public string password { get; set; }
+        public int Id {  get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public Address Address { get; set; }
+        public string PhoneNo { get; set; }
+        public string Email { get; set; }
+        public int CustomerNo { get; set; }
+        public string Password { get; set; }
     }
 }

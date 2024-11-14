@@ -2,8 +2,8 @@
 {
     public class Venue
     {
-        public int id { get; set; }
-        public Address address { get; set; }
-        public string name { get; set; }
+        public int Id { get; set; }
+        public Address Address { get; set; }
+        public string Name { get; set; }
     }
 }

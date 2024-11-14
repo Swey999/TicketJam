@@ -6,7 +6,7 @@
 
 <div class="text-center" style="width:800px; margin:0px auto;">
     <h1 class="display-4">Cart</h1>
-    @if (Model == null || Model.orderLines.Count == 0)
+    @if (Model == null || Model.OrderLines.Count == 0)
     {
         <div class="row">
             <div class="col-12 text-center">
@@ -17,22 +17,22 @@
     else
     {
         var tickets = ViewBag.TicketDetails as List<Ticket>;
-        @foreach (var orderLine in Model.orderLines)
+        @foreach (var orderLine in Model.OrderLines)
         {
-            var ticket = tickets?.FirstOrDefault(t => t.id == orderLine.ticketId);
+            var ticket = tickets?.FirstOrDefault(t => t.Id == orderLine.TicketId);
             if (ticket != null)
             {
                 <div class="row" style="padding-top:2px;">
                     <div class="col-6">
-                        @orderLine.quantity x @ticket.description (Category: @ticket.ticketCategory) at $@ticket.price each
+                        @orderLine.Quantity x @ticket.Description (Category: @ticket.TicketCategory) at $@ticket.Price each
                     </div>
                     <div class="col-3">
-                        total $@(orderLine.quantity * ticket.price)
+                        total $@(orderLine.Quantity * ticket.Price)
                     </div>
                     <div class="col-3">
-                        <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = orderLine.ticketId, quantity = -1 })" title="remove one">-1</a>
-                        <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = orderLine.ticketId, quantity = 1 })" title="add one">+1</a>
-                        <a class="btn btn-danger" href="@Url.Action("Delete", "Cart", new { id = orderLine.ticketId })" title="delete product"><span class="bi-trash"></span>Delete</a>
+                        <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = orderLine.TicketId, quantity = -1 })" title="remove one">-1</a>
+                        <a class="btn btn-primary" href="@Url.Action("Add", "Cart", new { id = orderLine.TicketId, quantity = 1 })" title="add one">+1</a>
+                        <a class="btn btn-danger" href="@Url.Action("Delete", "Cart", new { id = orderLine.TicketId })" title="delete product"><span class="bi-trash"></span>Delete</a>
                     </div>
                 </div>
             }
@@ -40,7 +40,7 @@
             {
                 <div class="row">
                     <div class="col-12">
-                        <p>Details not available for ticket ID: @orderLine.ticketId</p>
+                        <p>Details not available for ticket ID: @orderLine.TicketId</p>
                     </div>
                 </div>
             }
