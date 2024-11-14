@@ -93,7 +93,6 @@
             btnSubmit.TabIndex = 6;
             btnSubmit.Text = "Submit";
             btnSubmit.UseVisualStyleBackColor = true;
-            btnSubmit.Click += btnSubmit_Click;
             // 
             // RegisterOrganizer
             // 
