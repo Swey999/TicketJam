@@ -24,19 +24,19 @@ namespace TicketJam.DAL.DAO
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
-            IDbTransaction transaction = connection.BeginTransaction();
             try
             {
                 organizer.Id = connection.ExecuteScalar<int>(_insertOrganizer_SQL, organizer, transaction);
+                return organizer.Id;
             }
-            catch (Exception)
+            catch (SqlException e)
             {
-                transaction.Rollback();
-                throw;
+                throw new Exception($"There was an issue connecting to database and inserting organizer, exception was {e.Message}", e);
+            } finally
+            {
+                connection.Close();
             }
-            transaction.Commit();
 
-            return organizer.Id;
         }
     }
 }

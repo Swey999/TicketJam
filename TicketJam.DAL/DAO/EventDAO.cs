@@ -72,17 +72,17 @@ public class EventDAO : IEventDAO, IDAO<Event>
         Random random = new Random();
         Event.EventNo = random.Next();
         connection.Open();
-        IDbTransaction transaction = connection.BeginTransaction();
         try
         {
-            Event.Id = connection.ExecuteScalar<int>(_INSERT_SQL, Event, transaction);
+            Event.Id = connection.ExecuteScalar<int>(_INSERT_SQL, Event);
         }
-        catch (Exception)
+        catch (SqlException e)
         {
-            transaction.Rollback();
-            throw;
+            throw new Exception($"There was an issue saving event, error message was {e.Message}", e);
+        } finally
+        {
+            connection.Close();
         }
-        transaction.Commit();
 
         return Event.Id;
     }
