@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,14 +10,14 @@ using TicketJam.DAL.Model;
 
 namespace TicketJam.Test.Organizer.Test
 {
-    public class OrganizerTest(IOrganizerDAO organizerDAO)
+    public class OrganizerTest (IOrganizerDAO organizerDAO)
     {
         private IOrganizerDAO _organizerDAO = organizerDAO;
 
         [SetUp]
         public void SetUp()
         {
-
+            
         }
 
         [Test]
