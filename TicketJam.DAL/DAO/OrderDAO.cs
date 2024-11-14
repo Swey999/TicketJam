@@ -25,6 +25,7 @@ namespace TicketJam.DAL.DAO
         private string _GET_ORDER_FROM_ID_QUERY = "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
         private string _GET_ID_FROM_ORDER_QUERY = "SELECT Id FROM Orders";
         private string _ORDERLINE_JOIN_QUERY = "SELECT DISTINCT Orderline.*, Ticket.*, Section.*, Venue.*, Event.*, Address.* FROM Orderline JOIN Ticket ON Ticket.Id = Orderline.Ticket_ID_FK JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Event ON Venue.Id = Event.Venue_ID_FK JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Orderline.Order_ID_FK = @orderId";
+        
 
 
         public OrderDAO(String connectionStringns)
@@ -36,6 +37,12 @@ namespace TicketJam.DAL.DAO
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             IDbTransaction transaction = connection.BeginTransaction();
+
+            //TODO: Change random to something more unique.
+            Random random = new Random();
+            entity.orderNo = random.Next();
+
+
             try
             {
                 var parameters = new

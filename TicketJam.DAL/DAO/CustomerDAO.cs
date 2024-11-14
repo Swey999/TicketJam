@@ -48,7 +48,7 @@ namespace TicketJam.DAL.DAO
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
-            return connection.QuerySingle<Customer>(_findCustomerByIdSQL, new { id = id });
+            return connection.QuerySingle<Customer>(_findCustomerByIdSQL, new { Id = id });
         }
 
         public IEnumerable<Customer> Read()

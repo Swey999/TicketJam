@@ -44,7 +44,7 @@ namespace TicketJam.Website.Controllers
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Order order) //SLET IFORMCOLLECTION !!!!!
+        public ActionResult Create(Order order) 
         {
             try
             {
