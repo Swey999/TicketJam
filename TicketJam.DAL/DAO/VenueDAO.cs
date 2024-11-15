@@ -34,13 +34,34 @@ namespace TicketJam.DAL.DAO
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
-            return connection.QuerySingle<Venue>(GETVENUEBYID_SQL, new { Id = id });
+            try
+            {
+                return connection.QuerySingle<Venue>(GETVENUEBYID_SQL, new { Id = id });
+            }
+            catch (SqlException e)
+            {
+                throw new Exception ($"There was an issue getting venue by ID: {id}, error message was {e.Message}", e);
+            } finally
+            {
+                connection.Close();
+            }
         }
 
         public IEnumerable<Venue> Read()
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
-            return connection.Query<Venue>(GETALLVENUES_SQL);
+            try
+            {
+                return connection.Query<Venue>(GETALLVENUES_SQL);
+            }
+            catch (SqlException e)
+            {
+                throw new Exception($"There was an issue finding all venues, error message was {e.Message}", e);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public Venue Update(Venue entity)

@@ -57,10 +57,13 @@ namespace TicketJam.DAL.DAO
                     connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = entity.Id, quantity = orderline.Quantity , ticketId = orderline.TicketId}, transaction);
                 }
             }
-            catch (Exception)
+            catch (SqlException e)
             {
+                throw new Exception ($"There was an issue inserting order, error message was {e.Message}", e);
                 transaction.Rollback();
-                throw;
+            } finally
+            {
+                connection.Close();
             }
             transaction.Commit();
 
@@ -89,6 +92,9 @@ namespace TicketJam.DAL.DAO
                 transaction.Rollback();
                 return false;
                 throw new Exception($"Couldn't delete Order on ID: {id}, the error was: {ex.Message}", ex);
+            } finally
+            {
+                connection.Close();
             }
         }
 
@@ -96,15 +102,36 @@ namespace TicketJam.DAL.DAO
         public Order GetById(int id)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
-            Order order = connection.QuerySingle<Order>(_GET_ORDER_FROM_ID_QUERY, new { id = id });
-            order.OrderLines = connection.Query<OrderLine>(_ORDERLINE_JOIN_QUERY, new { orderId = order.Id }).ToList();
-            return order;
+            try
+            {
+                Order order = connection.QuerySingle<Order>(_GET_ORDER_FROM_ID_QUERY, new { id = id });
+                order.OrderLines = connection.Query<OrderLine>(_ORDERLINE_JOIN_QUERY, new { orderId = order.Id }).ToList();
+                return order;
+            }
+            catch (SqlException e)
+            {
+                throw new Exception ($"There was an issue getting order by ID: {id}, error message was {e.Message}", e);
+            } finally
+            {
+                connection.Close();
+            }
         }
 
         public IEnumerable<Order> Read()
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
-            return connection.Query<Order>(_GET_ID_FROM_ORDER_QUERY);
+            try
+            {
+                return connection.Query<Order>(_GET_ID_FROM_ORDER_QUERY);
+            }
+            catch (SqlException e)
+            {
+                //TODO fix exception when method is done
+                throw new Exception ($"", e);
+            } finally
+            {
+                connection.Close();
+            }
         }
 
         public Order Update(Order entity)

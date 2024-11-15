@@ -23,6 +23,8 @@ namespace TicketJam.WebAPI
             builder.Services.AddScoped<IDAO<Customer>>(provider => new CustomerDAO(connectionString));
             builder.Services.AddScoped<IDAO<Venue>>(provider => new VenueDAO(connectionString));
 
+            builder.Services.AddSingleton<IOrganizerDAO>(provider => new OrganizerDAO(connectionString));
+
             //builder.Services.AddSingleton<IDAO<Event>>((_) => new EventDAO(connectionString));
             //builder.Services.AddSingleton<IDAO<Order>>((_) => new OrderDAO(connectionString));
             //builder.Services.AddSingleton<IDAO<Ticket>>((_) => new TicketDAO(connectionString));

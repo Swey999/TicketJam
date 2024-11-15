@@ -39,30 +39,61 @@ public class EventDAO : IEventDAO, IDAO<Event>
         throw new NotImplementedException();
     }
 
+    public IEnumerable<Venue> GetAllVenues()
+    {
+        throw new NotImplementedException();
+    }
+
     public Event GetById(int id)
     {
         using IDbConnection connection = new SqlConnection(_connectionString);
         connection.Open();
-        return connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
+        try
+        {
+            return connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
+        }
+        catch (SqlException e)
+        {
+
+            throw new Exception ($"There was an issue getting event using ID: {id}, error message was {e.Message}", e);
+        } finally
+        {
+            connection.Close();
+        }
     }
 
+    public Event GetEvent(int id)
+    {
+        throw new NotImplementedException();
+    }
 
     public Event GetEventAndJoinData(int id)
     {
 
         using IDbConnection connection = new SqlConnection(_connectionString);
-        Event Event = connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
-
-        Event.TicketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(_JOIN_SQL, (t, s, v, a) =>
+        try
         {
-            t.Section = s;
-            t.Section.Venue = v;
-            t.Section.Venue.Address = a;
-            return t;
+            Event Event = connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
 
-        }, new { EventId = Event.Id }).ToList();
+            Event.TicketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(_JOIN_SQL, (t, s, v, a) =>
+            {
+                t.Section = s;
+                t.Section.Venue = v;
+                t.Section.Venue.Address = a;
+                return t;
 
-        return Event;
+            }, new { EventId = Event.Id }).ToList();
+
+            return Event;
+        }
+        catch (SqlException e)
+        {
+
+            throw new Exception ($"There was an error getting event data using ID: {id}, error message was {e.Message}", e);
+        } finally
+        {
+            connection.Close();
+        }
     }
 
     public int InsertEvent(Event Event)
