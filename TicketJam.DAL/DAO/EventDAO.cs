@@ -19,7 +19,8 @@ public class EventDAO : IEventDAO, IDAO<Event>
 
     private string _GETBYID_SQL = "SELECT * FROM Event WHERE Id = @id";
     private string _GET_EVENT_FROM_ID_SQL = "SELECT Id, EventNo, TotalAmount, StartDate, EndDate, Name FROM Event WHERE Id = @id";
-    private string _GET_EVENT_SQL = "SELECT * FROM Event";
+    private string _GET_EVENT_SQL = "SELECT * from Event";
+    private string _GET_ADDRESS_ON_EVENT_SQL = "SELECT Venue.Id, Address.Id, Address.StreetName, Address.City, Address.Zip, Address.HouseNo FROM Event JOIN Venue ON Event.Venue_ID_FK = Venue.Id JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Event.Id = @EventId";
 
     private string _JOIN_SQL = "SELECT DISTINCT Ticket.*, Section.*, Venue.*, Address.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Address ON Address.Id = Venue.Address_ID_FK WHERE Ticket.Event_ID_FK = @EventId";
 
@@ -120,7 +121,35 @@ public class EventDAO : IEventDAO, IDAO<Event>
     public IEnumerable<Event> Read()
     {
         using IDbConnection connection = new SqlConnection(_connectionString);
-        return connection.Query<Event>(_GET_EVENT_SQL);
+        try
+        {
+            // Fetch the main Event entities
+            var events = connection.Query<Event>(_GET_EVENT_SQL).ToList();
+
+            foreach (var eventEntity in events)
+            {
+                // Fetch related Venue and Address for each Event
+                var venue = connection.Query<Venue, Address, Venue>(
+                    _GET_ADDRESS_ON_EVENT_SQL,
+                    (venue, address) =>
+                    {
+                        venue.Address = address;
+                        return venue;
+                    },
+                    new { EventId = eventEntity.Id }
+                ).FirstOrDefault(); // Expecting a single Venue for each Event
+
+                // Assign the Venue (along with its Address) to the Event's VenueId property
+                eventEntity.VenueId = venue;
+            }
+
+            return events;
+        }
+        catch (Exception ex)
+        {
+            // Handle or log exceptions
+            throw new ApplicationException("An error occurred while reading events.", ex);
+        }
     }
 
     public Event Update(Event entity)
