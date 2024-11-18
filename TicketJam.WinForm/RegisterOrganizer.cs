@@ -34,6 +34,7 @@ namespace TicketJam.WinForm
             organizerDto.Password = txtPasswordWrite.Text;
 
             _organizerAPIConsumer.AddEvent(organizerDto);
+            
         }
     }
 }

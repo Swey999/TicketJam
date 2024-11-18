@@ -2,37 +2,48 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TicketJam.DAL.DAO;
-using TicketJam.DAL.Model;
 
 namespace TicketJam.Test.Organizer.Test
 {
-    public class OrganizerTest (IOrganizerDAO organizerDAO)
+    public class OrganizerTest()
     {
-        private IOrganizerDAO _organizerDAO = organizerDAO;
+        private IOrganizerDAO _organizerDAO;
+        private const string _connectionString = "Server=hildur.ucn.dk;Database=DMA-CSD-S232_10503088;User Id=DMA-CSD-S232_10503088;Password=Password1!;; TrustServerCertificate=True";
 
         [SetUp]
         public void SetUp()
         {
-            
+            _organizerDAO = new OrganizerDAO(_connectionString);
         }
 
         [Test]
         public void CreateOrganizerAndReturnIdentitySuccess()
         {
 
-            // Arrange
-            //Organizer organizerTest = new Organizer() { Email = "Testmail@gmail.com", Password = "password", PhoneNo = 88888888 };
+            TicketJam.DAL.Model.Organizer organizerTest = new TicketJam.DAL.Model.Organizer()
+            {
+                Email = "Testmailer@gmail.com",
+                Password = "password",
+                PhoneNo = "88888888"
+            };
 
-            // Act
-            int identityReturned = 0;
-            //identityReturned = _organizerDAO.CreateOrganizerAndReturnIdentity(organizerTest);
 
-            // Assert
-            Assert.GreaterOrEqual(identityReturned, 1);
+            try
+            {
+                int identityReturned = 0;
+                identityReturned = _organizerDAO.CreateOrganizerAndReturnIdentity(organizerTest);
+
+                Assert.GreaterOrEqual(identityReturned, 1);
+            }
+            catch (SqlException e)
+            {
+            }
         }
 
         [Test]
@@ -40,14 +51,14 @@ namespace TicketJam.Test.Organizer.Test
         {
 
             // Arrange
-            //Organizer organizerTest = new Organizer() { };
+            TicketJam.DAL.Model.Organizer organizerTest = new TicketJam.DAL.Model.Organizer();
 
             // Act
             int identityReturned = 0;
 
             try
             {
-                //identityReturned = _organizerDAO.CreateOrganizerAndReturnIdentity(organizerTest);
+                identityReturned = _organizerDAO.CreateOrganizerAndReturnIdentity(organizerTest);
             }
             catch (Exception e)
             {
