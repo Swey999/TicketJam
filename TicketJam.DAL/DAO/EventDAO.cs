@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using TicketJam.DAL.Model;
 using static Dapper.SqlMapper;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -96,7 +97,8 @@ public class EventDAO : IEventDAO, IDAO<Event>
         }
     }
 
-    public int InsertEvent(Event Event)
+
+    public int InsertEvent(Event Event, int organizerId, int VenueId)
     {
         using IDbConnection connection = new SqlConnection(_connectionString);
         //TODO, make with less chance of duplicate, probably uuid ish
@@ -105,7 +107,18 @@ public class EventDAO : IEventDAO, IDAO<Event>
         connection.Open();
         try
         {
-            Event.Id = connection.ExecuteScalar<int>(_INSERT_SQL, Event);
+            //Cannot pass parameter Event as parameter in ExecuteScalar because it does not 1:1 match database, so we create empty object and assign the values
+            Event.Id = connection.ExecuteScalar<int>(_INSERT_SQL, new
+            {
+                Description = Event.Description,
+                Name = Event.Name,
+                TotalAmount = Event.TotalAmount,
+                StartDate = Event.StartDate,
+                EndDate = Event.EndDate,
+                EventNo = Event.EventNo,
+                OrganizerId = organizerId,
+                VenueId = VenueId
+            });
         }
         catch (SqlException e)
         {

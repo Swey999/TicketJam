@@ -18,6 +18,20 @@ namespace TicketJam.WebAPI.DTOs.Converters
             return Event;
         }
 
+        public static EventDtoForeignKeys ToDtoForeignKey(this DAL.Model.Event eventToConvert)
+        {
+            var EventDto = new EventDtoForeignKeys();
+            eventToConvert.CopyPropertiesTo(EventDto);
+            return EventDto;
+        }
+
+        public static DAL.Model.Event FromDto(this EventDtoForeignKeys eventDtoToConvert)
+        {
+            var Event = new DAL.Model.Event();
+            eventDtoToConvert.CopyPropertiesTo(Event);
+            return Event;
+        }
+
         public static IEnumerable<EventDto> ToDtos(this IEnumerable<DAL.Model.Event> eventToConvert)
         {
             foreach (var Event in eventToConvert)

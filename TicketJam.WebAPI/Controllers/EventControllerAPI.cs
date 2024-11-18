@@ -39,9 +39,9 @@ namespace TicketJam.WebAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Event> AddEvent (EventDto eventObject)
+        public ActionResult<Event> AddEvent (EventDtoForeignKeys eventObject)
         {
-            int id = _eventDAO.InsertEvent(eventObject.FromDto());
+            int id = _eventDAO.InsertEvent(eventObject.FromDto(), eventObject.OrganizerId, eventObject.VenueId);
             return Ok(eventObject);
         }
 
