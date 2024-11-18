@@ -60,7 +60,7 @@ namespace TicketJam.WinForm
         private void OpenCreateOrganizerWindow()
         {
             RegisterOrganizer registerOrganizer = new RegisterOrganizer();
-            registerOrganizer.ShowDialog(); // Shows Form2 you can also use f2.Show() 
+            registerOrganizer.ShowDialog();
             registerOrganizer.Dispose();
         }
     }
