@@ -2,6 +2,7 @@
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
 using TicketJam.WebAPI.DTOs;
+using TicketJam.WebAPI.DTOs.Converters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,10 +14,16 @@ namespace TicketJam.WebAPI.Controllers
     {
         public IDAO<Venue> _venueDAO;
         // GET: api/<VenueControllerAPI>
-        [HttpGet]
-        public ActionResult<IEnumerable<Venue>> Get()
+
+        public VenueControllerAPI(IDAO<Venue> venueDAO)
         {
-            return Ok(_venueDAO.Read());
+            _venueDAO = venueDAO;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<VenueDto>> Get()
+        {
+            return Ok(_venueDAO.Read().ToDtos());
         }
 
         // GET api/<VenueControllerAPI>/5
