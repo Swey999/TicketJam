@@ -34,7 +34,17 @@ namespace TicketJam.DAL.DAO
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
-            return connection.QuerySingle<Ticket>(_GET_BY_ID, new { Id = id });
+            try
+            {
+                return connection.QuerySingle<Ticket>(_GET_BY_ID, new { Id = id });
+            }
+            catch (SqlException e)
+            {
+                throw new Exception ($"There was an issue finding ticket using ID: {id}, error message was {e.Message}", e);
+            } finally
+            {
+                connection.Close();
+            }
 
         }
 

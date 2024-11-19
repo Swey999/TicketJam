@@ -28,8 +28,12 @@ public class TransactionTest
     public void PurchaseTicketsFromSectionCantGoBelowZeroTestSuccess()
     {
         // Arrange
-        Venue venue = new Venue() { Id = 2 };
-        Section section = new Section() { Description = "Ny sektion med Transaction, wow", TicketAmount = 250, Venue = venue };
+
+        var section = _sectionDAO.GetById(2);
+
+        IList<Section> sections = new List<Section>();
+        
+        
 
         int startTicket = section.TicketAmount;
 
@@ -42,7 +46,7 @@ public class TransactionTest
         
         try
         {
-            int amountTaken = 300;
+            int amountTaken = 501;
 
 
             if(section.TicketAmount >= amountTaken)
@@ -60,7 +64,7 @@ public class TransactionTest
         }
 
         // Assert
-        Assert.AreEqual(startTicket, section.TicketAmount, "Billetterne er de samme efter rollback");
+        Assert.That(section.TicketAmount, Is.EqualTo(startTicket), "Billetterne er de samme efter rollback");
     }
     
 
@@ -69,8 +73,7 @@ public class TransactionTest
     {
 
         // Arrange
-        Venue venue = new Venue();
-        Section section = new Section() { Description = "Ny sektion med Transaction, wow", TicketAmount = 250, Venue = venue };
+        var section = _sectionDAO.GetById(2);
         int startTicket = section.TicketAmount;
 
         Console.WriteLine($"Start mængde af tickets: {startTicket}");
@@ -82,7 +85,7 @@ public class TransactionTest
 
         try
         {
-            int amountTaken = 300;
+            int amountTaken = 501;
 
 
             if (section.TicketAmount < amountTaken)

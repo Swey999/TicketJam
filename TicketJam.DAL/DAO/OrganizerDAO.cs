@@ -24,9 +24,19 @@ namespace TicketJam.DAL.DAO
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
+            IDbTransaction transaction = connection.BeginTransaction();
+
             try
             {
-                organizer.Id = connection.ExecuteScalar<int>(_insertOrganizer_SQL, organizer);
+                organizer.Id = connection.ExecuteScalar<int>(_insertOrganizer_SQL, organizer, transaction);
+                //TODO: Hardcoded test data to ensure it does not save in database, could be optimized
+                if (organizer.Email == "Testmailer@gmail.com")
+                {
+                    transaction.Rollback();
+                } else 
+                { 
+                    transaction.Commit(); 
+                }
                 return organizer.Id;
             }
             catch (SqlException e)

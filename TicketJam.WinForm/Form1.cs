@@ -9,7 +9,7 @@ namespace TicketJam.WinForm
         private EventDto _Event = new EventDto();
         private List<VenueDto> list = VenueStub.list;
         //Insert dependency injection for baseuri
-        private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/Event");
+        private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/EventControllerAPI");
 
         public Form1()
         {
@@ -50,6 +50,18 @@ namespace TicketJam.WinForm
             _Event.OrganizerId = OrganizerStub.Organizer.OrganizerId;
 
             _eventAPIConsumer.AddEvent(_Event);
+        }
+
+        private void btnCreateOrganizer_Click(object sender, EventArgs e)
+        {
+            OpenCreateOrganizerWindow();
+        }
+
+        private void OpenCreateOrganizerWindow()
+        {
+            RegisterOrganizer registerOrganizer = new RegisterOrganizer();
+            registerOrganizer.ShowDialog();
+            registerOrganizer.Dispose();
         }
     }
 }
