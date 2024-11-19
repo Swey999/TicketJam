@@ -10,11 +10,12 @@ using Dapper;
 
 namespace TicketJam.DAL.DAO
 {
-    public class SectionDAO : IDAO<Section>
+    public class SectionDAO : IDAO<Section>, ISectionDAO
     {
         private string _connectionString;
         private string GETALLSECTIONS_SQL = "SELECT * FROM Section";
         private string GETSECTIONBYID_SQL = "SELECT * FROM Section WHERE Id = @Id";
+        private string GETSECTIONBYVENUEID_SQL = "SELECT * FROM Section WHERE Venue_ID_FK = @Venue_ID_FK";
 
         public SectionDAO(String connectionStringns)
         {
@@ -47,5 +48,12 @@ namespace TicketJam.DAL.DAO
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Section> GetSectionsByVenue(int id)
+        {
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            return connection.Query<Section>(GETSECTIONBYVENUEID_SQL, new { Venue_ID_FK = id });
+        }
+
     }
 }

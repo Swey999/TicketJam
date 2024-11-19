@@ -16,6 +16,7 @@ namespace TicketJam.DAL.DAO
         private string GETALLVENUES_SQL = "SELECT DISTINCT Venue.*, Address.* FROM Address JOIN Venue on Address.id = Venue.Address_ID_FK";
         private string GETVENUEBYID_SQL = "SELECT DISTINCT Venue.*, Address.* FROM Address JOIN Venue on Address.id = Venue.Address_ID_FK WHERE Venue.id = @Id";
 
+
         public VenueDAO(String connectionStringns)
         {
             this._connectionString = connectionStringns;
@@ -37,6 +38,7 @@ namespace TicketJam.DAL.DAO
             return connection.QuerySingle<Venue>(GETVENUEBYID_SQL, new { Id = id });
         }
 
+
         public IEnumerable<Venue> Read()
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -47,5 +49,7 @@ namespace TicketJam.DAL.DAO
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

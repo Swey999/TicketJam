@@ -1,4 +1,5 @@
-﻿@model TicketJam.Website.APIClient.DTO.Event
+﻿@using TicketJam.Website.APIClient.DTO
+@model TicketJam.Website.APIClient.DTO.Event
 
 @{
     ViewData["Title"] = "Event Details";
@@ -15,14 +16,16 @@
             <dt class="col-sm-4">Event Total Amount</dt>
             <dd class="col-sm-8">@Model.TotalAmount.ToString()</dd>
 
-            <dt class="col-sm-4">Start Date</dt>
+            <dt class="col-sm-4">Sale starts:</dt>
             <dd class="col-sm-8">@Model.StartDate.ToString("d")</dd>
 
-            <dt class="col-sm-4">End Date</dt>
+            <dt class="col-sm-4">Sale ends:</dt>
             <dd class="col-sm-8">@Model.EndDate.ToString("d")</dd>
 
             <dt class="col-sm-4">Name</dt>
             <dd class="col-sm-8">@Model.Name</dd>
+
+
         </dl>
     </div>
 </div>
@@ -53,6 +56,7 @@
                             <dt class="col-sm-4">Price</dt>
                             <dd class="col-sm-8">@ticket?.Price.ToString("C")</dd>
                         </dl>
+
 
                         <h5>Section Information</h5>
                         <dl class="row">

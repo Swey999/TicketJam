@@ -10,7 +10,6 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Venue VenueId { get; set; }
-
         public List<Ticket> TicketList { get; set; } = new List<Ticket>();
     }
 }
