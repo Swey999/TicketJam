@@ -153,7 +153,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
                 ).FirstOrDefault(); // Expecting a single Venue for each Event
 
                 // Assign the Venue (along with its Address) to the Event's VenueId property
-                eventEntity.VenueId = venue;
+                eventEntity.Venue = venue;
             }
 
             return events;
