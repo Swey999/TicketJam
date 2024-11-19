@@ -84,5 +84,17 @@ namespace TicketJam.Website.Controllers
             SaveCartToCookie(order);
             return View("Index", order);
         }
+
+        public ActionResult Delete(int id, int quantity)
+        {
+            Order order = GetCartFromCookie();
+            OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == id);
+            if (existingOrderLine != null)
+            {
+                order.OrderLines.Remove(existingOrderLine);
+            }
+            SaveCartToCookie(order);
+            return RedirectToAction("Index", "Cart");
+        }
     }
 }
