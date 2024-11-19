@@ -1,4 +1,5 @@
-﻿using TicketJam.WinForm.DTO;
+﻿using TicketJam.WinForm.ApiClient;
+using TicketJam.WinForm.DTO;
 using TicketJam.WinForm.Stubs;
 
 namespace TicketJam.WinForm
@@ -32,14 +33,10 @@ namespace TicketJam.WinForm
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            VenueDto venueDto4 = new VenueDto();
-            VenueDto venueDto5 = new VenueDto();
-            VenueDto venueDto6 = new VenueDto();
+            IEnumerable<VenueDto> venueDtoList = _venueAPIConsumer.GetVenues();
             txtVenueReadText = new TextBox();
             btnCreateNewVenue = new Button();
             comboBoxVenueList = new ComboBox();
-            venueBindingSource1 = new BindingSource(components);
-            venueBindingSource = new BindingSource(components);
             txtDescriptionWrite = new TextBox();
             txtDescriptionRead = new TextBox();
             txtTicketAmountRead = new TextBox();
@@ -54,8 +51,6 @@ namespace TicketJam.WinForm
             txtNameReadOnly = new TextBox();
             txtNameWrite = new TextBox();
             btnCreateOrganizer = new Button();
-            ((System.ComponentModel.ISupportInitialize)venueBindingSource1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)venueBindingSource).BeginInit();
             SuspendLayout();
             // 
             // txtVenueReadText
@@ -79,18 +74,13 @@ namespace TicketJam.WinForm
             // comboBoxVenueList
             // 
             comboBoxVenueList.FormattingEnabled = true;
-            venueDto4.Name = "Gigantium";
-            venueDto4.VenueId = 1;
-            venueDto5.Name = "Elgiganten";
-            venueDto5.VenueId = 2;
-            venueDto6.Name = "Bilka";
-            venueDto6.VenueId = 3;
-            comboBoxVenueList.Items.AddRange(new object[] { venueDto4, venueDto5, venueDto6 });
+            comboBoxVenueList.DataSource = venueDtoList;
             comboBoxVenueList.Location = new Point(168, 114);
             comboBoxVenueList.Name = "comboBoxVenueList";
             comboBoxVenueList.Size = new Size(151, 28);
             comboBoxVenueList.TabIndex = 2;
-            comboBoxVenueList.SelectedIndexChanged += comboBoxVenueList_SelectedIndexChanged;
+            comboBoxVenueList.DisplayMember = "Name";
+            comboBoxVenueList.ValueMember = "Id";
             // 
             // txtDescriptionWrite
             // 
@@ -236,8 +226,6 @@ namespace TicketJam.WinForm
             Controls.Add(txtVenueReadText);
             Name = "Form1";
             Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)venueBindingSource1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)venueBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }

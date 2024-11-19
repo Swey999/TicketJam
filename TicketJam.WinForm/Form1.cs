@@ -10,6 +10,7 @@ namespace TicketJam.WinForm
         private List<VenueDto> list = VenueStub.list;
         //Insert dependency injection for baseuri
         private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/EventControllerAPI");
+        private VenueAPIConsumer _venueAPIConsumer = new VenueAPIConsumer("https://localhost:7280/api/VenueControllerAPI");
 
         public Form1()
         {
@@ -43,7 +44,7 @@ namespace TicketJam.WinForm
             _Event.TotalAmount = int.Parse(txtTicketAmountWrite.Text);
             _Event.Name = txtNameWrite.Text;
             VenueDto tempObject = (VenueDto)comboBoxVenueList.SelectedItem;
-            _Event.VenueId = tempObject.VenueId;
+            _Event.VenueId = tempObject.Id;
 
             //TODO
             //FIX THIS SO NOT HARD CODED

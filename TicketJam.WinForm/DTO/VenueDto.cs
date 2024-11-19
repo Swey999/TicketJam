@@ -9,7 +9,7 @@ namespace TicketJam.WinForm.DTO
     public class VenueDto
     {
         public string Name { get; set; }
-        public int VenueId { get; set; }
+        public int Id { get; set; }
 
         public override string ToString()
         {

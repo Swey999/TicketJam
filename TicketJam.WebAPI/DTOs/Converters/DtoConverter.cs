@@ -61,5 +61,36 @@ namespace TicketJam.WebAPI.DTOs.Converters
             organizerDtoToConvert.CopyPropertiesTo(Organizer);
             return Organizer;
         }
+
+        public static VenueDto ToDto(this DAL.Model.Venue venueToConvert)
+        {
+            var venueDto = new VenueDto();
+            venueToConvert.CopyPropertiesTo(venueDto);
+            return venueDto;
+        }
+
+        public static DAL.Model.Venue FromDto(this VenueDto venueDtoToConvert)
+        {
+            var Venue = new DAL.Model.Venue();
+            venueDtoToConvert.CopyPropertiesTo(Venue);
+            return Venue;
+        }
+
+        public static IEnumerable<VenueDto> ToDtos(this IEnumerable<DAL.Model.Venue> venueToConvert)
+        {
+            foreach (var Venue in venueToConvert)
+            {
+                yield return Venue.ToDto();
+            }
+        }
+
+        public static IEnumerable<DAL.Model.Venue> FromDtos(this IEnumerable<VenueDto> venueDtosToConvert)
+        {
+            foreach (var venueDtos in venueDtosToConvert)
+            {
+                yield return venueDtos.FromDto();
+            }
+        }
+
     }
 }
