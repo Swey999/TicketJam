@@ -21,3 +21,18 @@ body {
     margin-bottom: 60px;
     background-color: #f8f9fa;
 }
+
+img {
+    width: 100%;
+    max-width: 350px;
+    display: block;
+    margin: 0 auto;
+}
+
+.logo {
+    height: 70px; /* Adjust as needed */
+    width: auto; /* Maintains aspect ratio */
+    display: block; /* Ensures proper alignment */
+}
+
+
