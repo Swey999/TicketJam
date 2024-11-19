@@ -56,6 +56,7 @@
                             <dt class="col-sm-4">Price</dt>
                             <dd class="col-sm-8">@ticket?.Price.ToString("C")</dd>
                         </dl>
+                        
 
 
                         <h5>Section Information</h5>
@@ -65,25 +66,15 @@
 
                             <dt class="col-sm-4">Ticket Amount</dt>
                             <dd class="col-sm-8">@ticket?.Section?.TicketAmount.ToString()</dd>
-                        </dl>
+                        </dl> 
+                        <hr />
 
-                        <h5>Address Information</h5>
-                        <dl class="row">
-                            <dt class="col-sm-4">Street Name</dt>
-                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.StreetName</dd>
-
-                            <dt class="col-sm-4">House Number</dt>
-                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.HouseNo</dd>
-
-                            <dt class="col-sm-4">City</dt>
-                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.City</dd>
-
-                            <dt class="col-sm-4">Zip Code</dt>
-                            <dd class="col-sm-8">@ticket?.Section?.Venue.Address.Zip</dd>
-                        </dl>
                         <td>
                             <a class="btn-sm btn-primary" href="@Url.Action("Add", "Cart", new { id = ticket.Id, quantity = 1 })">Add to basket<span class="bi-cart-plus" style="margin-left:10px;"></span></a>
                         </td>
+
+                        <hr />
+
                     </div>
                 }
             }
