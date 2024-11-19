@@ -48,6 +48,7 @@ namespace TicketJam.DAL.DAO
             }
         }
 
+
         public IEnumerable<Venue> Read()
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -87,5 +88,7 @@ namespace TicketJam.DAL.DAO
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

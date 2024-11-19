@@ -15,10 +15,10 @@
                 <p class="event-date"><strong>Date:</strong> @eventItem.StartDate.ToString("D")</p>
                 <p class="event-totalAmount"><strong>Tickets for sale:</strong> @eventItem.TotalAmount</p>
                 <p class="event-location"><strong>Location:</strong> 
-                    @eventItem.VenueId.Address.City,
-                    @eventItem.VenueId.Address.StreetName,
-                    @eventItem.VenueId.Address.HouseNo,
-                    @eventItem.VenueId.Address.Zip
+                    @eventItem.Venue.Address.City,
+                    @eventItem.Venue.Address.StreetName,
+                    @eventItem.Venue.Address.HouseNo,
+                    @eventItem.Venue.Address.Zip
                 </p>
             </div>  
             <a asp-action="Details" asp-route-id="@eventItem.Id" class="details-button">Køb Billet</a>

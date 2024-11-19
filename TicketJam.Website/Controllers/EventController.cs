@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TicketJam.Website.APIClient;
+using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.Controllers
 {
     public class EventController : Controller
     {
         EventAPIConsumer EventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/EventControllerAPI");
-
+        SectionAPIConsumer _sectionAPIConsumer = new SectionAPIConsumer("https://localhost:7280/api/v1/SectionControllerAPI");
 
         // GET: EventController
         public ActionResult Index()
@@ -21,11 +22,25 @@ namespace TicketJam.Website.Controllers
         public ActionResult Details(int id)
         {
             try
-            
-            
             {
 
-                return View(EventAPIConsumer.GetById(id));
+                var eventDetails = EventAPIConsumer.GetById(id);
+
+
+                int venueId = eventDetails.Id;
+                var sectionDetails = new List<Section>();
+                var sections = _sectionAPIConsumer.GetSectionsByVenue(venueId);
+
+                foreach (var section in sections)
+                {
+                    sectionDetails.Add(section);
+                }
+           
+
+                ViewBag.Sections = sectionDetails;
+
+                return View(eventDetails);
+                //return View(EventAPIConsumer.GetById(id));
             }
             catch (Exception ex)
             {

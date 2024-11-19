@@ -11,7 +11,13 @@ namespace TicketJam.WebAPI.Controllers
     public class SectionControllerAPI : ControllerBase
     {
         public IDAO<Section> _sectionDAO;
+        public ISectionDAO _sectionDAO2;
 
+        public SectionControllerAPI(IDAO<Section> IDAO, ISectionDAO SectionDAO)
+        {
+            this._sectionDAO = IDAO;
+            this._sectionDAO2 = SectionDAO;
+        }
         // GET: api/<SectionControllerAPI>
         [HttpGet]
         public ActionResult<IEnumerable<Section>> Get()
@@ -50,6 +56,18 @@ namespace TicketJam.WebAPI.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        // GET: api/VenueControllerAPI/5/sections
+        [HttpGet("{id}/sections")]
+        public ActionResult<IEnumerable<Section>> GetSectionsByVenueId(int id)
+        {
+            var sections = _sectionDAO2.GetSectionsByVenue(id);
+            if (sections == null || !sections.Any())
+            {
+                return NotFound($"No sections found for venue ID {id}.");
+            }
+            return Ok(sections);
         }
     }
 }

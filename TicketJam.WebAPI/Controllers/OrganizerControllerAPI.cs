@@ -18,11 +18,11 @@ namespace TicketJam.WebAPI.Controllers
             _organizerDAO = organizerDAO;
         }
 
-        [HttpPost]
-        public ActionResult<Organizer> AddOrganizer(OrganizerDto organizer)
-        {
-            int id = _organizerDAO.CreateOrganizerAndReturnIdentity(organizer.FromDto());
-            return Ok(organizer);
-        }
+        //[HttpPost]
+        //public ActionResult<Organizer> AddOrganizer(OrganizerDto organizer)
+        //{
+        //    int id = _organizerDAO.CreateOrganizerAndReturnIdentity(organizer.FromDto());
+        //    return Ok(organizer);
+        //}
     }
 }
