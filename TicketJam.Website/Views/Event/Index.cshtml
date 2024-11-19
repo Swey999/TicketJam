@@ -4,7 +4,7 @@
     ViewData["Title"] = "Upcoming Events";
 }
 
-<h1>Upcoming Events</h1>
+<h1 class="display-4" style="color: #e74c3c; font-weight: bold;">Upcoming Events </h1>
 
 <div class="event-list">
     @foreach (var eventItem in Model)
@@ -76,7 +76,7 @@
 
     .details-button {
         padding: 10px 20px;
-        background-color: blue;
+        background-color: #e74c3c;
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -88,6 +88,7 @@
     }
 
         .details-button:hover {
-            background-color: #45a049;
+            background-color: #b93d31;
+            color: white;
         }
 </style>

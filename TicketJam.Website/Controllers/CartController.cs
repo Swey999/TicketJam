@@ -12,7 +12,8 @@ namespace TicketJam.Website.Controllers
         TicketAPIConsumer _ticketAPIConsumer = new TicketAPIConsumer("https://localhost:7280/api/v1/TicketControllerAPI");
         public ActionResult Index()
         {
-            return View(GetCartFromCookie());
+            Order order = GetCartFromCookie();
+            return View(order);
         }
 
         public ActionResult Add(int id, int quantity)
@@ -38,7 +39,7 @@ namespace TicketJam.Website.Controllers
             }
             
             SaveCartToCookie(order);
-            return View("Index", order);
+            return RedirectToAction("Index", "Cart");
         }
 
         public Order GetCartFromCookie()
