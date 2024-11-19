@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TicketJam.DAL.Model;
 using Dapper;
+using DataAccess.Authentication;
 
 namespace TicketJam.DAL.DAO
 {
@@ -25,6 +26,7 @@ namespace TicketJam.DAL.DAO
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             IDbTransaction transaction = connection.BeginTransaction();
+            organizer.Password = BCryptTool.HashPassword(organizer.Password);
 
             try
             {
