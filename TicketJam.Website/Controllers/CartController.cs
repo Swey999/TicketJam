@@ -72,7 +72,7 @@ namespace TicketJam.Website.Controllers
         private void SaveCartToCookie(Order order)
         {
             var cookieOptions = new CookieOptions();
-            cookieOptions.Expires = DateTime.Now.AddDays(7);
+            cookieOptions.Expires = DateTime.Now.AddMinutes(10);
             cookieOptions.Path = "/";
             Response.Cookies.Append("Order", JsonSerializer.Serialize(order), cookieOptions);
         }

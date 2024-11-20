@@ -13,7 +13,7 @@
             <div class="event-info">
                 <h2 class="event-title">@eventItem.Name</h2>
                 <p class="event-date"><strong>Date:</strong> @eventItem.StartDate.ToString("D")</p>
-                <p class="event-totalAmount"><strong>Tickets for sale:</strong> @eventItem.TotalAmount</p>
+                <p class="event-totalAmount"><strong>Tickets left:</strong> @eventItem.TotalAmount</p>
                 <p class="event-location"><strong>Location:</strong> 
                     @eventItem.Venue.Address.City,
                     @eventItem.Venue.Address.StreetName,
@@ -69,7 +69,8 @@
     }
 
     .event-date,
-    .event-location {
+    .event-location,
+    .event-totalAmount {
         color: #777;
         font-size: 1em;
     }
