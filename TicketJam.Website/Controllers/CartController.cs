@@ -12,7 +12,8 @@ namespace TicketJam.Website.Controllers
         TicketAPIConsumer _ticketAPIConsumer = new TicketAPIConsumer("https://localhost:7280/api/v1/TicketControllerAPI");
         public ActionResult Index()
         {
-            return View(GetCartFromCookie());
+            Order order = GetCartFromCookie();
+            return View(order);
         }
 
         public ActionResult Add(int id, int quantity)
@@ -38,7 +39,7 @@ namespace TicketJam.Website.Controllers
             }
             
             SaveCartToCookie(order);
-            return View("Index", order);
+            return RedirectToAction("Index", "Cart");
         }
 
         public Order GetCartFromCookie()
@@ -71,7 +72,7 @@ namespace TicketJam.Website.Controllers
         private void SaveCartToCookie(Order order)
         {
             var cookieOptions = new CookieOptions();
-            cookieOptions.Expires = DateTime.Now.AddDays(7);
+            cookieOptions.Expires = DateTime.Now.AddMinutes(10);
             cookieOptions.Path = "/";
             Response.Cookies.Append("Order", JsonSerializer.Serialize(order), cookieOptions);
         }
@@ -82,6 +83,18 @@ namespace TicketJam.Website.Controllers
             order.OrderLines = new List<OrderLine>(); //Check om det virker nyt shit
             SaveCartToCookie(order);
             return View("Index", order);
+        }
+
+        public ActionResult Delete(int id, int quantity)
+        {
+            Order order = GetCartFromCookie();
+            OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == id);
+            if (existingOrderLine != null)
+            {
+                order.OrderLines.Remove(existingOrderLine);
+            }
+            SaveCartToCookie(order);
+            return RedirectToAction("Index", "Cart");
         }
     }
 }

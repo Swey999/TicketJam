@@ -5,7 +5,7 @@
     ViewData["Title"] = "Event Details";
 }
 
-<h1>Ticket Details</h1>
+<h1>Event Details</h1>
 <hr />
 
 <!-- Event Information -->
@@ -24,64 +24,53 @@
 
             <dt class="col-sm-4">Name</dt>
             <dd class="col-sm-8">@Model.Name</dd>
-
-
         </dl>
     </div>
 </div>
 
 <hr />
 
-<!-- Tickets Information -->
+<!-- Tickets Dropdown -->
 <div class="row">
     <div class="col-md-12">
-        @{
-            var ticketList = Model.TicketList;
-            if (ticketList != null && ticketList.Any())
-            {
-                foreach (var ticket in ticketList)
+        <h4>Available Tickets</h4>
+        @if (Model.TicketList != null && Model.TicketList.Any())
+        {
+            <select id="ticketDropdown" class="form-control">
+                <option value="" disabled selected>Select a ticket</option>
+                @foreach (var ticket in Model.TicketList)
                 {
-                    <div class="ticket-section">
-                        <h5>Venue Information</h5>
-                        <dl class="row">
-                            <dt class="col-sm-4">Venue Name</dt>
-                            <dd class="col-sm-8">@ticket?.Section?.Venue.Name</dd>
-                        </dl>
-
-                        <h5>Ticket Information</h5>
-                        <dl class="row">
-                            <dt class="col-sm-4">Ticket Category</dt>
-                            <dd class="col-sm-8">@ticket?.TicketCategory</dd>
-
-                            <dt class="col-sm-4">Price</dt>
-                            <dd class="col-sm-8">@ticket?.Price.ToString("C")</dd>
-                        </dl>
-                        
-
-
-                        <h5>Section Information</h5>
-                        <dl class="row">
-                            <dt class="col-sm-4">Section Description</dt>
-                            <dd class="col-sm-8">@ticket?.Section?.Description</dd>
-
-                            <dt class="col-sm-4">Ticket Amount</dt>
-                            <dd class="col-sm-8">@ticket?.Section?.TicketAmount.ToString()</dd>
-                        </dl> 
-                        <hr />
-
-                        <td>
-                            <a class="btn-sm btn-primary" href="@Url.Action("Add", "Cart", new { id = ticket.Id, quantity = 1 })">Add to basket<span class="bi-cart-plus" style="margin-left:10px;"></span></a>
-                        </td>
-
-                        <hr />
-
-                    </div>
+                    <option value="@ticket.Id">@ticket.TicketCategory</option>
                 }
-            }
-            else
-            {
-                <p>No tickets available.</p>
-            }
+            </select>
+
+            <div id="ticketDetails" class="mt-4" style="display: none;">
+                <h5>Ticket Details</h5>
+                <dl class="row">
+                    <dt class="col-sm-4">Venue Name</dt>
+                    <dd class="col-sm-8" id="venueName"></dd>
+
+                    <dt class="col-sm-4">Ticket Category</dt>
+                    <dd class="col-sm-8" id="ticketCategory"></dd>
+
+                    <dt class="col-sm-4">Price</dt>
+                    <dd class="col-sm-8" id="ticketPrice"></dd>
+
+                    <dt class="col-sm-4">Section Description</dt>
+                    <dd class="col-sm-8" id="sectionDescription"></dd>
+
+                    <dt class="col-sm-4">Ticket Amount</dt>
+                    <dd class="col-sm-8" id="ticketAmount"></dd>
+                </dl>
+
+                <a id="addToBasketLink" class="btn-sm btn-custom" href="#">
+                    Add to basket<span class="bi-cart-plus"></span>
+                </a>
+            </div>
+        }
+        else
+        {
+            <p>No tickets available.</p>
         }
     </div>
 </div>
@@ -90,5 +79,59 @@
 
 <!-- Back Button -->
 <div class="form-group">
-    <a class="btn btn-secondary" href="@Url.Action("Index", "Ticket")">Back to List</a>
+    <a class="btn btn-secondary" href="@Url.Action("Index", "Event")">Back to List</a>
 </div>
+
+<style>
+    .btn-custom {
+        background-color: #e74c3c;
+        color: #fff;
+        border: none;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .btn-custom:hover {
+            background-color: #b93d31;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn-custom span {
+            margin-left: 10px;
+        }
+</style>
+
+<!-- JavaScript for Interactivity -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const ticketDetails = document.getElementById('ticketDetails');
+        const venueName = document.getElementById('venueName');
+        const ticketCategory = document.getElementById('ticketCategory');
+        const ticketPrice = document.getElementById('ticketPrice');
+        const sectionDescription = document.getElementById('sectionDescription');
+        const ticketAmount = document.getElementById('ticketAmount');
+            
+        // Ticket data (populated server-side into JavaScript object)
+        const tickets = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.TicketList));
+
+        ticketDropdown.addEventListener('change', function () {
+            const selectedTicketId = this.value;
+            const selectedTicket = tickets.find(ticket => ticket.Id.toString() === selectedTicketId);
+
+            if (selectedTicket) {
+                venueName.textContent = selectedTicket.Section?.Venue?.Name || "N/A";
+                ticketCategory.textContent = selectedTicket.TicketCategory || "N/A";
+                ticketPrice.textContent = selectedTicket.Price?.toLocaleString(undefined, { style: 'currency', currency: 'DKK' }) || "N/A";
+                sectionDescription.textContent = selectedTicket.Section?.Description || "N/A";
+                ticketAmount.textContent = selectedTicket.Section?.TicketAmount || "N/A";
+
+                addToBasketLink.href = `@Url.Action("Add", "Cart")?id=${selectedTicketId}&quantity=1`;
+
+                ticketDetails.style.display = 'block';
+            }
+        });
+    });
+</script>
