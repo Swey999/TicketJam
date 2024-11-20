@@ -10,11 +10,12 @@ using TicketJam.DAL.Model;
 
 namespace TicketJam.DAL.DAO
 {
-    public class CustomerDAO : IDAO<Customer>
+    public class CustomerDAO : IDAO<Customer>, ICustomerDAO
     {
         private readonly string _connectionString;
         private string _createCustomerSQL = "INSERT INTO Customer (CustomerNo, FirstName, LastName, PhoneNo, Email, Password) VALUES (@CustomerNo, @FirstName, @LastName, @PhoneNo, @Email, @Password); SELECT SCOPE_IDENTITY();";
         private string _findCustomerByIdSQL = "SELECT * FROM Customer WHERE Id=@Id";
+        private string _findCustomerByEmailSQL = "SELECT * FROM CUSTOMER WHERE Email = @email";
 
         public CustomerDAO(string connectionString)
         {
@@ -26,9 +27,12 @@ namespace TicketJam.DAL.DAO
             //Using realses all resources
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
+            //TODO: Change random to something more unique.
+            Random random = new Random();
 
             try
             {
+                entity.CustomerNo = random.Next();
                 entity.Id = connection.ExecuteScalar<int>(_createCustomerSQL, entity);
             }
             catch (Exception ex)
@@ -58,6 +62,22 @@ namespace TicketJam.DAL.DAO
             } finally
             {
                 connection.Close();
+            }
+        }
+
+        public Customer GetCustomerByEmail(string email)
+        {
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            connection.Open();
+            try
+            {
+                return connection.QuerySingle<Customer>(_findCustomerByEmailSQL, new { Email = email });
+
+            }
+            catch (SqlException e)
+            {
+
+                throw new Exception($"There was an issue finding a customer using Email: {email}, error message was {e.Message}", e);
             }
         }
 

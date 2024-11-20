@@ -13,9 +13,26 @@ namespace TicketJam.Website.APIClient
             BaseURI = baseURI;
         }
 
-        public Customer Add(Customer OrderToAdd)
+        public Customer Add(Customer customerToAdd)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var request = new RestRequest().AddJsonBody(customerToAdd);
+
+                var client = new RestClient(BaseURI);
+
+                var response = client.ExecutePost<Customer>(request);
+
+                return response.Data;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"The Order failed to Post{ex.Message}", ex);
+            }
+
+
+
         }
 
         public bool Delete(int id)
@@ -37,6 +54,14 @@ namespace TicketJam.Website.APIClient
         public Customer Update(Customer OrderToUpdate)
         {
             throw new NotImplementedException();
+        }
+
+        public Customer GetCustomerByEmail(string userEmail)
+        {
+            var encodedEmail = Uri.EscapeDataString(userEmail); // Encodes '@' to '%40'
+            var request = new RestRequest($"/by-email/{encodedEmail}", RestSharp.Method.Get);
+            var response = restClient.Execute<Customer>(request);
+            return response.Data;
         }
     }
 }

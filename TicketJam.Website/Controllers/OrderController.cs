@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.Security.Claims;
 using System.Text.Json;
 using TicketJam.Website.APIClient;
 using TicketJam.Website.APIClient.DTO;
@@ -10,7 +11,7 @@ namespace TicketJam.Website.Controllers
     {
         // GET: OrderController
         OrderAPIConsumer OrderAPIConsumer = new OrderAPIConsumer("https://localhost:7280/api/v1/OrderControllerAPI");
-        CustomerAPIConsumer customerAPIConsumer = new CustomerAPIConsumer("https://localhost:7280/api/v1/CustomersController");
+        CustomerAPIConsumer customerAPIConsumer = new CustomerAPIConsumer("https://localhost:7280/api/v1/CustomerControllerAPI");
         CartController cartController = new CartController();
 
 
@@ -35,24 +36,50 @@ namespace TicketJam.Website.Controllers
         // GET: OrderController/Create
         public ActionResult Create()
         {
+            var userEmail = User.FindFirstValue(ClaimTypes.Email); // Get email from claims
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                throw new Exception("User email not found. Please ensure the user is logged in and authenticated.");
+            }
+
+            Customer customer = customerAPIConsumer.GetCustomerByEmail(userEmail);
+
             Request.Cookies.TryGetValue("Order", out string? cookie);
             Order order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
-
+            if (customer == null)
+            {
+                return Redirect("/Customer/Create");
+            }
             return View(order);
         }
 
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Order order) 
+        public ActionResult Create(Order order)
         {
             try
             {
+                var userEmail = User.FindFirstValue(ClaimTypes.Email); // Get email from claims
+
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    throw new Exception("User email not found. Please ensure the user is logged in and authenticated.");
+                }
+
+                Customer customer = customerAPIConsumer.GetCustomerByEmail(userEmail);
+                if (customer == null)
+                {
+                    throw new Exception("Customer not found in the system.");
+                }
+
+
                 Request.Cookies.TryGetValue("Order", out string? cookie);
                 order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
                 order.OrderNo = 1492;
-                
-                order.CustomerId = 1;
+
+                order.CustomerId = customer.Id;
                 OrderAPIConsumer.Add(order);
                 return View(order);
             }

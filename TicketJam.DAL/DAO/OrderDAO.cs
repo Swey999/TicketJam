@@ -56,6 +56,7 @@ namespace TicketJam.DAL.DAO
                 {
                     connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = entity.Id, quantity = orderline.Quantity , ticketId = orderline.TicketId}, transaction);
                 }
+                transaction.Commit();
             }
             catch (SqlException e)
             {
@@ -65,7 +66,6 @@ namespace TicketJam.DAL.DAO
             {
                 connection.Close();
             }
-            transaction.Commit();
 
             return entity;
         }

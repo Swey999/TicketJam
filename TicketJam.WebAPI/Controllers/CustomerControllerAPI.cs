@@ -10,15 +10,42 @@ namespace TicketJam.WebAPI.Controllers
     public class CustomerControllerAPI : Controller
     {
         public IDAO<Customer> _customerDAO;
-        public CustomerControllerAPI(IDAO<Customer> customerDAO)
+        public ICustomerDAO _icustDAO;
+
+        public CustomerControllerAPI(IDAO<Customer> customerDAO, ICustomerDAO icustDAO)
         {
             _customerDAO = customerDAO;
+            _icustDAO = icustDAO;
         }
 
         [HttpGet("{id}")]
         public ActionResult<Customer> GetById(int id)
         {
             Customer customer = _customerDAO.GetById(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(customer);
+            }
+        }
+
+
+        // POST api/<OrderControllerAPI>
+        [HttpPost]
+        public ActionResult<Customer> Post(Customer customer)
+        {
+            _customerDAO.Create(customer);
+            return Ok(customer);
+        }
+
+        [HttpGet("by-email/{email}")]
+        public ActionResult<Customer> GetCustomerByEmail([FromRoute] string email)
+        {
+            Customer customer = new Customer();
+            customer = _icustDAO.GetCustomerByEmail(email);
             if (customer == null)
             {
                 return NotFound();
