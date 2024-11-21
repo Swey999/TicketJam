@@ -13,7 +13,7 @@ namespace TicketJam.DAL.DAO
     public class TicketDAO : IDAO<Ticket>
     {
         private string _connectionString;
-        private string _GET_BY_ID = "SELECT * FROM Ticket WHERE Id = @Id";
+        private string _GET_BY_ID = "SELECT Id, Description, TicketId, Price, TicketCategory, TimeCreated, Section_ID_FK, Event_ID_FK from Ticket WHERE id = @id";
 
         public TicketDAO(String connectionStringns)
         {

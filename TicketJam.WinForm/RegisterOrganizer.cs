@@ -14,8 +14,7 @@ namespace TicketJam.WinForm
 {
     public partial class RegisterOrganizer : Form
     {
-        private OrganizerAPIConsumer _organizerAPIConsumer = new OrganizerAPIConsumer("https://localhost:7280/api/v1/OrganizerControllerAPI");
-
+        private OrganizerAPIConsumer _organizerAPIConsumer = new OrganizerAPIConsumer("https://localhost:7280/api/v1/OrganizerControllerAPI", "https://localhost:7280/api/v1/LoginControllerAPI");
         public RegisterOrganizer()
         {
             InitializeComponent();
@@ -34,7 +33,14 @@ namespace TicketJam.WinForm
             organizerDto.Password = txtPasswordWrite.Text;
 
             _organizerAPIConsumer.AddEvent(organizerDto);
-            
+
+            MessageBox.Show("Account created!", "Account created!", MessageBoxButtons.OK);
+
+            OrganizerLogin organizerLogin = new OrganizerLogin();
+            this.Hide();
+            organizerLogin.ShowDialog();
+            organizerLogin.Dispose();
+            this.Dispose();
         }
     }
 }

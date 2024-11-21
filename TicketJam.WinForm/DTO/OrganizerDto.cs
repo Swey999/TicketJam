@@ -12,6 +12,6 @@ namespace TicketJam.WinForm.DTO
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public int OrganizerId { get; set; }
+        public int Id { get; set; }
     }
 }

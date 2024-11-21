@@ -37,7 +37,6 @@ namespace TicketJam.Website.Controllers
         {
             try
             {
-                customer.Password = "sejtpassword";
                 customer.CustomerNo = 111;
                 //customer.Address = ; 
                 _customerAPIConsumer.Add(customer);

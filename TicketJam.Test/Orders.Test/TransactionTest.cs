@@ -15,7 +15,7 @@ public class TransactionTest
     private IDAO<Section> _sectionDAO;
     private IDAO<Venue> _venueDAO;
     private const string _connectionString = "Server=hildur.ucn.dk;Database=DMA-CSD-S232_10503088;User Id=DMA-CSD-S232_10503088;Password=Password1!;; TrustServerCertificate=True";
-    
+
 
     [SetUp]
     public void SetUp()
@@ -27,13 +27,15 @@ public class TransactionTest
     [Test]
     public void PurchaseTicketsFromSectionCantGoBelowZeroTestSuccess()
     {
+        //Test First
+
         // Arrange
 
         var section = _sectionDAO.GetById(2);
 
         IList<Section> sections = new List<Section>();
-        
-        
+
+
 
         int startTicket = section.TicketAmount;
 
@@ -43,18 +45,18 @@ public class TransactionTest
         using IDbConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         IDbTransaction transaction = connection.BeginTransaction();
-        
+
         try
         {
             int amountTaken = 501;
 
 
-            if(section.TicketAmount >= amountTaken)
+            if (section.TicketAmount >= amountTaken)
             {
                 section.TicketAmount -= amountTaken;
                 Console.WriteLine($"Mængden af ticket efter der er taget 300 tickets: {section.TicketAmount}");
                 transaction.Commit();
-            } 
+            }
         }
 
         catch (Exception ex)
@@ -66,11 +68,12 @@ public class TransactionTest
         // Assert
         Assert.That(section.TicketAmount, Is.EqualTo(startTicket), "Billetterne er de samme efter rollback");
     }
-    
+
 
     [Test]
     public void PurchaseTicketsFromSectionCantGoBelowZeroTestFailed()
     {
+        //Test First
 
         // Arrange
         var section = _sectionDAO.GetById(2);

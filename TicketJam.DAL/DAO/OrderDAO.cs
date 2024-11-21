@@ -24,6 +24,9 @@ namespace TicketJam.DAL.DAO
 
         private string _GET_ORDER_FROM_ID_QUERY = "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
         private string _GET_ID_FROM_ORDER_QUERY = "SELECT Id FROM Orders";
+
+        //TODO: * skal rettes så vi ikke henter ALT op fra databasen. Det bliver en senere opgave. 
+
         private string _ORDERLINE_JOIN_QUERY = "SELECT DISTINCT Orderline.*, Ticket.*, Section.*, Venue.*, Event.*, Address.* FROM Orderline JOIN Ticket ON Ticket.Id = Orderline.Ticket_ID_FK JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Event ON Venue.Id = Event.Venue_ID_FK JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Orderline.Order_ID_FK = @orderId";
         
 
