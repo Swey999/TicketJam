@@ -1,4 +1,5 @@
-﻿@model TicketJam.Website.APIClient.DTO.Order
+﻿@using TicketJam.Website.APIClient.DTO
+@model TicketJam.Website.APIClient.DTO.Order
 
 @{
     ViewData["Title"] = "Create Order";
@@ -9,8 +10,92 @@
 
 <div class="row">
     <div class="col-md-6">
+
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (Model == null || Model.OrderLines.Count == 0)
+            {
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h3>Cart is empty</h3>
+                    </div>
+                </div>
+            }
+            else
+            {
+                var tickets = ViewBag.TicketDetails as List<Ticket>;
+                @foreach (var orderLine in Model.OrderLines)
+                {
+                    var ticket = tickets?.FirstOrDefault(t => t.Id == orderLine.TicketId);
+                    if (ticket != null)
+                    {
+                        <div class="row" style="padding-top:2px;">
+                            <div class="col-6">
+                                @orderLine.Quantity x @ticket.Description (Category: @ticket.TicketCategory) at $@ticket.Price each
+                            </div>
+                            <div class="col-3">
+                                total $@(orderLine.Quantity * ticket.Price)
+                            </div>
+                            <div class="col-3">
+                                <a class="btn btn-add" href="@Url.Action("Add", "Order", new { id = orderLine.TicketId, quantity = -1 })" title="remove one">-1</a>
+                                <a class="btn btn-add" href="@Url.Action("Add", "Order", new { id = orderLine.TicketId, quantity = 1 })" title="add one">+1</a>
+                                <a class="btn btn-danger" href="@Url.Action("DeleteOrderLine", "Order", new { id = orderLine.TicketId })" title="delete product"><span class="bi-trash"></span>Delete</a>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            <style>
+                .btn-add {
+                    background-color: #090bcd;
+                    color: #fff;
+                    border: none;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+
+                    .btn-add:hover {
+                        background-color: #070884;
+                        color: #fff;
+                        text-decoration: none;
+                        font-weight: bold;
+                    }
+
+                .btn-danger:hover {
+                    background-color: #b93d31;
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+
+                .btn-success:hover {
+                    background-color: #070884;
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+
+                .btn-add span {
+                    margin-left: 10px;
+                }
+
+                .btn-danger {
+                    background-color: #b93d31;
+                    color: #fff;
+                    border: none;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+
+                .btn-success {
+                    background-color: #090bcd;
+                    color: #fff;
+                    border: none;
+                    text-decoration: none;
+                    font-weight: bold;
+            </style>
+
+
 
 @*             <!-- Event Details -->
             <h4>Event Details</h4>
@@ -83,6 +168,8 @@
                 </tbody>
             </table> *@
 
+
+
             <!-- Submit Button -->
             <div class="form-group">
                 <input type="submit" value="Confirm Order" class="btn btn-primary" />
@@ -91,7 +178,13 @@
             <p>
                 <img src="~/images/jakob2.png" alt="Flot billede af Jakob, ikke dårligt" />
             </p>
+
+
         </form>
+
+    
+
+
     </div>
 </div>
 
