@@ -32,8 +32,6 @@ namespace TicketJam.WinForm
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            IEnumerable<VenueDto> venueDtoList = _venueAPIConsumer.GetVenues();
             txtVenueReadText = new TextBox();
             btnCreateNewVenue = new Button();
             comboBoxVenueList = new ComboBox();
@@ -50,7 +48,6 @@ namespace TicketJam.WinForm
             btnSubmitEvent = new Button();
             txtNameReadOnly = new TextBox();
             txtNameWrite = new TextBox();
-            btnCreateOrganizer = new Button();
             SuspendLayout();
             // 
             // txtVenueReadText
@@ -73,13 +70,12 @@ namespace TicketJam.WinForm
             // 
             // comboBoxVenueList
             // 
+            comboBoxVenueList.DisplayMember = "Name";
             comboBoxVenueList.FormattingEnabled = true;
-            comboBoxVenueList.DataSource = venueDtoList;
             comboBoxVenueList.Location = new Point(168, 114);
             comboBoxVenueList.Name = "comboBoxVenueList";
             comboBoxVenueList.Size = new Size(151, 28);
             comboBoxVenueList.TabIndex = 2;
-            comboBoxVenueList.DisplayMember = "Name";
             comboBoxVenueList.ValueMember = "Id";
             // 
             // txtDescriptionWrite
@@ -163,7 +159,7 @@ namespace TicketJam.WinForm
             txtLoggedInAsResult.ReadOnly = true;
             txtLoggedInAsResult.Size = new Size(125, 27);
             txtLoggedInAsResult.TabIndex = 12;
-            txtLoggedInAsResult.Text = "Dinmor@gmail.com";
+            txtLoggedInAsResult.Text = _organizerDto.Email.ToString();
             txtLoggedInAsResult.TextChanged += txtLoggedInAsResult_TextChanged;
             // 
             // btnSubmitEvent
@@ -192,22 +188,11 @@ namespace TicketJam.WinForm
             txtNameWrite.Size = new Size(125, 27);
             txtNameWrite.TabIndex = 15;
             // 
-            // btnCreateOrganizer
-            // 
-            btnCreateOrganizer.Location = new Point(596, 160);
-            btnCreateOrganizer.Name = "btnCreateOrganizer";
-            btnCreateOrganizer.Size = new Size(143, 29);
-            btnCreateOrganizer.TabIndex = 16;
-            btnCreateOrganizer.Text = "Create Organizer";
-            btnCreateOrganizer.UseVisualStyleBackColor = true;
-            btnCreateOrganizer.Click += btnCreateOrganizer_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(btnCreateOrganizer);
             Controls.Add(txtNameWrite);
             Controls.Add(txtNameReadOnly);
             Controls.Add(btnSubmitEvent);
@@ -250,6 +235,6 @@ namespace TicketJam.WinForm
         private Button btnSubmitEvent;
         private TextBox txtNameReadOnly;
         private TextBox txtNameWrite;
-        private Button btnCreateOrganizer;
+        private Button button1;
     }
 }
