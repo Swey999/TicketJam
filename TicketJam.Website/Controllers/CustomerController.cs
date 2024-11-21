@@ -1,20 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
+using TicketJam.Website.APIClient;
 using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.Controllers
 {
     public class CustomerController : Controller
     {
-        IDAO<APIClient.DTO.Customer> _customerDAO;
-
-        public CustomerController(IDAO<APIClient.DTO.Customer> customerDAO)
-        {
-            _customerDAO = customerDAO;
-        }
-
+        CustomerAPIConsumer _customerAPIConsumer = new CustomerAPIConsumer("https://localhost:7280/api/v1/CustomerControllerAPI");
 
         // GET: CustomerController
         public ActionResult Index()
@@ -41,8 +37,11 @@ namespace TicketJam.Website.Controllers
         {
             try
             {
-                _customerDAO.Create(customer);
-                return RedirectToAction(nameof(Index));
+                customer.Password = "sejtpassword";
+                customer.CustomerNo = 111;
+                //customer.Address = ; 
+                _customerAPIConsumer.Add(customer);
+                return Redirect("/Order/Create");
             }
             catch
             {

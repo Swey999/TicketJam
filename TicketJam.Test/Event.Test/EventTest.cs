@@ -11,7 +11,8 @@ namespace TicketJam.Test.CreateOrder.Test;
 public class EventTest
 {
     private IDAO<Event> _eventDAO;
-    private IEventDAO _eventDAO2;
+    private IEventDAO _eventDAOTwo;
+
 
 
     [SetUp]
@@ -36,12 +37,35 @@ public class EventTest
     [Test]
     public void FindEventByIdTestSuccess()
     {
-    //ARRANGE
+        //ARRANGE
+        int eventId = 1;
 
-    //ACT
-    var test = _eventDAO.GetById(1);
+        //ACT
+        var test = _eventDAO.GetById(eventId);
 
-    //ASSERT
-    Assert.That(test, Is.Not.Null);
+        //ASSERT
+        Assert.That(test, Is.Not.Null);
     }
+
+
+    [Test]
+    public void FindAllEventsTestSuccess()
+    {
+        // Aarange
+
+
+        // Act
+        IEnumerable<Event> foundEvents = _eventDAO.Read();
+        foreach (Event e in foundEvents)
+        {
+            Console.WriteLine(foundEvents);
+        }
+
+        // Assert
+
+        Assert.That(foundEvents, Is.Not.Null);
+    }
+
+
+   
 }
