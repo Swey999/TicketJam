@@ -45,8 +45,6 @@ namespace TicketJam.WinForm
                 MessageBox.Show("Login succesful!");
                 Form1 form1 = new Form1(organizerDto);
                 form1.Show();
-                this.Hide();
-                this.Dispose();
             }
         }
 

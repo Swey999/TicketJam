@@ -68,5 +68,31 @@ namespace TicketJam.Test.Organizer.Test
             // Assert
             Assert.AreEqual(identityReturned, 0);
         }
+
+        [Test]
+        public void LoginTestSuccess()
+        {
+            TicketJam.DAL.Model.Organizer organizerTest = new TicketJam.DAL.Model.Organizer()
+            {
+                Email = "test2",
+                Password = "test2",
+                PhoneNo = "88888888",
+                Id = 0
+            };
+
+            TicketJam.DAL.Model.Organizer organizerAssert = new DAL.Model.Organizer();
+
+            try
+            {
+                organizerAssert = _organizerDAO.Login(organizerTest);
+            }
+            catch (SqlException e)
+            {
+
+                throw;
+            }
+
+            Assert.AreEqual(organizerAssert.Id, 4);
+        }
     }
 }
