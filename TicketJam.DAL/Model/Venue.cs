@@ -9,5 +9,6 @@ namespace TicketJam.DAL.Model;
 public class Venue
 {
     public int Id { get; set; }
+    public string Name { get; set; }
     public Address Address { get; set; }
 }

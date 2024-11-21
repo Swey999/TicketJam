@@ -13,9 +13,11 @@ namespace TicketJam.DAL.DAO
     public class VenueDAO : IDAO<Venue>
     {
         private string _connectionString;
+
+        //TODO: * skal rettes så vi ikke henter ALT op fra databasen. Det bliver en senere opgave.
         private string GETALLVENUES_SQL = "SELECT DISTINCT Venue.*, Address.* FROM Address JOIN Venue on Address.id = Venue.Address_ID_FK";
         private string GETVENUEBYID_SQL = "SELECT DISTINCT Venue.*, Address.* FROM Address JOIN Venue on Address.id = Venue.Address_ID_FK WHERE Venue.id = @Id";
-        private string GETALLVENUESWITHOUTADDRESS_SQL = "SELECT * FROM VENUE";
+        // private string GETALLVENUESWITHOUTADDRESS_SQL = "SELECT * FROM VENUE";
 
         public VenueDAO(string connectionStringns)
         {
