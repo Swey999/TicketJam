@@ -13,7 +13,7 @@ namespace TicketJam.DAL.DAO
     public class CustomerDAO : IDAO<Customer>, ICustomerDAO
     {
         private readonly string _connectionString;
-        private string _createCustomerSQL = "INSERT INTO Customer (CustomerNo, FirstName, LastName, PhoneNo, Email, Password) VALUES (@CustomerNo, @FirstName, @LastName, @PhoneNo, @Email, @Password); SELECT SCOPE_IDENTITY();";
+        private string _createCustomerSQL = "INSERT INTO Customer (CustomerNo, FirstName, LastName, PhoneNo, Email) VALUES (@CustomerNo, @FirstName, @LastName, @PhoneNo, @Email); SELECT SCOPE_IDENTITY();";
         private string _findCustomerByIdSQL = "SELECT * FROM Customer WHERE Id=@Id";
         private string _findCustomerByEmailSQL = "SELECT * FROM CUSTOMER WHERE Email = @email";
 
