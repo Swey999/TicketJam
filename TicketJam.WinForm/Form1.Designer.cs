@@ -32,6 +32,7 @@ namespace TicketJam.WinForm
         /// </summary>
         private void InitializeComponent()
         {
+            IEnumerable<VenueDto> venueDtoList = _venueAPIConsumer.GetVenues();
             txtVenueReadText = new TextBox();
             btnCreateNewVenue = new Button();
             comboBoxVenueList = new ComboBox();
@@ -70,12 +71,13 @@ namespace TicketJam.WinForm
             // 
             // comboBoxVenueList
             // 
-            comboBoxVenueList.DisplayMember = "Name";
             comboBoxVenueList.FormattingEnabled = true;
+            comboBoxVenueList.DataSource = venueDtoList;
             comboBoxVenueList.Location = new Point(168, 114);
             comboBoxVenueList.Name = "comboBoxVenueList";
             comboBoxVenueList.Size = new Size(151, 28);
             comboBoxVenueList.TabIndex = 2;
+            comboBoxVenueList.DisplayMember = "Name";
             comboBoxVenueList.ValueMember = "Id";
             // 
             // txtDescriptionWrite
