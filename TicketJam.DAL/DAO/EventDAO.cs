@@ -18,11 +18,11 @@ public class EventDAO : IEventDAO, IDAO<Event>
     private readonly string _connectionString;
     private string _INSERT_SQL = "INSERT INTO Event (Description, Name, TotalAmount, StartDate, EndDate, EventNo, Organizer_ID_FK, Venue_ID_FK) VALUES (@Description, @Name, @TotalAmount, @StartDate, @EndDate, @EventNo, @OrganizerId, @VenueId) SELECT CAST(SCOPE_IDENTITY() as int)";
 
-    private string _GETBYID_SQL = "SELECT * FROM Event WHERE Id = @id";
-    private string _GET_EVENT_FROM_ID_SQL = "SELECT Id, EventNo, TotalAmount, StartDate, EndDate, Name FROM Event WHERE Id = @id";
-    private string _GET_EVENT_SQL = "SELECT * from Event";
+    private string _GETBYID_SQL = "SELECT Id FROM Event WHERE Id = @id";
+    private string _GET_EVENT_SQL = "SELECT Id, Name, Description, TotalAmount, EventNo, StartDate, EndDate, Venue_ID_FK, Organizer_ID_FK FROM Event";
     private string _GET_ADDRESS_ON_EVENT_SQL = "SELECT Venue.Id, Address.Id, Address.StreetName, Address.City, Address.Zip, Address.HouseNo FROM Event JOIN Venue ON Event.Venue_ID_FK = Venue.Id JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Event.Id = @EventId";
 
+    //TODO: * skal rettes så vi ikke henter ALT op fra databasen. Det bliver en senere opgave. 
     private string _JOIN_SQL = "SELECT DISTINCT Ticket.*, Section.*, Venue.*, Address.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Address ON Address.Id = Venue.Address_ID_FK WHERE Ticket.Event_ID_FK = @EventId";
 
 

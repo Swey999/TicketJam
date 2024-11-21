@@ -27,6 +27,8 @@ public class TransactionTest
     [Test]
     public void PurchaseTicketsFromSectionCantGoBelowZeroTestSuccess()
     {
+        //Test First
+
         // Arrange
 
         var section = _sectionDAO.GetById(2);
@@ -71,6 +73,7 @@ public class TransactionTest
     [Test]
     public void PurchaseTicketsFromSectionCantGoBelowZeroTestFailed()
     {
+        //Test First
 
         // Arrange
         var section = _sectionDAO.GetById(2);
