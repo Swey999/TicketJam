@@ -9,6 +9,5 @@
         public string PhoneNo { get; set; }
         public string Email { get; set; }
         public int CustomerNo { get; set; }
-        public string Password { get; set; }
     }
 }
