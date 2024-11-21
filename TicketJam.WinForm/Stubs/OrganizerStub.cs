@@ -9,6 +9,6 @@ namespace TicketJam.WinForm.Stubs
 {
     public static class OrganizerStub
     {
-        public static OrganizerDto Organizer { get; set; } = new OrganizerDto() { PhoneNo = "20202020", Email = "Dinmor@gmail.com", Password = "Hvorofr har du adgang til det her???????", OrganizerId = 1};
+        public static OrganizerDto Organizer { get; set; } = new OrganizerDto() { PhoneNo = "20202020", Email = "Dinmor@gmail.com", Password = "Hvorofr har du adgang til det her???????", Id = 1};
     }
 }

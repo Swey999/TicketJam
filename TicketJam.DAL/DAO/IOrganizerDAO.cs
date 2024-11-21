@@ -10,5 +10,7 @@ namespace TicketJam.DAL.DAO
     public interface IOrganizerDAO
     {
         int CreateOrganizerAndReturnIdentity(Organizer organizer);
+
+        public Organizer Login (Organizer organizer);
     }
 }

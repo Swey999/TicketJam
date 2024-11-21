@@ -46,9 +46,9 @@ namespace TicketJam.WebAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Event>> GetAll()
+        public ActionResult<IEnumerable<EventDto>> GetAll()
         {
-            return Ok(_iDAO.Read());
+            return Ok(_iDAO.Read().ToDtos());
         }
 
     }
