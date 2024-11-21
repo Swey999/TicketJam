@@ -27,7 +27,7 @@ public class CustomerTest
         
         // Arrange
         Address address = new Address() { City = "London", StreetName = "LondonStreet", HouseNo = "36", Zip = "9283" };
-        Customer customer = new Customer() { FirstName = "Bobby", LastName = "Olsen", Email = "bobby@hotmail.com", PhoneNo = "28734633", Password = "1234", Address = address };
+        Customer customer = new Customer() { FirstName = "Bobby", LastName = "Olsen", Email = "bobby@hotmail.com", PhoneNo = "28734633", Address = address };
 
         // Act
         var insertIntoDatabase = _customerDAO.Create(customer);

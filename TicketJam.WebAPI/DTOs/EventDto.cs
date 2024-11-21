@@ -7,7 +7,7 @@
         public int TotalAmount { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public VenueDto VenueId { get; set; }
+        public VenueDto Venue { get; set; }
         public int OrganizerId { get; set; }
 
     }
