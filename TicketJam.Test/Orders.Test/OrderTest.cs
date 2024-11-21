@@ -22,7 +22,6 @@ namespace TicketJam.Test.Orders.Test
         public void CreateOrderAndInsertIntoDatabaseTestSuccess()
         {
 
-
             // Arrange
             Order order = new() { OrderNo = 3654, CustomerId = 1};
             order.OrderLines = new List<OrderLine>();

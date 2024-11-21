@@ -25,7 +25,7 @@ namespace TicketJam.Test.Organizer.Test
         [Test]
         public void CreateOrganizerAndReturnIdentitySuccess()
         {
-            // Test First
+
             TicketJam.DAL.Model.Organizer organizerTest = new TicketJam.DAL.Model.Organizer()
             {
                 Email = "Testmailer@gmail.com",

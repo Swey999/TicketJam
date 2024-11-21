@@ -21,6 +21,8 @@ namespace TicketJam.WebAPI.Controllers
         }
 
 
+
+
         // GET api/<EventControllerAPI>/5
         [HttpGet("{id}")]
         public ActionResult<Event> GetById(int id)

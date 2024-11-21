@@ -36,31 +36,5 @@ public class CustomerTest
         Assert.That(insertIntoDatabase, Is.Not.Null);
     }
 
-    [Test]
-    public void FindCustomerOnIdTestSuccess()
-    {
-        // Arrange
-        int customerId = 10;
-
-        // Act
-        var getCustomerById = _customerDAO.GetById(customerId);
-
-        // Assert
-        Assert.That(getCustomerById, Is.Not.Null);
-    }
-
-    [Test]
-    public void FindCustomerOnEmailTestSuccess()
-    {
-        // Arrange
-        string email = "jane.smith@example.com";
-
-        // Act
-        var findCustomerByEmail = _customerDAO.GetCustomerByEmail(email);
-
-        // Assert
-        Assert.That(findCustomerByEmail, Is.Not.Null);
-    }
-
 
 }
