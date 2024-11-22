@@ -1,5 +1,4 @@
 ﻿using TicketJam.Website.APIClient.DTO;
-using static Dapper.SqlMapper;
 
 namespace TicketJam.Website.APIClient
 {

@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TicketJam.DAL.DAO;
-using TicketJam.DAL.Model;
 using TicketJam.Website.APIClient.DTO;
 using TicketJam.Website.Data;
 

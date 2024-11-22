@@ -17,8 +17,4 @@
     <PackageReference Include="RestSharp" Version="112.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TicketJam.DAL\TicketJam.DAL.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -114,31 +114,39 @@ namespace TicketJam.Website.Controllers
                 return View();
             }
         }
-        public ActionResult Add(int id, int quantity)
+        public IActionResult Add(int id, int quantity)
         {
-            Order order = GetCartFromCookie();
-            OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == id);
-            if (existingOrderLine != null)
+            try
             {
-                existingOrderLine.Quantity += quantity;
-                if (existingOrderLine.Quantity <= 0)
+                Order order = GetCartFromCookie();
+                OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == id);
+                if (existingOrderLine != null)
                 {
-                    order.OrderLines.Remove(existingOrderLine);
+                    existingOrderLine.Quantity += quantity;
+                    if (existingOrderLine.Quantity <= 0)
+                    {
+                        order.OrderLines.Remove(existingOrderLine);
+                    }
                 }
-            }
-            else
-            {
-                OrderLine newOrderLine = new OrderLine
+                else
                 {
-                    TicketId = _ticketAPIConsumer.GetById(id).Id,
-                    Quantity = quantity
-                };
-                order.OrderLines.Add(newOrderLine);
-            }
+                    OrderLine newOrderLine = new OrderLine
+                    {
+                        TicketId = _ticketAPIConsumer.GetById(id).Id,
+                        Quantity = quantity
+                    };
+                    order.OrderLines.Add(newOrderLine);
+                }
 
-            SaveCartToCookie(order);
-            return RedirectToAction("Create", "Order");
+                SaveCartToCookie(order);
+                return Ok(new { success = true, message = "Item added to basket" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
         }
+
         public Order GetCartFromCookie()
         {
             // Retrieve the order from the cookie

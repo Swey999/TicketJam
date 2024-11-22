@@ -83,6 +83,8 @@
 
 <hr />
 
+<a class="btn btn-success" href="@Url.Action("Create", "Order")">Go to Checkout</a>
+
 <!-- Back Button -->
 <div class="form-group">
     <a class="btn btn-secondary" href="@Url.Action("Index", "Event")">Back to List</a>
@@ -112,48 +114,61 @@
 <!-- JavaScript for Interactivity -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+    const ticketDetails = document.getElementById('ticketDetails');
+    const venueName = document.getElementById('venueName');
+    const ticketCategory = document.getElementById('ticketCategory');
+    const ticketPrice = document.getElementById('ticketPrice');
+    const sectionDescription = document.getElementById('sectionDescription');
+    const ticketAmount = document.getElementById('ticketAmount');
+    const ticketQuantityInput = document.getElementById('ticketQuantity');
+    const addToBasketLink = document.getElementById('addToBasketLink');
+    const ticketDropdown = document.getElementById('ticketDropdown');
 
-        const ticketDetails = document.getElementById('ticketDetails');
-        const venueName = document.getElementById('venueName');
-        const ticketCategory = document.getElementById('ticketCategory');
-        const ticketPrice = document.getElementById('ticketPrice');
-        const sectionDescription = document.getElementById('sectionDescription');
-        const ticketAmount = document.getElementById('ticketAmount');
-        const ticketQuantityInput = document.getElementById('ticketQuantity');
-        const addToBasketLink = document.getElementById('addToBasketLink');
-        const ticketDropdown = document.getElementById('ticketDropdown');
+    const tickets = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.TicketList));
 
-        // Ticket data (populated server-side into JavaScript object)
-        const tickets = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.TicketList));
+    ticketDropdown.addEventListener('change', function () {
+        const selectedTicketId = this.value;
+        const selectedTicket = tickets.find(ticket => ticket.Id.toString() === selectedTicketId);
 
-        ticketDropdown.addEventListener('change', function () {
-            const selectedTicketId = this.value;
-            const selectedTicket = tickets.find(ticket => ticket.Id.toString() === selectedTicketId);
+        if (selectedTicket) {
+            venueName.textContent = selectedTicket.Section?.Venue?.Name || "N/A";
+            ticketCategory.textContent = selectedTicket.TicketCategory || "N/A";
+            ticketPrice.textContent = selectedTicket.Price?.toLocaleString(undefined, { style: 'currency', currency: 'DKK' }) || "N/A";
+            sectionDescription.textContent = selectedTicket.Section?.Description || "N/A";
+            ticketAmount.textContent = selectedTicket.Section?.TicketAmount || "N/A";
 
-            if (selectedTicket) {
-                venueName.textContent = selectedTicket.Section?.Venue?.Name || "N/A";
-                ticketCategory.textContent = selectedTicket.TicketCategory || "N/A";
-                ticketPrice.textContent = selectedTicket.Price?.toLocaleString(undefined, { style: 'currency', currency: 'DKK' }) || "N/A";
-                sectionDescription.textContent = selectedTicket.Section?.Description || "N/A";
-                ticketAmount.textContent = selectedTicket.Section?.TicketAmount || "N/A";
-
-                // Update Add to Basket link dynamically
-                updateAddToBasketLink(selectedTicket.Id);
-
-                ticketDetails.style.display = 'block';
-            }
-        });
-
-        // Update the Add to Basket link whenever quantity changes
-        ticketQuantityInput.addEventListener('input', function () {
-            const selectedTicketId = ticketDropdown.value;
-            updateAddToBasketLink(selectedTicketId);
-        });
-
-        function updateAddToBasketLink(ticketId) {
-            const quantity = ticketQuantityInput.value || 1; // Default to 1 if empty
-            addToBasketLink.href = `@Url.Action("Add", "Event")?id=${ticketId}&quantity=${quantity}`;
+            ticketDetails.style.display = 'block';
         }
     });
+
+    addToBasketLink.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        const selectedTicketId = ticketDropdown.value;
+        const quantity = ticketQuantityInput.value || 1;
+
+        if (!selectedTicketId) {
+            alert("Please select a ticket.");
+            return;
+        }
+
+        fetch(`/Event/Add?id=${selectedTicketId}&quantity=${quantity}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Item added to basket!");
+                } else {
+                    alert(`Error: ${data.message}`);
+                }
+            })
+            .catch(error => console.error('Error adding to basket:', error));
+    });
+});
+
 
 </script>
