@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
+using TicketJam.WebAPI.DTOs;
+using TicketJam.WebAPI.DTOs.Converters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,10 +14,13 @@ namespace TicketJam.WebAPI.Controllers
     {
 
         public IDAO<Ticket> _ticketDAO;
+        public ITicketDAO _ITicketDAO;
 
-        public TicketControllerAPI(IDAO<Ticket> iDAO)
+        public TicketControllerAPI(IDAO<Ticket> iDAO, ITicketDAO iTicketDAO)
         {
             this._ticketDAO = iDAO;
+            _ITicketDAO = iTicketDAO;
+
         }
 
         // GET: api/<TicketController>
@@ -40,6 +45,23 @@ namespace TicketJam.WebAPI.Controllers
             }
         }
 
+        [HttpGet("get-ticket-joined/{id}")]
+        public ActionResult<TicketDto> GetTicketWithSectionAndEvent(int Id)
+        {
+            TicketDto ticket = _ITicketDAO.GetTicketWithSectionAndEvent(Id).ToDto();
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(ticket);
+            }
+
+        }
+
+
+
         // POST api/<TicketController>
         [HttpPost]
         public void Post([FromBody] string value)
@@ -48,9 +70,23 @@ namespace TicketJam.WebAPI.Controllers
 
         // PUT api/<TicketController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(int id, Ticket ticket)
         {
+            if (id != ticket.Id)
+            {
+                return BadRequest("ID mismatch");
+            }
+
+            var existingTicket = _ticketDAO.GetById(id);
+            if (existingTicket == null)
+            {
+                return NotFound();
+            }
+
+            _ticketDAO.Update(ticket);
+            return Ok();
         }
+
 
         // DELETE api/<TicketController>/5
         [HttpDelete("{id}")]

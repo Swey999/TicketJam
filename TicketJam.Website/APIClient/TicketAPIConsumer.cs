@@ -44,9 +44,42 @@ namespace TicketJam.Website.APIClient
             return response.Data;
         }
 
-        public Ticket Update(Ticket orderToUpdate)
+        public Ticket GetTicketWithSectionAndEvent(int id)
         {
-            throw new NotImplementedException();
+            var client = new RestClient($"{BaseURI}/get-ticket-joined/{id}");
+
+            var response = client.ExecuteGet<Ticket>(new RestRequest());
+
+            if (!response.IsSuccessful || response == null)
+            {
+                throw new Exception("Unable to call that thing that thing");
+            }
+
+            return response.Data;
         }
+
+        public Ticket Update(Ticket ticketToUpdate)
+        {
+            // Ensure BaseURI includes the correct base URL
+            var client = new RestClient(BaseURI);
+
+            // Append only the ID to the base URL
+            var request = new RestRequest($"{ticketToUpdate.Id}")
+                .AddJsonBody(ticketToUpdate);
+
+            // Execute the PUT request and get the response
+            var response = client.Execute<Ticket>(request, Method.Put);
+
+            // Check if the response is successful
+            if (!response.IsSuccessful)
+            {
+                throw new Exception($"Failed to update Ticket: {response.ErrorMessage}");
+            }
+
+            return ticketToUpdate;
+        }
+
+
+
     }
 }

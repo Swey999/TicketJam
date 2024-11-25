@@ -16,5 +16,5 @@ public class Ticket
     public int TicketId { get; set; }
     public DateTime TimeCreated { get; set; }
     public Section Section { get; set; }
-    public Event Events { get; set; }
+    public Event Event { get; set; }
 }

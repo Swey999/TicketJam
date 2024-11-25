@@ -14,7 +14,7 @@ namespace TicketJam.WebAPI.DTOs.Converters
             {
                 EventDto.Venue = eventToConvert.Venue.ToDto();
             }
-            if (eventToConvert.Venue.Address != null)
+            if (eventToConvert.Venue != null)
             {
                 EventDto.Venue.Address = eventToConvert.Venue.Address.ToDto();
             }
@@ -41,6 +41,42 @@ namespace TicketJam.WebAPI.DTOs.Converters
             return Event;
         }
 
+        public static DAL.Model.Ticket FromDto(this TicketDto ticketDtoToConvert)
+        {
+            var Ticket = new DAL.Model.Ticket();
+            ticketDtoToConvert.CopyPropertiesTo(Ticket);
+
+            // Explicitly convert Venue if it exists
+            if (ticketDtoToConvert != null)
+            {
+                Ticket.Section = ticketDtoToConvert.Section.FromDto();
+            }
+            if (ticketDtoToConvert.Event != null)
+            {
+                Ticket.Event = ticketDtoToConvert.Event.FromDto();
+            }
+
+            return Ticket;
+        }
+
+        public static TicketDto ToDto(this DAL.Model.Ticket ticketToConvert)
+        {
+            var ticketDto = new TicketDto();
+            ticketToConvert.CopyPropertiesTo(ticketDto);
+
+            // Explicitly convert Venue if it exists
+            if (ticketToConvert.Section != null)
+            {
+                ticketDto.Section = ticketToConvert.Section.ToDto();
+            }
+            if (ticketToConvert.Event != null)
+            {
+                ticketDto.Event = ticketToConvert.Event.ToDto();
+            }
+
+            return ticketDto;
+        }
+
 
         public static EventDtoForeignKeys ToDtoForeignKey(this DAL.Model.Event eventToConvert)
         {
@@ -49,11 +85,32 @@ namespace TicketJam.WebAPI.DTOs.Converters
             return EventDto;
         }
 
+        public static SectionDto ToDto(this DAL.Model.Section SectionToConvert)
+        {
+            var SectionDto = new SectionDto();
+            SectionToConvert.CopyPropertiesTo(SectionDto);
+            return SectionDto;
+        }
+
         public static DAL.Model.Event FromDto(this EventDtoForeignKeys eventDtoToConvert)
         {
             var Event = new DAL.Model.Event();
             eventDtoToConvert.CopyPropertiesTo(Event);
             return Event;
+        }
+
+        public static DAL.Model.Section FromDto(this SectionDtoForeignKeys SectionForeignKeysDtoToConvert)
+        {
+            var Section = new DAL.Model.Section();
+            SectionForeignKeysDtoToConvert.CopyPropertiesTo(Section);
+            return Section;
+        }
+
+        public static DAL.Model.Section FromDto(this SectionDto SectionDtoToConvert)
+        {
+            var Section = new DAL.Model.Section();
+            SectionDtoToConvert.CopyPropertiesTo(Section);
+            return Section;
         }
 
         public static IEnumerable<EventDto> ToDtos(this IEnumerable<DAL.Model.Event> eventToConvert)

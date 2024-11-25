@@ -81,6 +81,7 @@ namespace TicketJam.Website.Controllers
         {
             try
             {
+                //Find Customer from login cookie and Email.
                 var userEmail = User.FindFirstValue(ClaimTypes.Email); // Get email from claims
 
                 if (string.IsNullOrEmpty(userEmail))
@@ -94,13 +95,27 @@ namespace TicketJam.Website.Controllers
                     throw new Exception("Customer not found in the system.");
                 }
 
-
+                //Find Order Cookie
                 Request.Cookies.TryGetValue("Order", out string? cookie);
                 order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
                 order.OrderNo = 1492;
-
                 order.CustomerId = customer.Id;
+
+                //Count ticketAmount on Section down and ticketamount on Event.
+                //TODO: ADD IFSTATEMENT SO THAT THE TICKETS ONLY GETS REMOVED IF THE ORDER TRANSACTION SUCCEDS.
                 OrderAPIConsumer.Add(order);
+
+                //foreach(var orderline in order.OrderLines)
+                //{
+                //    Ticket ticket = _ticketAPIConsumer.GetTicketWithSectionAndEvent(orderline.TicketId);
+                    
+                //    ticket.Section.TicketAmount -= orderline.Quantity;
+                //    ticket.Event.TotalAmount -= orderline.Quantity;
+                //    _ticketAPIConsumer.Update(ticket);
+                //}
+
+
+
                 return View(order);
             }
             catch
