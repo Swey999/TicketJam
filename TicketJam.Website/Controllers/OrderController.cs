@@ -181,7 +181,26 @@ namespace TicketJam.Website.Controllers
                 }
 
                 var orders = OrderAPIConsumer.GetOrdersByCustomer(customer.Id);
-                
+
+                // Fetch ticket details for each order line
+                var ticketDetails = new List<Ticket>();
+                foreach (var order in orders)
+                {
+                    foreach(var orderLine in order.OrderLines)
+                    {
+                    // Fetch ticket from the API based on the ticketId
+                    var ticket = _ticketAPIConsumer.GetTicketWithSectionAndEvent(orderLine.TicketId);
+                    if (ticket != null && !ticketDetails.Any(t => t.Id == ticket.TicketId))
+                    {
+                        ticketDetails.Add(ticket);
+                    }
+
+                    }
+                }
+
+                // Store ticket details in ViewBag so the view has access to them
+                ViewBag.TicketDetails = ticketDetails;
+
                 return View("Purchases", orders);
             }
             catch 
