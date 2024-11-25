@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using TicketJam.Website.APIClient;
 using TicketJam.Website.APIClient.DTO;
+using TicketJam.Website.Models;
 
 namespace TicketJam.Website.Controllers
 {
@@ -165,6 +166,29 @@ namespace TicketJam.Website.Controllers
                 return View();
             }
         }
+
+        public ActionResult Purchases()
+        {
+            var userEmail = User.FindFirstValue(ClaimTypes.Email); // Get email from claims
+
+            try
+            {
+                Customer customer = customerAPIConsumer.GetCustomerByEmail(userEmail);
+
+                if (customer == null)
+                {
+                    return Redirect("/Customer/Create");
+                }
+
+                var orders = OrderAPIConsumer.GetOrdersByCustomer(customer.Id);
+                
+                return View("Purchases", orders);
+            }
+            catch 
+            {
+                return View();
+            }
+        }
         public ActionResult Add(int id, int quantity)
         {
             Order order = GetCartFromCookie();
@@ -233,5 +257,7 @@ namespace TicketJam.Website.Controllers
             SaveCartToCookie(order);
             return RedirectToAction("Create", "Order");
         }
+
+
     }
 }

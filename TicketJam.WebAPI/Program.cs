@@ -19,6 +19,7 @@ namespace TicketJam.WebAPI
             builder.Services.AddScoped<IDAO<Event>>(provider => new EventDAO(connectionString));
             builder.Services.AddScoped<IEventDAO>(provider => new EventDAO(connectionString));
             builder.Services.AddScoped<IDAO<Order>>(provider => new OrderDAO(connectionString));
+            builder.Services.AddScoped<IOrderDAO>(provider => new OrderDAO(connectionString));
             builder.Services.AddScoped<ITicketDAO>(provider => new TicketDAO(connectionString));
             builder.Services.AddScoped<IDAO<Ticket>>(provider => new TicketDAO(connectionString));
             builder.Services.AddScoped<ICustomerDAO>(provider => new CustomerDAO(connectionString));

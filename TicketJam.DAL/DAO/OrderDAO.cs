@@ -13,7 +13,7 @@ using static Dapper.SqlMapper;
 
 namespace TicketJam.DAL.DAO
 {
-    public class OrderDAO : IDAO<Order>
+    public class OrderDAO : IDAO<Order>, IOrderDAO
     {
         private string _connectionString;
         private string _INSERT_ORDER_QUERY = "INSERT INTO Orders (OrderNo, Customer_ID_FK) VALUES (@OrderNo, @CustomerId); SELECT CAST(SCOPE_IDENTITY() as int)";
@@ -24,6 +24,7 @@ namespace TicketJam.DAL.DAO
 
         private string _GET_ORDER_FROM_ID_QUERY = "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
         private string _GET_ID_FROM_ORDER_QUERY = "SELECT Id FROM Orders";
+        private string _GET_ORDERS_BY_CUSTOMERID = "SELECT * FROM Orders WHERE Customer_ID_FK = @CustomerId";
 
         //TODO: * skal rettes så vi ikke henter ALT op fra databasen. Det bliver en senere opgave. 
 
@@ -128,6 +129,7 @@ namespace TicketJam.DAL.DAO
             try
             {
                 return connection.Query<Order>(_GET_ID_FROM_ORDER_QUERY);
+
             }
             catch (SqlException e)
             {
@@ -138,6 +140,28 @@ namespace TicketJam.DAL.DAO
                 connection.Close();
             }
         }
+        public IEnumerable<Order> GetOrdersByCustomer(int customerId)
+        {
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            try
+            {
+                var orders = connection.Query<Order>(_GET_ORDERS_BY_CUSTOMERID, new { CustomerId = customerId }).ToList();
+
+                foreach (var order in orders)
+                {
+                    // Get order lines for each order
+                    order.OrderLines = connection.Query<OrderLine>(_ORDERLINE_JOIN_QUERY, new { orderId = order.Id }).ToList();
+                }
+                
+
+                return orders;
+            }
+            catch (SqlException e)
+            {
+                throw new Exception($"Error fetching orders for customer with ID: {customerId}. {e.Message}", e);
+            }
+        }
+
 
         public Order Update(Order entity)
         {

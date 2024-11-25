@@ -71,9 +71,19 @@ public class OrderAPIConsumer : IRestClient<Order>
 
             throw new Exception($"The Order failed to Post{ex.Message}", ex);
         }
+    }
 
+    public IEnumerable<Order> GetOrdersByCustomer(int customerId)
+    {
+        var client = new RestClient($"{BaseURI}/orders/{customerId}/purchases");
+        var response = client.Execute<IEnumerable<Order>>(new RestRequest());
 
+        if (!response.IsSuccessful || response.Data == null)
+        {
+            throw new Exception("Unable to fetch orders for the customer.");
+        }
 
+        return response.Data;
     }
 
     public Order Update(Order orderToUpdate)
