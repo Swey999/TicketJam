@@ -86,7 +86,7 @@ namespace TicketJam.DAL.DAO
             throw new NotImplementedException();
         }
 
-        public Ticket Update(int quantity, int ticketId)
+        public bool Update(int quantity, int ticketId)
         {
             using DbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
@@ -125,8 +125,17 @@ namespace TicketJam.DAL.DAO
                 }, transaction);
 
                 // Commit the transaction if both updates were successful
+                if(ticket.Event.TotalAmount - quantity < 0 || ticket.Section.TicketAmount - quantity < 0)
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+                else
+                {
                 transaction.Commit();
-                return ticket; // Return true if both were updated
+                return true; // Return true if both were updated
+                }
+              
             }
             catch (Exception ex)
             {

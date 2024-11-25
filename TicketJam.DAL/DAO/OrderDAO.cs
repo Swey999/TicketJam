@@ -60,7 +60,10 @@ namespace TicketJam.DAL.DAO
                 foreach (OrderLine orderline in entity.OrderLines)
                 {
                     connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = entity.Id, quantity = orderline.Quantity , ticketId = orderline.TicketId}, transaction);
-                    _ticketDao.Update(orderline.Quantity, orderline.TicketId);
+                    if(_ticketDao.Update(orderline.Quantity, orderline.TicketId) != true)
+                    {
+                        transaction.Rollback();
+                    }
                 }
                 transaction.Commit();
             }
