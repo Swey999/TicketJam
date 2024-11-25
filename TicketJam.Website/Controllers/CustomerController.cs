@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using TicketJam.DAL.DAO;
-using TicketJam.DAL.Model;
 using TicketJam.Website.APIClient;
 using TicketJam.Website.APIClient.DTO;
 

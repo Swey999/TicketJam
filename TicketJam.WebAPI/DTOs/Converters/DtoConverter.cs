@@ -8,15 +8,39 @@ namespace TicketJam.WebAPI.DTOs.Converters
         {
             var EventDto = new EventDto();
             eventToConvert.CopyPropertiesTo(EventDto);
+
+            // Explicitly convert Venue if it exists
+            if (eventToConvert.Venue != null)
+            {
+                EventDto.Venue = eventToConvert.Venue.ToDto();
+            }
+            if (eventToConvert.Venue.Address != null)
+            {
+                EventDto.Venue.Address = eventToConvert.Venue.Address.ToDto();
+            }
+
             return EventDto;
         }
+
 
         public static DAL.Model.Event FromDto(this EventDto eventDtoToConvert)
         {
             var Event = new DAL.Model.Event();
             eventDtoToConvert.CopyPropertiesTo(Event);
+
+            // Explicitly convert Venue if it exists
+            if (eventDtoToConvert.Venue != null)
+            {
+                Event.Venue = eventDtoToConvert.Venue.FromDto();
+            }
+            if (eventDtoToConvert.Venue.Address != null)
+            {
+                Event.Venue.Address = eventDtoToConvert.Venue.Address.FromDto();
+            }
+
             return Event;
         }
+
 
         public static EventDtoForeignKeys ToDtoForeignKey(this DAL.Model.Event eventToConvert)
         {
@@ -89,6 +113,37 @@ namespace TicketJam.WebAPI.DTOs.Converters
             foreach (var venueDtos in venueDtosToConvert)
             {
                 yield return venueDtos.FromDto();
+            }
+        }
+
+
+        public static AddressDto ToDto(this DAL.Model.Address addressToConvert)
+        {
+            var addressDto = new AddressDto();
+            addressToConvert.CopyPropertiesTo(addressDto);
+            return addressDto;
+        }
+
+        public static DAL.Model.Address FromDto(this AddressDto addressDtoToConvert)
+        {
+            var Address = new DAL.Model.Address();
+            addressDtoToConvert.CopyPropertiesTo(Address);
+            return Address;
+        }
+
+        public static IEnumerable<AddressDto> ToDtos(this IEnumerable<DAL.Model.Address> addressToConvert)
+        {
+            foreach (var Address in addressToConvert)
+            {
+                yield return Address.ToDto();
+            }
+        }
+
+        public static IEnumerable<DAL.Model.Address> FromDtos(this IEnumerable<AddressDto> addressDtosToConvert)
+        {
+            foreach (var addressDtos in addressDtosToConvert)
+            {
+                yield return addressDtos.FromDto();
             }
         }
 
