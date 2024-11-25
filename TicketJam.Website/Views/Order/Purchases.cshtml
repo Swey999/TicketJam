@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TicketJam.Website.APIClient.DTO.Order>
+
+@{
+    ViewData["Title"] = "Your Purchases";
+}
+
+<h1>Your Purchases</h1>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order No</th>
+                <th>Ticket</th>
+                <th>Quantity</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderNo</td>
+                    <td>
+                        <table>
+                            @foreach (var orderLine in order.OrderLines)
+                            {
+                                <tr>
+                                    <td>@orderLine.TicketId</td>
+                                </tr>
+                            
+                            }
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            @foreach (var orderLine in order.OrderLines)
+                            {
+                                <tr>
+                                    <td>@orderLine.Quantity</td>
+                                </tr>
+
+                            }
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No purchases found.</p>
+}

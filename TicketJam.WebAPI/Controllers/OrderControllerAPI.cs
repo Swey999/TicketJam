@@ -11,9 +11,12 @@ namespace TicketJam.WebAPI.Controllers
     public class OrderControllerAPI : ControllerBase
     {
         public IDAO<Order> _orderDAO;
+        public IOrderDAO _orderDAO2;
 
-        public OrderControllerAPI(IDAO<Order> iDAO) {
+        public OrderControllerAPI(IDAO<Order> iDAO, IOrderDAO orderDAO)
+        {
             _orderDAO = iDAO;
+            _orderDAO2 = orderDAO;
         }
 
         // GET: api/<OrderControllerAPI>
@@ -74,6 +77,19 @@ namespace TicketJam.WebAPI.Controllers
             {
                 return Ok();
             }
+        }
+
+        // GET api/v1/OrderControllerAPI/orders/{customerId}/purchases
+        [HttpGet("orders/{customerId}/purchases")]
+        public ActionResult<IEnumerable<Order>> GetOrdersByCustomer(int customerId)
+        {
+            var orders = _orderDAO2.GetOrdersByCustomer(customerId);
+            if (orders == null || !orders.Any())
+            {
+                return NotFound($"No orders found for customer with ID {customerId}");
+            }
+            return Ok(orders);
+
         }
     }
 }
