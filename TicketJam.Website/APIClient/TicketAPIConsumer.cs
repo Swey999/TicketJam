@@ -58,6 +58,20 @@ namespace TicketJam.Website.APIClient
             return response.Data;
         }
 
+        public Ticket TicketWithSectionAndEvent(int id)
+        {
+            var client = new RestClient($"{BaseURI}/TicketsFromOrder/{id}");
+
+            var response = client.ExecuteGet<Ticket>(new RestRequest());
+
+            if (!response.IsSuccessful || response == null)
+            {
+                throw new Exception("Unable to call that thing that thing");
+            }
+
+            return response.Data;
+        }
+
         public Ticket Update(Ticket ticketToUpdate)
         {
             // Ensure BaseURI includes the correct base URL

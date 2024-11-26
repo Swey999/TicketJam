@@ -18,6 +18,8 @@ namespace TicketJam.DAL.DAO
         private string _GET_BY_ID = "SELECT Id, Description, TicketId, Price, TicketCategory, TimeCreated, Section_ID_FK, Event_ID_FK from Ticket WHERE id = @id";
         private string _updateTicketAmountSQL = "UPDATE Section SET TicketAmount = @TicketAmount FROM Section JOIN Ticket ON Ticket.Section_ID_FK = Section.Id WHERE Section.Id = @SectionId;";
         private string _GET_TICKET_FROM_ID_JOIN = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE Ticket.Id = @TicketId";
+        private string _GET_TICKET_FROM_TICKETID_JOIN = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE TicketId = @TicketId";
+
         public TicketDAO(String connectionStringns)
         {
             this._connectionString = connectionStringns;
@@ -60,6 +62,32 @@ namespace TicketJam.DAL.DAO
             }
         }
 
+        public Ticket TicketWithSectionAndEvent(int ticketId)
+        {
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            try
+            {
+                // Query to join Ticket with Section and Event
+
+                // Execute query and map the result
+                var ticket = connection.Query<Ticket, Section, Event, Ticket>(
+                    _GET_TICKET_FROM_TICKETID_JOIN,
+                    (t, s, e) =>
+                    {
+                        t.Section = s;
+                        t.Event = e;
+                        return t;
+                    },
+                    new { TicketId = ticketId })
+                    .SingleOrDefault();
+
+                return ticket;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving ticket with ID: {ticketId}, error: {ex.Message}", ex);
+            }
+        }
 
 
         public Ticket GetById(int id)

@@ -60,6 +60,21 @@ namespace TicketJam.WebAPI.Controllers
 
         }
 
+        [HttpGet("TicketsFromOrder/{id}")]
+        public ActionResult<Ticket> TicketWithSectionAndEvent(int Id)
+        {
+            Ticket ticket = _ITicketDAO.TicketWithSectionAndEvent(Id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(ticket);
+            }
+
+        }
+
 
 
         // POST api/<TicketController>

@@ -189,7 +189,7 @@ namespace TicketJam.Website.Controllers
                     foreach(var orderLine in order.OrderLines)
                     {
                     // Fetch ticket from the API based on the ticketId
-                    var ticket = _ticketAPIConsumer.GetTicketWithSectionAndEvent(orderLine.TicketId);
+                    var ticket = _ticketAPIConsumer.TicketWithSectionAndEvent(orderLine.TicketId);
                     if (ticket != null && !ticketDetails.Any(t => t.Id == ticket.TicketId))
                     {
                         ticketDetails.Add(ticket);
@@ -197,9 +197,9 @@ namespace TicketJam.Website.Controllers
 
                     }
                 }
-
                 // Store ticket details in ViewBag so the view has access to them
                 ViewBag.TicketDetails = ticketDetails;
+
 
                 return View("Purchases", orders);
             }

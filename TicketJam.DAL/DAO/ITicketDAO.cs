@@ -10,5 +10,6 @@ namespace TicketJam.DAL.DAO
     public interface ITicketDAO
     {
         public Ticket GetTicketWithSectionAndEvent(int ticketId);
+        public Ticket TicketWithSectionAndEvent(int ticketId);
     }
 }

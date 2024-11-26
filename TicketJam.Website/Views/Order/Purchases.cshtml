@@ -13,55 +13,31 @@
         <thead>
             <tr>
                 <th>Order No</th>
-                <th>Ticket</th>
                 <th>Quantity</th>
+                <th>Section Description</th>
                 <th>Details</th>
+                <th>Total Price</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var order in Model)
             {
-                <tr>
-                    <td>@order.OrderNo</td>
-                    <td>
-                        <table>
-                            @foreach (var orderLine in order.OrderLines)
-                            {
-                                <tr>
-                                    <td>@orderLine.TicketId</td>
-                                </tr>
-                            
-                            }
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            @foreach (var orderLine in order.OrderLines)
-                            {
-                                var tickets = ViewBag.TicketDetails as List<Ticket>;
-                             
-                                    var ticket = tickets?.FirstOrDefault(t => t.Id == orderLine.TicketId);
-                                    if (ticket != null)
-                                    {
-                                        <div class="row" style="padding-top:2px;">
-                                            <div class="col-6">
-                                                @orderLine.Quantity x @ticket.Description (Category: @ticket.TicketCategory) at $@ticket.Price each
-                                            </div>
-                                            <div class="col-3">
-                                                total $@(orderLine.Quantity * ticket.Price)
-                                            </div>
-                                            <div class="col-3">
-                                            </div>
-                                        </div>
-                                    }
-                                
+                foreach (var orderLine in order.OrderLines)
+                {
+                    var tickets = ViewBag.TicketDetails as List<Ticket>;
+                    var ticket = tickets?.FirstOrDefault(t => t.TicketId == orderLine.TicketId);
 
-                            }
-
-
-                        </table>
-                    </td>
-                </tr>
+                    if (ticket != null)
+                    {
+                        <tr>
+                            <td>@order.OrderNo</td>
+                            <td>@orderLine.Quantity</td>
+                            <td>@ticket.Section.Description</td>
+                            <td>@ticket.Description (Category: @ticket.TicketCategory) at $@ticket.Price each</td>
+                            <td>$@(orderLine.Quantity * ticket.Price)</td>
+                        </tr>
+                    }
+                }
             }
         </tbody>
     </table>
