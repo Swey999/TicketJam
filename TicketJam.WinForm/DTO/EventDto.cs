@@ -17,5 +17,6 @@ namespace TicketJam.WinForm.DTO
         public int VenueId { get; set; }
         public int OrganizerId { get; set; }
 
+
     }
 }

@@ -66,6 +66,9 @@ namespace TicketJam.Website.Controllers
             // Store ticket details in ViewBag so the view has access to them
             ViewBag.TicketDetails = ticketDetails;
 
+            // Store same ticket details in TempData for display in Confirmation view to reduce API calls
+            TempData["TicketDetails"] = JsonSerializer.Serialize(ticketDetails);
+
 
 
             if (customer == null)
@@ -104,20 +107,24 @@ namespace TicketJam.Website.Controllers
 
                 //Count ticketAmount on Section down and ticketamount on Event.
                 //TODO: ADD IFSTATEMENT SO THAT THE TICKETS ONLY GETS REMOVED IF THE ORDER TRANSACTION SUCCEDS.
-                OrderAPIConsumer.Add(order);
+                order = OrderAPIConsumer.Add(order);
 
                 //foreach(var orderline in order.OrderLines)
                 //{
                 //    Ticket ticket = _ticketAPIConsumer.GetTicketWithSectionAndEvent(orderline.TicketId);
-                    
+
                 //    ticket.Section.TicketAmount -= orderline.Quantity;
                 //    ticket.Event.TotalAmount -= orderline.Quantity;
                 //    _ticketAPIConsumer.Update(ticket);
                 //}
 
+                var ticketDetailsSerialized = TempData["TicketDetails"] as string;
+                var ticketDetails = string.IsNullOrEmpty(ticketDetailsSerialized)
+                    ? new List<Ticket>()
+                    : JsonSerializer.Deserialize<List<Ticket>>(ticketDetailsSerialized);
+                ViewBag.TicketDetails = ticketDetails;
 
-
-                return View(order);
+                return View("Confirmation", order);
             }
             catch
             {
