@@ -65,7 +65,8 @@ namespace TicketJam.Website.Controllers
 
             // Store ticket details in ViewBag so the view has access to them
             ViewBag.TicketDetails = ticketDetails;
-
+            ViewBag.Customer = customer;
+            ViewBag.CustomerAddress = customer.Address;
 
 
             if (customer == null)
@@ -109,7 +110,7 @@ namespace TicketJam.Website.Controllers
                 //foreach(var orderline in order.OrderLines)
                 //{
                 //    Ticket ticket = _ticketAPIConsumer.GetTicketWithSectionAndEvent(orderline.TicketId);
-                    
+
                 //    ticket.Section.TicketAmount -= orderline.Quantity;
                 //    ticket.Event.TotalAmount -= orderline.Quantity;
                 //    _ticketAPIConsumer.Update(ticket);
