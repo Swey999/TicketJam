@@ -65,6 +65,8 @@ namespace TicketJam.Website.Controllers
 
             // Store ticket details in ViewBag so the view has access to them
             ViewBag.TicketDetails = ticketDetails;
+            ViewBag.Customer = customer;
+            ViewBag.CustomerAddress = customer.Address;
 
             // Store same ticket details in TempData for display in Confirmation view to reduce API calls
             TempData["TicketDetails"] = JsonSerializer.Serialize(ticketDetails);
