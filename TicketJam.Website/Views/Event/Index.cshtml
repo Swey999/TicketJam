@@ -4,52 +4,102 @@
     ViewData["Title"] = "Upcoming Events";
 }
 
-<h1 class="display-4" style="color: #e74c3c; font-weight: bold;">Upcoming Events </h1>
+<h1 class="display-4" style="color: #e74c3c; font-weight: bold;">Upcoming Events</h1>
 
-<div class="event-list">
-    @foreach (var eventItem in Model)
-    {
-        <div class="event-card">
-            <div class="event-info">
-                <h2 class="event-title">@eventItem.Name</h2>
-                <p class="event-date"><strong>Date:</strong> @eventItem.StartDate.ToString("D")</p>
-                <p class="event-totalAmount"><strong>Tickets left:</strong> @eventItem.TotalAmount</p>
-                <p class="event-location"><strong>Location:</strong> 
-                    @eventItem.Venue.Address.City,
-                    @eventItem.Venue.Address.StreetName,
-                    @eventItem.Venue.Address.HouseNo,
-                    @eventItem.Venue.Address.Zip
-                </p>
-            </div>  
-            <a asp-action="Details" asp-route-id="@eventItem.Id" class="details-button">Køb Billet</a>
-        </div>
-    }
+<!-- Container for both event list and filter form -->
+<div class="content-container">
+    <!-- Event List Section -->
+    <div id="eventList" class="event-list">
+        @foreach (var eventItem in Model)
+        {
+            <div class="event-card" data-venue="@eventItem.Venue.Address.City" data-name="@eventItem.Name" data-city="@eventItem.Venue.Address.City">
+                <div class="event-info">
+                    <h2 class="event-title">@eventItem.Name</h2>
+                    <p class="event-date"><strong>Date:</strong> @eventItem.StartDate.ToString("D")</p>
+                    <p class="event-venue"><strong>Venue:</strong> @eventItem.Venue.Name</p>
+                    <p class="event-totalAmount"><strong>Tickets left:</strong> @eventItem.TotalAmount</p>
+                    <p class="event-location">
+                        <strong>Location:</strong>
+                        @eventItem.Venue.Address.City,
+                        @eventItem.Venue.Address.StreetName,
+                        @eventItem.Venue.Address.HouseNo,
+                        @eventItem.Venue.Address.Zip
+                    </p>
+                </div>
+                <a asp-action="Details" asp-route-id="@eventItem.Id" class="details-button">Køb Billet</a>
+            </div>
+        }
+    </div>
 
+    <!-- Filter Section (Right Hand Side) -->
+    <div class="filter-section">
+        <!-- Filter Form -->
+        <form id="filterForm" class="filter-form">
+            <div class="filter-options">
+                <!-- Venue Filter -->
+                <select id="venueFilter" class="form-control">
+                    <option value="">Select Venue</option>
+                    @foreach (var venue in Model.Select(e => e.Venue.Name).Distinct())
+                    {
+                        <option value="@venue">@venue</option>
+                    }
+                </select>
+
+                <!-- City Filter -->
+                <select id="cityFilter" class="form-control">
+                    <option value="">Select City</option>
+                    @foreach (var city in Model.Select(e => e.Venue.Address.City).Distinct())
+                    {
+                        <option value="@city">@city</option>
+                    }
+                </select>
+
+                <!-- Event Name Filter -->
+                <input type="text" id="eventNameFilter" class="form-control" placeholder="Filter by Event Name" />
+
+            </div>
+        </form>
+    </div>
 </div>
 
-<!-- Inline CSS within the Razor view -->
+<!-- Inline CSS for Layout -->
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f9;
-        margin: 0;
-        padding: 20px;
-    }
-
-    h1 {
-        color: #333;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .event-list {
+    /* Flexbox layout for the container */
+    .content-container {
         display: flex;
-        flex-direction: column;
-        gap: 20px;
-        max-width: 900px;
+        justify-content: space-between;
+        gap: 20px; /* Space between the event list and filter */
+        max-width: 1200px;
         margin: 0 auto;
     }
 
+    /* Event List Styles */
+    .event-list {
+        flex: 3; /* The event list takes up most of the space */
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    /* Filter Section Styles */
+    .filter-section {
+        flex: 1; /* The filter section takes up less space */
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .filter-options select,
+    .filter-options input,
+    .filter-options button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* Your existing event card styles here */
     .event-card {
         background-color: #fff;
         border-radius: 8px;
@@ -62,19 +112,6 @@
         box-sizing: border-box;
     }
 
-    .event-title {
-        font-size: 1.6em;
-        color: #333;
-        margin: 0;
-    }
-
-    .event-date,
-    .event-location,
-    .event-totalAmount {
-        color: #777;
-        font-size: 1em;
-    }
-
     .details-button {
         padding: 10px 20px;
         background-color: #e74c3c;
@@ -85,11 +122,49 @@
         text-transform: uppercase;
         font-weight: bold;
         text-decoration: none;
-        align-self: flex-start; /* Align the button to the left */
+        align-self: flex-start;
     }
 
         .details-button:hover {
             background-color: #b93d31;
-            color: white;
         }
 </style>
+
+<!-- JavaScript for client-side filtering -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const venueFilter = document.getElementById("venueFilter");
+        const cityFilter = document.getElementById("cityFilter");
+        const eventNameFilter = document.getElementById("eventNameFilter");
+        const eventList = document.getElementById("eventList");
+        const events = eventList.getElementsByClassName("event-card");
+
+        function filterEvents() {
+            const venueValue = venueFilter.value.toLowerCase();
+            const cityValue = cityFilter.value.toLowerCase();
+            const eventNameValue = eventNameFilter.value.toLowerCase();
+
+            Array.from(events).forEach(function (eventCard) {
+                const eventVenue = eventCard.getAttribute("data-venue").toLowerCase();
+                const eventCity = eventCard.getAttribute("data-city").toLowerCase();
+                const eventName = eventCard.getAttribute("data-name").toLowerCase();
+
+                // Check if the event matches the filter criteria
+                const matchesVenue = venueValue === "" || eventVenue.includes(venueValue);
+                const matchesCity = cityValue === "" || eventCity.includes(cityValue);
+                const matchesEventName = eventName.includes(eventNameValue);
+
+                if (matchesVenue && matchesCity && matchesEventName) {
+                    eventCard.style.display = ""; // Show event
+                } else {
+                    eventCard.style.display = "none"; // Hide event
+                }
+            });
+        }
+
+        // Attach event listeners to filter inputs
+        venueFilter.addEventListener("change", filterEvents);
+        cityFilter.addEventListener("change", filterEvents);
+        eventNameFilter.addEventListener("input", filterEvents);
+    });
+</script>

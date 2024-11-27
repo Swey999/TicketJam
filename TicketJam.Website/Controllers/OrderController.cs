@@ -78,6 +78,8 @@ namespace TicketJam.Website.Controllers
             return View(order);
         }
 
+
+
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -112,7 +114,7 @@ namespace TicketJam.Website.Controllers
                 //foreach(var orderline in order.OrderLines)
                 //{
                 //    Ticket ticket = _ticketAPIConsumer.GetTicketWithSectionAndEvent(orderline.TicketId);
-
+                    
                 //    ticket.Section.TicketAmount -= orderline.Quantity;
                 //    ticket.Event.TotalAmount -= orderline.Quantity;
                 //    _ticketAPIConsumer.Update(ticket);
@@ -282,6 +284,13 @@ namespace TicketJam.Website.Controllers
             }
             SaveCartToCookie(order);
             return RedirectToAction("Create", "Order");
+        }
+
+        public void EmptyCart()
+        {
+            Order order = GetCartFromCookie();
+            order.OrderLines = new List<OrderLine>(); //Check om det virker nyt shit
+            SaveCartToCookie(order);
         }
 
 
