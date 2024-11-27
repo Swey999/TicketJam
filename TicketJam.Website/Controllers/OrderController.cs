@@ -76,6 +76,8 @@ namespace TicketJam.Website.Controllers
             return View(order);
         }
 
+
+
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -103,18 +105,9 @@ namespace TicketJam.Website.Controllers
                 order.OrderNo = 1492;
                 order.CustomerId = customer.Id;
 
-                //Count ticketAmount on Section down and ticketamount on Event.
-                //TODO: ADD IFSTATEMENT SO THAT THE TICKETS ONLY GETS REMOVED IF THE ORDER TRANSACTION SUCCEDS.
                 OrderAPIConsumer.Add(order);
 
-                //foreach(var orderline in order.OrderLines)
-                //{
-                //    Ticket ticket = _ticketAPIConsumer.GetTicketWithSectionAndEvent(orderline.TicketId);
-
-                //    ticket.Section.TicketAmount -= orderline.Quantity;
-                //    ticket.Event.TotalAmount -= orderline.Quantity;
-                //    _ticketAPIConsumer.Update(ticket);
-                //}
+                EmptyCart();
 
 
 
@@ -276,6 +269,13 @@ namespace TicketJam.Website.Controllers
             }
             SaveCartToCookie(order);
             return RedirectToAction("Create", "Order");
+        }
+
+        public void EmptyCart()
+        {
+            Order order = GetCartFromCookie();
+            order.OrderLines = new List<OrderLine>(); //Check om det virker nyt shit
+            SaveCartToCookie(order);
         }
 
 
