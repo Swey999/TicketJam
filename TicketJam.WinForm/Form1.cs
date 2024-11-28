@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.ComponentModel;
 using TicketJam.WinForm.ApiClient;
 using TicketJam.WinForm.DTO;
 using TicketJam.WinForm.Stubs;
@@ -7,7 +9,8 @@ namespace TicketJam.WinForm
     public partial class Form1 : Form
     {
         private OrganizerDto _organizerDto;
-        public EventDto _Event = new EventDto();
+        private EventDto _Event = new EventDto();
+        public BindingList<TicketDto> _ticketList = new BindingList<TicketDto>();
         private List<VenueDto> list = new List<VenueDto>();
         //Insert dependency injection for baseuri
         private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/EventControllerAPI");
@@ -20,6 +23,7 @@ namespace TicketJam.WinForm
             _organizerDto = organizerDto;
             InitializeComponent();
             list = (List<VenueDto>)GetVenueList();
+            lstBoxTicket.DataSource = _ticketList;
         }
 
         private void comboBoxVenueList_SelectedIndexChanged(object sender, EventArgs e)
@@ -51,6 +55,7 @@ namespace TicketJam.WinForm
             VenueDto tempObject = (VenueDto)comboBoxVenueList.SelectedItem;
             _Event.OrganizerId = _organizerDto.Id;
             _Event.VenueId = tempObject.Id;
+            _Event.ticketDtosList = _ticketList.ToList<TicketDto>();
             _eventAPIConsumer.AddEvent(_Event);
         }
 
@@ -67,7 +72,7 @@ namespace TicketJam.WinForm
         private void createTicketType()
         {
             //Har ikke kunne ændre cboxTicketCategory til CreateTicket...
-            cboxTicketCategory CreateTicket = new cboxTicketCategory(_Event);
+            cboxTicketCategory CreateTicket = new cboxTicketCategory(_ticketList);
             CreateTicket.Show();
         }
 
