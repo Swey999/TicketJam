@@ -82,6 +82,10 @@ namespace TicketJam.WebAPI.DTOs.Converters
         {
             var EventDto = new EventDtoForeignKeys();
             eventToConvert.CopyPropertiesTo(EventDto);
+            if (eventToConvert.TicketList != null && eventToConvert.TicketList.Count < 0)
+            {
+                //eventToConvert.TicketList<TicketDto>.FromDtos();
+            }
             return EventDto;
         }
 
@@ -204,5 +208,12 @@ namespace TicketJam.WebAPI.DTOs.Converters
             }
         }
 
+        public static IEnumerable<DAL.Model.Ticket> FromDtos(this List<TicketDto> ticketDtosToConvert)
+        {
+            foreach (var ticketDto in ticketDtosToConvert)
+            {
+                yield return ticketDto.FromDto();
+            }
+        }
     }
 }

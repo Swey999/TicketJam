@@ -28,7 +28,7 @@ namespace TicketJam.DAL.DAO
 
         //TODO: * skal rettes så vi ikke henter ALT op fra databasen. Det bliver en senere opgave. 
 
-        private string _ORDERLINE_JOIN_QUERY = "SELECT DISTINCT Orderline.*, Ticket.*, Section.*, Venue.*, Event.*, Address.* FROM Orderline JOIN Ticket ON Ticket.Id = Orderline.Ticket_ID_FK JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Event ON Venue.Id = Event.Venue_ID_FK JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Orderline.Order_ID_FK = @orderId";
+        private string _ORDERLINE_JOIN_QUERY = "SELECT DISTINCT OL.*, T.*, S.*, V.*, E.*, A.* FROM Orderline OL JOIN Ticket T ON T.Id = OL.Ticket_ID_FK JOIN Section S ON S.Id = T.Section_ID_FK JOIN Venue V ON V.Id = S.Venue_ID_FK JOIN Event E ON E.Id = T.Event_ID_FK JOIN Address A ON A.Id = V.Address_ID_FK WHERE OL.Order_ID_FK = @orderId;\r\n\r\n\r\n\r\n\r\n\r\n";
 
         private TicketDAO _ticketDao;
 

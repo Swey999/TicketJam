@@ -43,6 +43,7 @@ namespace TicketJam.WebAPI.Controllers
         {
             int id = _eventDAO.InsertEvent(eventObject.FromDto(), eventObject.OrganizerId, eventObject.VenueId);
             return Ok(eventObject);
+            return null;
         }
 
         [HttpGet]

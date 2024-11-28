@@ -9,5 +9,7 @@
         public DateTime EndDate { get; set; }
         public int VenueId { get; set; }
         public int OrganizerId { get; set; }
+
+        public List<TicketDto> ticketDtosList { get; set; } = new List<TicketDto>();
     }
 }

@@ -17,26 +17,54 @@
 }
 else
 {
-    var tickets = ViewBag.TicketDetails as List<Ticket>;
-    @foreach (var orderLine in Model.OrderLines)
-    {
-        var ticket = tickets?.FirstOrDefault(t => t.Id == orderLine.TicketId);
-        if (ticket != null)
-        {
-            <div class="row" style="padding-top:2px;">
-                <div class="col-6">
-                    @orderLine.Quantity x @ticket.Description (Category: @ticket.TicketCategory) at $@ticket.Price each
+    <h4>Order Summary</h4>
+    <div class="card mb-4">
+        <!-- Add Order Number -->
+        <div class="card-header text-center" style="background-color: #e74c3c; color: white;">
+            <h4>Your Order Number: <strong>@Model.OrderNo</strong></h4>
+        </div>
+
+        <div class="card-body">
+            @if (ViewBag.TicketDetails != null)
+            {
+                var tickets = ViewBag.TicketDetails as List<Ticket>;
+
+                <div class="row">
+                    @foreach (var orderLine in Model.OrderLines)
+                    {
+                        var ticket = tickets?.FirstOrDefault(t => t.Id == orderLine.TicketId);
+                        if (ticket != null)
+                        {
+                            <div class="col-md-12 mb-3">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- Ticket Details -->
+                                            <div class="col-md-6">
+                                                <h6><strong>@ticket.Description</strong></h6>
+                                                <p>Category: @ticket.TicketCategory</p>
+                                                <p>Price: $@ticket.Price each</p>
+                                            </div>
+                                            <!-- Quantity and Total -->
+                                            <div class="col-md-3 text-center">
+                                                <p><strong>Quantity:</strong> @orderLine.Quantity</p>
+                                                <p><strong>Total:</strong> $@(orderLine.Quantity * ticket.Price)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
-                <div class="col-3">
-                    total $@(orderLine.Quantity * ticket.Price)
-                </div>
-            </div>
-        }
-    }
+            }
+        </div>
+    </div>
 }
 
-<h2>Your order number is: @Model.OrderNo</h2>
-
+<a href="/Order/Purchases" class="btn btn-primary">
+    View your purchases
+</a>
 
 
             <p>
