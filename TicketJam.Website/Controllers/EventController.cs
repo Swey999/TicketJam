@@ -114,38 +114,89 @@ namespace TicketJam.Website.Controllers
                 return View();
             }
         }
+
         public IActionResult Add(int id, int quantity)
         {
             try
             {
-                Order order = GetCartFromCookie();
-                OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == id);
-                if (existingOrderLine != null)
+                Ticket ticket = _ticketAPIConsumer.GetTicketWithSectionAndEvent(id); // Fetch the ticket
+                Order order = GetCartFromCookie(); // Get the current cart
+
+                // Validate that the ticket's event matches the event in the cart
+                if (!IsSameEvent(order, ticket))
                 {
-                    existingOrderLine.Quantity += quantity;
-                    if (existingOrderLine.Quantity <= 0)
-                    {
-                        order.OrderLines.Remove(existingOrderLine);
-                    }
-                }
-                else
-                {
-                    OrderLine newOrderLine = new OrderLine
-                    {
-                        TicketId = _ticketAPIConsumer.GetById(id).Id,
-                        Quantity = quantity
-                    };
-                    order.OrderLines.Add(newOrderLine);
+                    return Ok(new { success = false, message = "Cannot buy tickets from multiple events." });
                 }
 
-                SaveCartToCookie(order);
-                return Ok(new { success = true, message = "Item added to basket" });
+                // Add or update the order line
+                if (!TryAddOrUpdateOrderLine(order, ticket, quantity))
+                {
+                    return Ok(new { success = false, message = "Too many tickets per person." });
+                }
+
+                SaveCartToCookie(order); // Save the updated cart
+                return Ok(new { success = true, message = "Item added to basket." });
             }
             catch (Exception ex)
             {
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
+
+        private bool IsSameEvent(Order order, Ticket ticket)
+        {
+            if (!order.OrderLines.Any()) return true; // No tickets in cart, any event is valid
+
+            // Get the EventId of the first ticket in the cart
+            int existingEventId = _ticketAPIConsumer.GetTicketWithSectionAndEvent(order.OrderLines.First().TicketId).Event.Id;
+
+            // Check if the ticket's event matches the existing event
+            return ticket.Event.Id == existingEventId;
+        }
+
+        private bool TryAddOrUpdateOrderLine(Order order, Ticket ticket, int quantity)
+        {
+            // Find the existing order line for this ticket
+            OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == ticket.Id);
+
+            if (existingOrderLine != null)
+            {
+                // Check if the new total quantity exceeds MaxAmount
+                if (existingOrderLine.Quantity + quantity > ticket.MaxAmount)
+                {
+                    return false; // Adding this quantity exceeds the max amount
+                }
+
+                existingOrderLine.Quantity += quantity;
+
+                // Remove the order line if quantity becomes zero or less
+                if (existingOrderLine.Quantity <= 0)
+                {
+                    order.OrderLines.Remove(existingOrderLine);
+                }
+            }
+            else
+            {
+                // Check if the new quantity exceeds MaxAmount
+                if (quantity > ticket.MaxAmount)
+                {
+                    return false; // Adding this quantity exceeds the max amount
+                }
+
+                // Add a new order line
+                OrderLine newOrderLine = new OrderLine
+                {
+                    TicketId = ticket.Id,
+                    Quantity = quantity
+                };
+                order.OrderLines.Add(newOrderLine);
+            }
+
+            return true;
+        }
+
+
+
 
         public Order GetCartFromCookie()
         {

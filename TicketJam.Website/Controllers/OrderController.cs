@@ -48,6 +48,11 @@ namespace TicketJam.Website.Controllers
 
             Customer customer = customerAPIConsumer.GetCustomerByEmail(userEmail);
 
+            if (customer == null)
+            {
+                return Redirect("/Customer/Create");
+            }
+
             Request.Cookies.TryGetValue("Order", out string? cookie);
             Order order = JsonSerializer.Deserialize<Order>(cookie) ?? new Order();
 
@@ -73,10 +78,6 @@ namespace TicketJam.Website.Controllers
 
 
 
-            if (customer == null)
-            {
-                return Redirect("/Customer/Create");
-            }
             return View(order);
         }
 

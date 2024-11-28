@@ -15,10 +15,12 @@ namespace TicketJam.WinForm
     public partial class cboxTicketCategory : Form
     {
         private List<TicketDto> _list = new List<TicketDto>();
+        private BindingList<TicketDto> _bindingList = new BindingList<TicketDto>();
 
-        public cboxTicketCategory()
+        public cboxTicketCategory(BindingList<TicketDto> list)
         {
             InitializeComponent();
+            this._bindingList = list;
         }
 
 
@@ -35,8 +37,9 @@ namespace TicketJam.WinForm
             ticketDto.TimeCreated = DateTime.Now;
             TicketDto tempObject = (TicketDto)comboBoxTicketCategory.SelectedItem;
             ticketDto.TicketCategory = tempObject.TicketCategory;
-
-
+            _bindingList.Add(ticketDto);
+            MessageBox.Show("Good job!", "Created new ticket!", MessageBoxButtons.OK);
+            this.Close();
         }
 
 
