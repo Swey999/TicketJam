@@ -24,5 +24,11 @@ namespace TicketJam.WinForm.ApiClient
         {
             return VenueStub.GetAll();
         }
+
+        public IEnumerable<TicketDto> GetAllTickets()
+        {
+            return TicketStub.GetAllTickets();
+        }
+
     }
 }

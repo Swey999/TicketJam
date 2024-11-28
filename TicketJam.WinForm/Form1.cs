@@ -12,6 +12,9 @@ namespace TicketJam.WinForm
         //Insert dependency injection for baseuri
         private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/EventControllerAPI");
         private VenueAPIConsumer _venueAPIConsumer = new VenueAPIConsumer("https://localhost:7280/api/VenueControllerAPI");
+        
+
+
         public Form1(OrganizerDto organizerDto)
         {
             _organizerDto = organizerDto;
@@ -51,10 +54,26 @@ namespace TicketJam.WinForm
             _eventAPIConsumer.AddEvent(_Event);
         }
 
-        public IEnumerable<VenueDto> GetVenueList() 
+        public IEnumerable<VenueDto> GetVenueList()
         {
             return _venueAPIConsumer.GetVenues();
         }
 
+        private void btnCreateTicketType_Click(object sender, EventArgs e)
+        {
+            createTicketType();
+        }
+
+        private void createTicketType()
+        {
+            //Har ikke kunne ændre cboxTicketCategory til CreateTicket...
+            cboxTicketCategory CreateTicket = new cboxTicketCategory();
+            CreateTicket.Show();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

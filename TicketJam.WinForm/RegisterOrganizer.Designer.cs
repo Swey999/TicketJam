@@ -39,57 +39,65 @@
             // 
             // txtEmailReadOnly
             // 
-            txtEmailReadOnly.Location = new Point(12, 36);
+            txtEmailReadOnly.Location = new Point(10, 27);
+            txtEmailReadOnly.Margin = new Padding(3, 2, 3, 2);
             txtEmailReadOnly.Name = "txtEmailReadOnly";
             txtEmailReadOnly.ReadOnly = true;
-            txtEmailReadOnly.Size = new Size(125, 27);
+            txtEmailReadOnly.Size = new Size(110, 23);
             txtEmailReadOnly.TabIndex = 0;
             txtEmailReadOnly.Text = "Email";
             // 
             // txtEmailWrite
             // 
-            txtEmailWrite.Location = new Point(12, 69);
+            txtEmailWrite.Location = new Point(10, 52);
+            txtEmailWrite.Margin = new Padding(3, 2, 3, 2);
             txtEmailWrite.Name = "txtEmailWrite";
-            txtEmailWrite.Size = new Size(125, 27);
+            txtEmailWrite.Size = new Size(110, 23);
             txtEmailWrite.TabIndex = 1;
+            txtEmailWrite.TextChanged += txtEmailWrite_TextChanged;
             // 
             // txtPhoneNoReadOnly
             // 
-            txtPhoneNoReadOnly.Location = new Point(12, 117);
+            txtPhoneNoReadOnly.Location = new Point(10, 88);
+            txtPhoneNoReadOnly.Margin = new Padding(3, 2, 3, 2);
             txtPhoneNoReadOnly.Name = "txtPhoneNoReadOnly";
             txtPhoneNoReadOnly.ReadOnly = true;
-            txtPhoneNoReadOnly.Size = new Size(125, 27);
+            txtPhoneNoReadOnly.Size = new Size(110, 23);
             txtPhoneNoReadOnly.TabIndex = 2;
             txtPhoneNoReadOnly.Text = "Phone number";
             // 
             // txtPhoneNoWrite
             // 
-            txtPhoneNoWrite.Location = new Point(12, 150);
+            txtPhoneNoWrite.Location = new Point(10, 112);
+            txtPhoneNoWrite.Margin = new Padding(3, 2, 3, 2);
             txtPhoneNoWrite.Name = "txtPhoneNoWrite";
-            txtPhoneNoWrite.Size = new Size(125, 27);
+            txtPhoneNoWrite.Size = new Size(110, 23);
             txtPhoneNoWrite.TabIndex = 3;
             // 
             // txtPasswordWrite
             // 
-            txtPasswordWrite.Location = new Point(12, 237);
+            txtPasswordWrite.Location = new Point(10, 178);
+            txtPasswordWrite.Margin = new Padding(3, 2, 3, 2);
             txtPasswordWrite.Name = "txtPasswordWrite";
-            txtPasswordWrite.Size = new Size(125, 27);
+            txtPasswordWrite.Size = new Size(110, 23);
             txtPasswordWrite.TabIndex = 4;
             // 
             // txtPasswordReadOnly
             // 
-            txtPasswordReadOnly.Location = new Point(12, 204);
+            txtPasswordReadOnly.Location = new Point(10, 153);
+            txtPasswordReadOnly.Margin = new Padding(3, 2, 3, 2);
             txtPasswordReadOnly.Name = "txtPasswordReadOnly";
             txtPasswordReadOnly.ReadOnly = true;
-            txtPasswordReadOnly.Size = new Size(125, 27);
+            txtPasswordReadOnly.Size = new Size(110, 23);
             txtPasswordReadOnly.TabIndex = 5;
             txtPasswordReadOnly.Text = "Password";
             // 
             // btnSubmit
             // 
-            btnSubmit.Location = new Point(361, 165);
+            btnSubmit.Location = new Point(316, 124);
+            btnSubmit.Margin = new Padding(3, 2, 3, 2);
             btnSubmit.Name = "btnSubmit";
-            btnSubmit.Size = new Size(94, 29);
+            btnSubmit.Size = new Size(82, 22);
             btnSubmit.TabIndex = 6;
             btnSubmit.Text = "Submit";
             btnSubmit.UseVisualStyleBackColor = true;
@@ -97,9 +105,9 @@
             // 
             // RegisterOrganizer
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(700, 338);
             Controls.Add(btnSubmit);
             Controls.Add(txtPasswordReadOnly);
             Controls.Add(txtPasswordWrite);
@@ -107,6 +115,7 @@
             Controls.Add(txtPhoneNoReadOnly);
             Controls.Add(txtEmailWrite);
             Controls.Add(txtEmailReadOnly);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "RegisterOrganizer";
             Text = "RegisterOrganizer";
             ResumeLayout(false);

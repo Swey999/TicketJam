@@ -10,6 +10,7 @@ namespace TicketJam.WinForm.ApiClient
     public interface IRestClient
     {
         IEnumerable<VenueDto> GetAllVenues();
+        IEnumerable<TicketDto> GetAllTickets();
         
         void CreateEvent(EventDto Event);
 

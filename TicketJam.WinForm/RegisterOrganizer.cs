@@ -42,5 +42,10 @@ namespace TicketJam.WinForm
             organizerLogin.Dispose();
             this.Dispose();
         }
+
+        private void txtEmailWrite_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
