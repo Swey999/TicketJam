@@ -288,11 +288,12 @@ namespace TicketJam.Website.Controllers
             return RedirectToAction("Create", "Order");
         }
 
-        public void EmptyCart()
+        public ActionResult EmptyCart()
         {
             Order order = GetCartFromCookie();
             order.OrderLines = new List<OrderLine>(); //Check om det virker nyt shit
             SaveCartToCookie(order);
+            return RedirectToAction("Create", "Order");
         }
 
 
