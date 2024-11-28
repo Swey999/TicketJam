@@ -118,10 +118,18 @@ namespace TicketJam.Website.Controllers
         {
             try
             {
+                Ticket ticket = _ticketAPIConsumer.GetById(id);
                 Order order = GetCartFromCookie();
                 OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == id);
+
+                // Validate quantity to ensure it does not exceed MaxAmount
                 if (existingOrderLine != null)
                 {
+                    // Check if the new quantity exceeds MaxAmount
+                    if (existingOrderLine.Quantity + quantity > ticket.MaxAmount)
+                    {
+                        return Ok(new { success = false, message = "Too many tickets per person" });
+                    }
                     existingOrderLine.Quantity += quantity;
                     if (existingOrderLine.Quantity <= 0)
                     {
@@ -130,9 +138,14 @@ namespace TicketJam.Website.Controllers
                 }
                 else
                 {
+                    // Adding a new order line
+                    if (quantity > ticket.MaxAmount)
+                    {
+                        return Ok(new { success = false, message = "Too many tickets per person" });
+                    }
                     OrderLine newOrderLine = new OrderLine
                     {
-                        TicketId = _ticketAPIConsumer.GetById(id).Id,
+                        TicketId = ticket.Id,
                         Quantity = quantity
                     };
                     order.OrderLines.Add(newOrderLine);
@@ -146,6 +159,7 @@ namespace TicketJam.Website.Controllers
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
+
 
         public Order GetCartFromCookie()
         {

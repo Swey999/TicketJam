@@ -15,7 +15,7 @@ namespace TicketJam.DAL.DAO
     {
         public string updateAccountSQL = "UPDATE Ticket SET WHERE id=@id";
         private string _connectionString;
-        private string _GET_BY_ID = "SELECT Id, Description, TicketId, Price, TicketCategory, TimeCreated, Section_ID_FK, Event_ID_FK from Ticket WHERE id = @id";
+        private string _GET_BY_ID = "SELECT Id, Description, TicketId, Price, TicketCategory, MaxAmount, TimeCreated, Section_ID_FK, Event_ID_FK from Ticket WHERE id = @id";
         private string _updateTicketAmountSQL = "UPDATE Section SET TicketAmount = @TicketAmount FROM Section JOIN Ticket ON Ticket.Section_ID_FK = Section.Id WHERE Section.Id = @SectionId;";
         private string _GET_TICKET_FROM_ID_JOIN = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE Ticket.Id = @TicketId";
         private string _GET_TICKET_FROM_TICKETID_JOIN = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE TicketId = @TicketId";

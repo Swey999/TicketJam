@@ -18,9 +18,10 @@ namespace TicketJam.Website.Controllers
 
         public ActionResult Add(int id, int quantity)
         {
+            Ticket ticket = _ticketAPIConsumer.GetById(id);
             Order order = GetCartFromCookie();
             OrderLine existingOrderLine = order.OrderLines.FirstOrDefault(ol => ol.TicketId == id);
-            if (existingOrderLine != null)
+            if (existingOrderLine != null && ticket.MaxAmount !> existingOrderLine.Quantity)
             {
                 existingOrderLine.Quantity += quantity;
                 if (existingOrderLine.Quantity <= 0)
@@ -32,7 +33,7 @@ namespace TicketJam.Website.Controllers
             {
                 OrderLine newOrderLine = new OrderLine
                 {
-                    TicketId = _ticketAPIConsumer.GetById(id).Id,
+                    TicketId = ticket.Id,
                     Quantity = quantity
                 };
                 order.OrderLines.Add(newOrderLine);

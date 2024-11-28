@@ -7,6 +7,8 @@
         public float Price { get; set; }
         public string TicketCategory { get; set; }
         public int TicketId { get; set; }
+        public int MaxAmount { get; set; }
+
         public DateTime TicketCreated { get; set; }
         public SectionDto Section { get; set; }
         public EventDto Event { get; set; }
