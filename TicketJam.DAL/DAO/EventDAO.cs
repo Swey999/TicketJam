@@ -21,7 +21,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
     private string _GETBYID_SQL = "SELECT Id, Name, Description, TotalAmount, EventNo, StartDate, EndDate, Venue_ID_FK, Organizer_ID_FK FROM Event WHERE Id = @id";
     private string _GET_EVENT_FROM_ID_SQL = "SELECT Id, EventNo, TotalAmount, StartDate, EndDate, Name FROM Event WHERE Id = @id";
     private string _GET_EVENT_SQL = "SELECT Id, Name, Description, TotalAmount, EventNo, StartDate, EndDate, Venue_ID_FK, Organizer_ID_FK FROM Event";
-    private string _GET_ADDRESS_ON_EVENT_SQL = "SELECT Venue.Id, Address.Id, Address.StreetName, Address.City, Address.Zip, Address.HouseNo FROM Event JOIN Venue ON Event.Venue_ID_FK = Venue.Id JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Event.Id = @EventId";
+    private string _GET_ADDRESS_ON_EVENT_SQL = "SELECT Venue.Id, Venue.Name, Address.Id, Address.StreetName, Address.City, Address.Zip, Address.HouseNo FROM Event JOIN Venue ON Event.Venue_ID_FK = Venue.Id JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Event.Id = @EventId";
 
    
 
