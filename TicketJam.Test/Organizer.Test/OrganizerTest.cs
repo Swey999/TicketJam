@@ -94,5 +94,6 @@ namespace TicketJam.Test.Organizer.Test
 
             Assert.AreEqual(organizerAssert.Id, 4);
         }
+
     }
 }

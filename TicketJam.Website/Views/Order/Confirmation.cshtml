@@ -1,0 +1,45 @@
+﻿@using TicketJam.Website.APIClient.DTO
+@model TicketJam.Website.APIClient.DTO.Order
+
+@{
+    ViewData["Title"] = "Create Order";
+}
+
+<h1>Order Confirmed!</h1>
+
+@if (Model == null || Model.OrderLines.Count == 0)
+{
+    <div class="row">
+        <div class="col-12 text-center">
+            <h3>Cart is empty</h3>
+        </div>
+    </div>
+}
+else
+{
+    var tickets = ViewBag.TicketDetails as List<Ticket>;
+    @foreach (var orderLine in Model.OrderLines)
+    {
+        var ticket = tickets?.FirstOrDefault(t => t.Id == orderLine.TicketId);
+        if (ticket != null)
+        {
+            <div class="row" style="padding-top:2px;">
+                <div class="col-6">
+                    @orderLine.Quantity x @ticket.Description (Category: @ticket.TicketCategory) at $@ticket.Price each
+                </div>
+                <div class="col-3">
+                    total $@(orderLine.Quantity * ticket.Price)
+                </div>
+            </div>
+        }
+    }
+}
+
+<h2>Your order number is: @Model.OrderNo</h2>
+
+
+
+            <p>
+                <img src="~/images/jakob2.png" alt="Flot billede af Jakob, ikke dårligt" />
+            </p>
+
