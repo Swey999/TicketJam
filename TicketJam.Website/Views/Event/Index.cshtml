@@ -12,11 +12,11 @@
     <div id="eventList" class="event-list">
         @foreach (var eventItem in Model)
         {
-            <div class="event-card" data-venue="@eventItem.Venue.Address.City" data-name="@eventItem.Name" data-city="@eventItem.Venue.Address.City">
+            <div class="event-card" data-venue="@eventItem.Venue.Name" data-name="@eventItem.Name" data-city="@eventItem.Venue.Address.City">
                 <div class="event-info">
                     <h2 class="event-title">@eventItem.Name</h2>
                     <p class="event-date"><strong>Date:</strong> @eventItem.StartDate.ToString("D")</p>
-                    <p class="event-venue"><strong>Venue:</strong> @eventItem.Venue.Name</p>
+                    <p class="event-totalAmount"><strong>Venue:</strong> @eventItem.Venue.Name</p>
                     <p class="event-totalAmount"><strong>Tickets left:</strong> @eventItem.TotalAmount</p>
                     <p class="event-location">
                         <strong>Location:</strong>
@@ -39,9 +39,9 @@
                 <!-- Venue Filter -->
                 <select id="venueFilter" class="form-control">
                     <option value="">Select Venue</option>
-                    @foreach (var venue in Model.Select(e => e.Venue.Name).Distinct())
+                    @foreach (var venueName in Model.Select(e => e.Venue.Name).Distinct())
                     {
-                        <option value="@venue">@venue</option>
+                        <option value="@venueName">@venueName</option>
                     }
                 </select>
 
@@ -57,6 +57,7 @@
                 <!-- Event Name Filter -->
                 <input type="text" id="eventNameFilter" class="form-control" placeholder="Filter by Event Name" />
 
+                <button type="submit" class="btn btn-primary">Filter</button>
             </div>
         </form>
     </div>
@@ -68,14 +69,14 @@
     .content-container {
         display: flex;
         justify-content: space-between;
-        gap: 20px; /* Space between the event list and filter */
+        gap: 20px;
         max-width: 1200px;
         margin: 0 auto;
     }
 
     /* Event List Styles */
     .event-list {
-        flex: 3; /* The event list takes up most of the space */
+        flex: 3;
         display: flex;
         flex-direction: column;
         gap: 20px;
@@ -84,7 +85,7 @@
 
     /* Filter Section Styles */
     .filter-section {
-        flex: 1; /* The filter section takes up less space */
+        flex: 1;
         background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -99,7 +100,6 @@
         margin-bottom: 10px;
     }
 
-    /* Your existing event card styles here */
     .event-card {
         background-color: #fff;
         border-radius: 8px;
