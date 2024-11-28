@@ -7,7 +7,7 @@ namespace TicketJam.WinForm
     public partial class Form1 : Form
     {
         private OrganizerDto _organizerDto;
-        private EventDto _Event = new EventDto();
+        public EventDto _Event = new EventDto();
         private List<VenueDto> list = new List<VenueDto>();
         //Insert dependency injection for baseuri
         private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/EventControllerAPI");
@@ -67,7 +67,7 @@ namespace TicketJam.WinForm
         private void createTicketType()
         {
             //Har ikke kunne ændre cboxTicketCategory til CreateTicket...
-            cboxTicketCategory CreateTicket = new cboxTicketCategory();
+            cboxTicketCategory CreateTicket = new cboxTicketCategory(_Event);
             CreateTicket.Show();
         }
 
