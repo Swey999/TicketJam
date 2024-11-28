@@ -65,6 +65,11 @@ namespace TicketJam.Website.Controllers
 
             // Store ticket details in ViewBag so the view has access to them
             ViewBag.TicketDetails = ticketDetails;
+            ViewBag.Customer = customer;
+            ViewBag.CustomerAddress = customer.Address;
+
+            // Store same ticket details in TempData for display in Confirmation view to reduce API calls
+            TempData["TicketDetails"] = JsonSerializer.Serialize(ticketDetails);
 
 
 
@@ -74,6 +79,8 @@ namespace TicketJam.Website.Controllers
             }
             return View(order);
         }
+
+
 
         // POST: OrderController/Create
         [HttpPost]
@@ -104,7 +111,7 @@ namespace TicketJam.Website.Controllers
 
                 //Count ticketAmount on Section down and ticketamount on Event.
                 //TODO: ADD IFSTATEMENT SO THAT THE TICKETS ONLY GETS REMOVED IF THE ORDER TRANSACTION SUCCEDS.
-                OrderAPIConsumer.Add(order);
+                order = OrderAPIConsumer.Add(order);
 
                 //foreach(var orderline in order.OrderLines)
                 //{
@@ -115,9 +122,13 @@ namespace TicketJam.Website.Controllers
                 //    _ticketAPIConsumer.Update(ticket);
                 //}
 
+                var ticketDetailsSerialized = TempData["TicketDetails"] as string;
+                var ticketDetails = string.IsNullOrEmpty(ticketDetailsSerialized)
+                    ? new List<Ticket>()
+                    : JsonSerializer.Deserialize<List<Ticket>>(ticketDetailsSerialized);
+                ViewBag.TicketDetails = ticketDetails;
 
-
-                return View(order);
+                return View("Confirmation", order);
             }
             catch
             {
@@ -275,6 +286,13 @@ namespace TicketJam.Website.Controllers
             }
             SaveCartToCookie(order);
             return RedirectToAction("Create", "Order");
+        }
+
+        public void EmptyCart()
+        {
+            Order order = GetCartFromCookie();
+            order.OrderLines = new List<OrderLine>(); //Check om det virker nyt shit
+            SaveCartToCookie(order);
         }
 
 
