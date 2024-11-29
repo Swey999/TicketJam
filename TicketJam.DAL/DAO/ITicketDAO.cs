@@ -11,5 +11,7 @@ namespace TicketJam.DAL.DAO
     {
         public Ticket GetTicketWithSectionAndEvent(int ticketId);
         public Ticket TicketWithSectionAndEvent(int ticketId);
+
+        public void InsertTicketWithEventId(int eventId, Ticket ticket);
     }
 }

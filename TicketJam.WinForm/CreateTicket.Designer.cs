@@ -51,7 +51,7 @@ namespace TicketJam.WinForm
             lblTitle.Font = new Font("Segoe UI", 16F);
             lblTitle.Location = new Point(0, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(214, 30);
+            lblTitle.Size = new Size(262, 37);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "CREATE NEW TICKET";
             lblTitle.TextAlign = ContentAlignment.TopCenter;
@@ -60,9 +60,9 @@ namespace TicketJam.WinForm
             // 
             lblTicketDescription.AutoSize = true;
             lblTicketDescription.Font = new Font("Segoe UI", 13F);
-            lblTicketDescription.Location = new Point(17, 70);
+            lblTicketDescription.Location = new Point(19, 93);
             lblTicketDescription.Name = "lblTicketDescription";
-            lblTicketDescription.Size = new Size(113, 25);
+            lblTicketDescription.Size = new Size(139, 30);
             lblTicketDescription.TabIndex = 1;
             lblTicketDescription.Text = "Ticket Name:";
             // 
@@ -70,9 +70,9 @@ namespace TicketJam.WinForm
             // 
             lblTicketCategory.AutoSize = true;
             lblTicketCategory.Font = new Font("Segoe UI", 13F);
-            lblTicketCategory.Location = new Point(17, 164);
+            lblTicketCategory.Location = new Point(19, 219);
             lblTicketCategory.Name = "lblTicketCategory";
-            lblTicketCategory.Size = new Size(138, 25);
+            lblTicketCategory.Size = new Size(170, 30);
             lblTicketCategory.TabIndex = 2;
             lblTicketCategory.Text = "Ticket Category:";
             // 
@@ -80,24 +80,26 @@ namespace TicketJam.WinForm
             // 
             lblPrice.AutoSize = true;
             lblPrice.Font = new Font("Segoe UI", 13F);
-            lblPrice.Location = new Point(17, 273);
+            lblPrice.Location = new Point(19, 364);
             lblPrice.Name = "lblPrice";
-            lblPrice.Size = new Size(53, 25);
+            lblPrice.Size = new Size(65, 30);
             lblPrice.TabIndex = 3;
             lblPrice.Text = "Price:";
             // 
             // txtTicketDescription
             // 
-            txtTicketDescription.Location = new Point(30, 98);
+            txtTicketDescription.Location = new Point(34, 131);
+            txtTicketDescription.Margin = new Padding(3, 4, 3, 4);
             txtTicketDescription.Name = "txtTicketDescription";
-            txtTicketDescription.Size = new Size(100, 23);
+            txtTicketDescription.Size = new Size(114, 27);
             txtTicketDescription.TabIndex = 4;
             // 
             // txtPrice
             // 
-            txtPrice.Location = new Point(30, 301);
+            txtPrice.Location = new Point(34, 401);
+            txtPrice.Margin = new Padding(3, 4, 3, 4);
             txtPrice.Name = "txtPrice";
-            txtPrice.Size = new Size(100, 23);
+            txtPrice.Size = new Size(114, 27);
             txtPrice.TabIndex = 5;
             // 
             // comboBoxTicketCategory
@@ -117,18 +119,20 @@ namespace TicketJam.WinForm
             ticketDto3.TicketCategory = "Standing";
             ticketDto3.TimeCreated = new DateTime(0L);
             comboBoxTicketCategory.Items.AddRange(new object[] { ticketDto1, ticketDto2, ticketDto3 });
-            comboBoxTicketCategory.Location = new Point(30, 192);
+            comboBoxTicketCategory.Location = new Point(34, 256);
+            comboBoxTicketCategory.Margin = new Padding(3, 4, 3, 4);
             comboBoxTicketCategory.Name = "comboBoxTicketCategory";
-            comboBoxTicketCategory.Size = new Size(121, 23);
+            comboBoxTicketCategory.Size = new Size(138, 28);
             comboBoxTicketCategory.TabIndex = 6;
             comboBoxTicketCategory.ValueMember = "Id";
             // 
             // btnSubmitTicket
             // 
             btnSubmitTicket.Font = new Font("Segoe UI", 13F);
-            btnSubmitTicket.Location = new Point(632, 368);
+            btnSubmitTicket.Location = new Point(722, 491);
+            btnSubmitTicket.Margin = new Padding(3, 4, 3, 4);
             btnSubmitTicket.Name = "btnSubmitTicket";
-            btnSubmitTicket.Size = new Size(119, 37);
+            btnSubmitTicket.Size = new Size(136, 49);
             btnSubmitTicket.TabIndex = 7;
             btnSubmitTicket.Text = "Submit";
             btnSubmitTicket.UseVisualStyleBackColor = true;
@@ -136,9 +140,9 @@ namespace TicketJam.WinForm
             // 
             // cboxTicketCategory
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(914, 600);
             Controls.Add(btnSubmitTicket);
             Controls.Add(comboBoxTicketCategory);
             Controls.Add(txtPrice);
@@ -147,6 +151,7 @@ namespace TicketJam.WinForm
             Controls.Add(lblTicketCategory);
             Controls.Add(lblTicketDescription);
             Controls.Add(lblTitle);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "cboxTicketCategory";
             Text = "CreateTicket";
             ResumeLayout(false);

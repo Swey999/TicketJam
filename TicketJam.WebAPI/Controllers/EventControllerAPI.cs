@@ -13,11 +13,13 @@ namespace TicketJam.WebAPI.Controllers
     {
         private readonly IEventDAO _eventDAO;
         private readonly IDAO<Event> _iDAO;
+        private readonly ITicketDAO _ticketDAO;
 
-        public EventControllerAPI(IEventDAO eventDAO, IDAO<Event> iDAO)
+        public EventControllerAPI(IEventDAO eventDAO, IDAO<Event> iDAO, ITicketDAO ticketDAO)
         {
             _eventDAO = eventDAO;
             _iDAO = iDAO;
+            _ticketDAO = ticketDAO;
         }
 
 
@@ -42,8 +44,12 @@ namespace TicketJam.WebAPI.Controllers
         public ActionResult<Event> AddEvent (EventDtoForeignKeys eventObject)
         {
             int id = _eventDAO.InsertEvent(eventObject.FromDto(), eventObject.OrganizerId, eventObject.VenueId);
+            //TODO: Fix so ticket is called from TicketController
+            foreach (TicketDtoForeignKeys item in eventObject.ticketDtosList)
+            {
+                _ticketDAO.InsertTicketWithEventId(id, item.FromDto()); 
+            }
             return Ok(eventObject);
-            return null;
         }
 
         [HttpGet]

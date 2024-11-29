@@ -10,6 +10,6 @@
         public int VenueId { get; set; }
         public int OrganizerId { get; set; }
 
-        public List<TicketDto> ticketDtosList { get; set; } = new List<TicketDto>();
+        public List<TicketDtoForeignKeys> ticketDtosList { get; set; } = new List<TicketDtoForeignKeys>();
     }
 }

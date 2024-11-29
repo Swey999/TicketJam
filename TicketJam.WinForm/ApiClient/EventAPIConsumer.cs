@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TicketJam.WinForm.DTO;
 
@@ -22,7 +24,8 @@ namespace TicketJam.WinForm.ApiClient
 
         public EventDto AddEvent (EventDto Event)
         {
-            var request = new RestRequest().AddJsonBody(Event);
+            string json = JsonSerializer.Serialize(Event);
+            var request = new RestRequest().AddJsonBody(json);
             var client = new RestClient(BaseURI);
 
             var response = client.ExecutePost<EventDto>(request);

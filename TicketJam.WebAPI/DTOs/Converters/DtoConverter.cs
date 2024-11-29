@@ -215,5 +215,12 @@ namespace TicketJam.WebAPI.DTOs.Converters
                 yield return ticketDto.FromDto();
             }
         }
+
+        public static DAL.Model.Ticket FromDto(this TicketDtoForeignKeys ticketDtoToConvert)
+        {
+            var Ticket = new DAL.Model.Ticket();
+            ticketDtoToConvert.CopyPropertiesTo(Ticket);
+            return Ticket;
+        }
     }
 }

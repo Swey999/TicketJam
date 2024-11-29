@@ -19,6 +19,7 @@ namespace TicketJam.DAL.DAO
         private string _updateTicketAmountSQL = "UPDATE Section SET TicketAmount = @TicketAmount FROM Section JOIN Ticket ON Ticket.Section_ID_FK = Section.Id WHERE Section.Id = @SectionId;";
         private string _GET_TICKET_FROM_ID_JOIN = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE Ticket.Id = @TicketId";
         private string _GET_TICKET_FROM_TICKETID_JOIN = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE TicketId = @TicketId";
+        private string _InsertTicket = "insert into Ticket (Description, TicketId, Price, TicketCategory, TimeCreated, Section_ID_FK, Event_ID_FK, MaxAmount) values (@Description, @TicketId, @Price, @TicketCategory, @TimeCreated, @SectionId, @EventId, @MaxAmount)";
 
         public TicketDAO(String connectionStringns)
         {
@@ -29,6 +30,8 @@ namespace TicketJam.DAL.DAO
         {
             throw new NotImplementedException();
         }
+
+
 
         public bool Delete(int id)
         {
@@ -176,6 +179,40 @@ namespace TicketJam.DAL.DAO
         public Ticket Update(Ticket entity)
         {
             throw new NotImplementedException();
+        }
+
+        public void InsertTicketWithEventId(int eventId, Ticket ticket)
+        {
+            using IDbConnection connection = new SqlConnection(_connectionString);
+            //TODO, make with less chance of duplicate, probably uuid ish
+            Random random = new Random();
+            ticket.TicketId = random.Next();
+            connection.Open();
+            try
+            {
+                //Cannot pass parameter ticket as parameter in Execute because it does not 1:1 match database, so we create empty object and assign the values
+                //Hardcoded SectionId to be implemente later, same with maxamount
+                ticket.Id = connection.Execute(_InsertTicket, new
+                {
+                    Description = ticket.Description,
+                    TicketId = ticket.TicketId,
+                    Price = ticket.Price,
+                    TicketCategory = ticket.TicketCategory,
+                    TimeCreated = ticket.TimeCreated,
+                    SectionId = 1,
+                    EventId = eventId,
+                    MaxAmount = 10
+                });
+            }
+            catch (SqlException e)
+            {
+                throw new Exception($"There was an issue saving ticket, error message was {e.Message}", e);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            
         }
     }
 }
