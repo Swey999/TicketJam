@@ -43,6 +43,7 @@ namespace TicketJam.WebAPI.Controllers
         [HttpPost]
         public ActionResult<Event> AddEvent (EventDtoForeignKeys eventObject)
         {
+            //TODO: Implement transaction
             int id = _eventDAO.InsertEvent(eventObject.FromDto(), eventObject.OrganizerId, eventObject.VenueId);
             //TODO: Fix so ticket is called from TicketController
             foreach (TicketDtoForeignKeys item in eventObject.ticketDtosList)

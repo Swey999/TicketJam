@@ -24,8 +24,7 @@ namespace TicketJam.WinForm.ApiClient
 
         public EventDto AddEvent (EventDto Event)
         {
-            string json = JsonSerializer.Serialize(Event);
-            var request = new RestRequest().AddJsonBody(json);
+            var request = new RestRequest().AddJsonBody(Event);
             var client = new RestClient(BaseURI);
 
             var response = client.ExecutePost<EventDto>(request);
