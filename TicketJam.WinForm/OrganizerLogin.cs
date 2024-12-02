@@ -35,7 +35,15 @@ namespace TicketJam.WinForm
             organizerDto.PhoneNo = "";
             organizerDto.Id = 0;
 
-            organizerDto = _organizerAPIConsumer.Login(organizerDto);
+            try
+            {
+                organizerDto = _organizerAPIConsumer.Login(organizerDto);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Wrong password or email, please try again", "Login fail!", MessageBoxButtons.OK);
+                return;
+            }
             if (organizerDto.Email == "")
             {
                 MessageBox.Show("Wrong password or email, please try again", "Login fail!", MessageBoxButtons.OK);
@@ -43,7 +51,7 @@ namespace TicketJam.WinForm
             else
             {
                 MessageBox.Show("Login succesful!");
-                Form1 form1 = new Form1(organizerDto);
+                CreateEvent form1 = new CreateEvent(organizerDto);
                 form1.Show();
             }
         }

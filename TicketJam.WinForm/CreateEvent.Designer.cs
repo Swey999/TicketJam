@@ -4,7 +4,7 @@ using TicketJam.WinForm.Stubs;
 
 namespace TicketJam.WinForm
 {
-    partial class Form1
+    partial class CreateEvent
     {
         /// <summary>
         ///  Required designer variable.
@@ -246,9 +246,8 @@ namespace TicketJam.WinForm
             Controls.Add(comboBoxVenueList);
             Controls.Add(btnCreateNewVenue);
             Controls.Add(txtVenueReadText);
-            Name = "Form1";
-            Text = "Form1";
-            Load += Form1_Load;
+            Name = "Create Event";
+            Text = "Create Event";
             ResumeLayout(false);
             PerformLayout();
         }

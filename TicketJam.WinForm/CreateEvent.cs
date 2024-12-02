@@ -6,7 +6,7 @@ using TicketJam.WinForm.Stubs;
 
 namespace TicketJam.WinForm
 {
-    public partial class Form1 : Form
+    public partial class CreateEvent : Form
     {
         private OrganizerDto _organizerDto;
         private EventDto _Event = new EventDto();
@@ -18,7 +18,7 @@ namespace TicketJam.WinForm
         
 
 
-        public Form1(OrganizerDto organizerDto)
+        public CreateEvent(OrganizerDto organizerDto)
         {
             _organizerDto = organizerDto;
             InitializeComponent();
@@ -47,16 +47,31 @@ namespace TicketJam.WinForm
 
         private void btnSubmitEvent_Click(object sender, EventArgs e)
         {
-            _Event.StartDate = dateTimePickerStartDateWrite.Value.Date;
-            _Event.EndDate = dateTimePickerEndDateWrite.Value.Date;
-            _Event.Description = txtDescriptionWrite.Text;
-            _Event.TotalAmount = int.Parse(txtTicketAmountWrite.Text);
-            _Event.Name = txtNameWrite.Text;
-            VenueDto tempObject = (VenueDto)comboBoxVenueList.SelectedItem;
-            _Event.OrganizerId = _organizerDto.Id;
-            _Event.VenueId = tempObject.Id;
-            _Event.ticketDtosList = _ticketList.ToList<TicketDto>();
-            _eventAPIConsumer.AddEvent(_Event);
+            if (txtDescriptionWrite.Text != "" && txtTicketAmountWrite.Text != "" && txtNameWrite.Text != "")
+            {
+                _Event.StartDate = dateTimePickerStartDateWrite.Value.Date;
+                _Event.EndDate = dateTimePickerEndDateWrite.Value.Date;
+                _Event.Description = txtDescriptionWrite.Text;
+                try
+                {
+                    _Event.TotalAmount = int.Parse(txtTicketAmountWrite.Text);
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Please make sure total amount is a numerical value", "Wrong input", MessageBoxButtons.OK);
+                    return;
+                }
+                _Event.Name = txtNameWrite.Text;
+                VenueDto tempObject = (VenueDto)comboBoxVenueList.SelectedItem;
+                _Event.OrganizerId = _organizerDto.Id;
+                _Event.VenueId = tempObject.Id;
+                _Event.ticketDtosList = _ticketList.ToList<TicketDto>();
+                _eventAPIConsumer.AddEvent(_Event);
+                MessageBox.Show("Event created!", "Event created!", MessageBoxButtons.OK);
+            } else
+            {
+                MessageBox.Show("Please fill out all the text fields", "One or more text fields not filled out", MessageBoxButtons.OK);
+            }
         }
 
         public IEnumerable<VenueDto> GetVenueList()
@@ -74,11 +89,6 @@ namespace TicketJam.WinForm
             //Har ikke kunne ændre cboxTicketCategory til CreateTicket...
             cboxTicketCategory CreateTicket = new cboxTicketCategory(_ticketList);
             CreateTicket.Show();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

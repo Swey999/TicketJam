@@ -67,6 +67,7 @@
             txtPasswordWrite.Name = "txtPasswordWrite";
             txtPasswordWrite.Size = new Size(125, 27);
             txtPasswordWrite.TabIndex = 3;
+            txtPasswordWrite.PasswordChar = '*';
             // 
             // btnLogin
             // 

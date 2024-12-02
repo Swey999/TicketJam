@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TicketJam.WinForm.ApiClient;
 using TicketJam.WinForm.DTO;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace TicketJam.WinForm
 {
@@ -27,7 +29,21 @@ namespace TicketJam.WinForm
 
         private void PressedBtnSubmit()
         {
+            if (txtEmailWrite.Text == "" || txtPhoneNoWrite.Text == "" || txtPasswordWrite.Text == "")
+            {
+                MessageBox.Show("Please fill out all fields", "Please fill out all fields", MessageBoxButtons.OK);
+                return;
+            }
             OrganizerDto organizerDto = new OrganizerDto();
+            try
+            {
+                var mailAddress = new MailAddress(txtEmailWrite.Text);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Not a valid email", "Email is not correct format", MessageBoxButtons.OK);
+                return;
+            }
             organizerDto.Email = txtEmailWrite.Text;
             organizerDto.PhoneNo = txtPhoneNoWrite.Text;
             organizerDto.Password = txtPasswordWrite.Text;

@@ -28,19 +28,6 @@ namespace TicketJam.Website.Controllers
 
                 var eventDetails = EventAPIConsumer.GetById(id);
 
-
-                int venueId = eventDetails.Id;
-                var sectionDetails = new List<Section>();
-                var sections = _sectionAPIConsumer.GetSectionsByVenue(venueId);
-
-                foreach (var section in sections)
-                {
-                    sectionDetails.Add(section);
-                }
-           
-
-                ViewBag.Sections = sectionDetails;
-
                 return View(eventDetails);
                 //return View(EventAPIConsumer.GetById(id));
             }

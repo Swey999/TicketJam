@@ -58,20 +58,27 @@ namespace TicketJam.DAL.DAO
 
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
+            //Set empty Organizer to return to ensure no leak on data
             Organizer ReturnOrganizer = new Organizer() { Id = 0, Password = "", Email = "", PhoneNo = ""};
 
             try
             {
-                Organizer OrganizerFromDB = connection.QueryFirstOrDefault<Organizer>(_Login_SQL, new { Email = organizer.Email });
-                if (OrganizerFromDB.Password != null && BCryptTool.ValidatePassword(organizer.Password, OrganizerFromDB.Password))
+                Organizer organizerFromDB = connection.QueryFirstOrDefault<Organizer>(_Login_SQL, new { Email = organizer.Email });
+                //Check if result was null, if that's the case throw exception for handling
+                if (organizerFromDB.Password == null)
                 {
-                    ReturnOrganizer = OrganizerFromDB;
+                    throw new Exception($"Not correct password for {organizer.Email}");
+                    return ReturnOrganizer;
+                }
+                //Check if passwords match, will not be reached unless email could be found in database
+                if (BCryptTool.ValidatePassword(organizer.Password, organizerFromDB.Password))
+                {
+                    ReturnOrganizer = organizerFromDB;
                     ReturnOrganizer.Password = "";
                 }
             }
             catch (SqlException e)
             {
-
                 throw new Exception($"Not correct password for {organizer.Email}", e);
             }
             return ReturnOrganizer;
