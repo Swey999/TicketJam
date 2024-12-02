@@ -10,12 +10,12 @@ namespace TicketJam.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VenueControllerAPI : ControllerBase
+    public class VenueController : ControllerBase
     {
         public IDAO<Venue> _venueDAO;
         // GET: api/<VenueControllerAPI>
 
-        public VenueControllerAPI(IDAO<Venue> venueDAO)
+        public VenueController(IDAO<Venue> venueDAO)
         {
             _venueDAO = venueDAO;
         }

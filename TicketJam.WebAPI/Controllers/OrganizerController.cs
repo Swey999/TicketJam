@@ -9,11 +9,11 @@ namespace TicketJam.WebAPI.Controllers
 
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class OrganizerControllerAPI : Controller
+    public class OrganizerController : Controller
     {
         private readonly IOrganizerDAO _organizerDAO;
 
-        public OrganizerControllerAPI(IOrganizerDAO organizerDAO)
+        public OrganizerController(IOrganizerDAO organizerDAO)
         {
             _organizerDAO = organizerDAO;
         }

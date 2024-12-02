@@ -14,7 +14,7 @@ namespace TicketJam.WinForm
 {
     public partial class OrganizerLogin : Form
     {
-        private OrganizerAPIConsumer _organizerAPIConsumer = new OrganizerAPIConsumer("https://localhost:7280/api/v1/OrganizerControllerAPI", "https://localhost:7280/api/v1/LoginControllerAPI");
+        private OrganizerAPIConsumer _organizerAPIConsumer = new OrganizerAPIConsumer("https://localhost:7280/api/v1/Organizer", "https://localhost:7280/api/v1/Login");
 
         public OrganizerLogin()
         {

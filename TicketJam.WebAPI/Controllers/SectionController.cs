@@ -8,12 +8,12 @@ namespace TicketJam.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class SectionControllerAPI : ControllerBase
+    public class SectionController : ControllerBase
     {
         public IDAO<Section> _sectionDAO;
         public ISectionDAO _sectionDAO2;
 
-        public SectionControllerAPI(IDAO<Section> IDAO, ISectionDAO SectionDAO)
+        public SectionController(IDAO<Section> IDAO, ISectionDAO SectionDAO)
         {
             this._sectionDAO = IDAO;
             this._sectionDAO2 = SectionDAO;

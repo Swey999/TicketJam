@@ -10,13 +10,13 @@ namespace TicketJam.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class TicketControllerAPI : ControllerBase
+    public class TicketController : ControllerBase
     {
 
         public IDAO<Ticket> _ticketDAO;
         public ITicketDAO _ITicketDAO;
 
-        public TicketControllerAPI(IDAO<Ticket> iDAO, ITicketDAO iTicketDAO)
+        public TicketController(IDAO<Ticket> iDAO, ITicketDAO iTicketDAO)
         {
             this._ticketDAO = iDAO;
             _ITicketDAO = iTicketDAO;

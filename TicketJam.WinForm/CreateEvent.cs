@@ -13,8 +13,8 @@ namespace TicketJam.WinForm
         public BindingList<TicketDto> _ticketList = new BindingList<TicketDto>();
         private List<VenueDto> list = new List<VenueDto>();
         //Insert dependency injection for baseuri
-        private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/EventControllerAPI");
-        private VenueAPIConsumer _venueAPIConsumer = new VenueAPIConsumer("https://localhost:7280/api/VenueControllerAPI");
+        private EventAPIConsumer _eventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/Event");
+        private VenueAPIConsumer _venueAPIConsumer = new VenueAPIConsumer("https://localhost:7280/api/Venue");
         
 
 

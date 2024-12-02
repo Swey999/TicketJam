@@ -9,7 +9,7 @@ namespace TicketJam.Website.Controllers
     public class CartController : Controller
     {
         // GET: CartController
-        TicketAPIConsumer _ticketAPIConsumer = new TicketAPIConsumer("https://localhost:7280/api/v1/TicketControllerAPI");
+        TicketAPIConsumer _ticketAPIConsumer = new TicketAPIConsumer("https://localhost:7280/api/v1/Ticket");
         public ActionResult Index()
         {
             Order order = GetCartFromCookie();

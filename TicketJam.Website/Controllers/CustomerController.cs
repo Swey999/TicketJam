@@ -8,7 +8,7 @@ namespace TicketJam.Website.Controllers
 {
     public class CustomerController : Controller
     {
-        CustomerAPIConsumer _customerAPIConsumer = new CustomerAPIConsumer("https://localhost:7280/api/v1/CustomerControllerAPI");
+        CustomerAPIConsumer _customerAPIConsumer = new CustomerAPIConsumer("https://localhost:7280/api/v1/Customer");
 
         // GET: CustomerController
         public ActionResult Index()

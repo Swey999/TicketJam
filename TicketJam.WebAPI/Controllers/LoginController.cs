@@ -8,11 +8,11 @@ namespace TicketJam.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class LoginControllerAPI : Controller
+    public class LoginController : Controller
     {
         private IOrganizerDAO _organizerDAO;
 
-        public LoginControllerAPI(IOrganizerDAO organizerDAO)
+        public LoginController(IOrganizerDAO organizerDAO)
         {
             _organizerDAO = organizerDAO;
         }

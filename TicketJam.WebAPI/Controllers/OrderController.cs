@@ -8,12 +8,12 @@ namespace TicketJam.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class OrderControllerAPI : ControllerBase
+    public class OrderController : ControllerBase
     {
         public IDAO<Order> _orderDAO;
         public IOrderDAO _orderDAO2;
 
-        public OrderControllerAPI(IDAO<Order> iDAO, IOrderDAO orderDAO)
+        public OrderController(IDAO<Order> iDAO, IOrderDAO orderDAO)
         {
             _orderDAO = iDAO;
             _orderDAO2 = orderDAO;

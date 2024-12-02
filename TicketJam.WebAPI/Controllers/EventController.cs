@@ -9,13 +9,13 @@ namespace TicketJam.WebAPI.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class EventControllerAPI : Controller
+    public class EventController : Controller
     {
         private readonly IEventDAO _eventDAO;
         private readonly IDAO<Event> _iDAO;
         private readonly ITicketDAO _ticketDAO;
 
-        public EventControllerAPI(IEventDAO eventDAO, IDAO<Event> iDAO, ITicketDAO ticketDAO)
+        public EventController(IEventDAO eventDAO, IDAO<Event> iDAO, ITicketDAO ticketDAO)
         {
             _eventDAO = eventDAO;
             _iDAO = iDAO;

@@ -8,9 +8,9 @@ namespace TicketJam.Website.Controllers
 {
     public class EventController : Controller
     {
-        EventAPIConsumer EventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/EventControllerAPI");
-        SectionAPIConsumer _sectionAPIConsumer = new SectionAPIConsumer("https://localhost:7280/api/v1/SectionControllerAPI");
-        TicketAPIConsumer _ticketAPIConsumer = new TicketAPIConsumer("https://localhost:7280/api/v1/TicketControllerAPI");
+        EventAPIConsumer EventAPIConsumer = new EventAPIConsumer("https://localhost:7280/api/v1/Event");
+        SectionAPIConsumer _sectionAPIConsumer = new SectionAPIConsumer("https://localhost:7280/api/v1/Section");
+        TicketAPIConsumer _ticketAPIConsumer = new TicketAPIConsumer("https://localhost:7280/api/v1/Ticket");
 
         // GET: EventController
         public ActionResult Index()
