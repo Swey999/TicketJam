@@ -31,6 +31,14 @@ namespace TicketJam.DAL.DAO
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Retrieves section using ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// Returns Section if found
+        /// <exception cref="Exception"></exception>
+        /// Throws exception error finding section with ID or issue connecting to database
         public Section GetById(int id)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -48,6 +56,13 @@ namespace TicketJam.DAL.DAO
             }
         }
 
+        /// <summary>
+        /// Retrieves all sections
+        /// </summary>
+        /// <returns></returns>
+        /// Returns all sections in an IEnumerable
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if issue finding all sections or issue connecting to database
         public IEnumerable<Section> Read()
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -69,10 +84,29 @@ namespace TicketJam.DAL.DAO
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Retrieves all sections from a certain venue
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// Returns IEnumerable of all sections
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if not able to find sections using ID or issue connecting to database
+
         public IEnumerable<Section> GetSectionsByVenue(int id)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
-            return connection.Query<Section>(GETSECTIONBYVENUEID_SQL, new { Venue_ID_FK = id });
+            try
+            {
+                return connection.Query<Section>(GETSECTIONBYVENUEID_SQL, new { Venue_ID_FK = id });
+            }
+            catch (SqlException e)
+            {
+                throw new Exception($"There was an issue finding all sections for Venue with ID: {id}, error message was {e.Message}", e);
+            } finally
+            {
+                connection.Close();
+            }
         }
 
     }

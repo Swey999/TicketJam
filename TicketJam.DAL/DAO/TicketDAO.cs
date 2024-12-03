@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TicketJam.DAL.Model;
 using Dapper;
 using System.Data.Common;
+using System.Transactions;
 
 namespace TicketJam.DAL.DAO
 {
@@ -38,6 +39,14 @@ namespace TicketJam.DAL.DAO
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Retrieves a ticket with its sections and event
+        /// </summary>
+        /// <param name="ticketId"></param>
+        /// <returns></returns>
+        /// Returns ticket with its sections and event
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if error with retrieving ticket with ticketId or issue connecting to database
         public Ticket GetTicketWithSectionAndEvent(int ticketId)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -59,11 +68,21 @@ namespace TicketJam.DAL.DAO
 
                 return ticket;
             }
-            catch (Exception ex)
+            catch (SqlException e)
             {
-                throw new Exception($"Error retrieving ticket with ID: {ticketId}, error: {ex.Message}", ex);
+                throw new Exception($"Error retrieving ticket with ID: {ticketId}, error: {e.Message}", e);
+            } finally
+            {
+               connection.Close();
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ticketId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
 
         public Ticket TicketWithSectionAndEvent(int ticketId)
         {
@@ -86,13 +105,20 @@ namespace TicketJam.DAL.DAO
 
                 return ticket;
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 throw new Exception($"Error retrieving ticket with ID: {ticketId}, error: {ex.Message}", ex);
             }
         }
 
-
+        /// <summary>
+        /// Retrieves a ticket using its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// Returns a ticket
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if problem finding ticket with id or issues connecting with database
         public Ticket GetById(int id)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -117,15 +143,26 @@ namespace TicketJam.DAL.DAO
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Updates available tickets in database
+        /// </summary>
+        /// <param name="quantity"></param>
+        /// <param name="ticketId"></param>
+        /// <returns></returns>
+        /// Returns true if succesful and done, and false if not
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if unable to find ticket
+        /// Throws exception if problem contacting database
         public bool Update(int quantity, int ticketId)
         {
             using DbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
+            IDbTransaction transaction = connection.BeginTransaction();
 
-            using var transaction = connection.BeginTransaction();
-
-
-            Ticket ticket = GetTicketWithSectionAndEvent(ticketId);
+            try
+            {
+                Ticket ticket = GetTicketWithSectionAndEvent(ticketId);
+            
 
             // SQL for updating TicketAmount in Section
             const string updateSectionSQL = @"
@@ -141,6 +178,12 @@ namespace TicketJam.DAL.DAO
 
             try
             {
+                // Checks before running to ensure not contacting database for no reason
+                if (ticket.Event.TotalAmount - quantity < 0 || ticket.Section.TicketAmount - quantity < 0)
+                {
+                    return false;
+                }
+
                 // Execute the first update on Section
                 int sectionRowsAffected = connection.Execute(updateSectionSQL, new
                 {
@@ -168,11 +211,19 @@ namespace TicketJam.DAL.DAO
                 }
               
             }
-            catch (Exception ex)
+            catch (SqlException e)
             {
                 // Rollback if something goes wrong
                 transaction.Rollback();
-                throw new Exception("Failed to update TicketAmount and TotalAmount.", ex);
+                throw new Exception($"Failed to update TicketAmount and TotalAmount. Error message was {e.Message}", e);
+            } finally
+            {
+                connection.Close();
+            }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error getting ticket using ticketId {ticketId}, was unable to update section and event ticket amounts. Error message was {e.Message}", e);
             }
         }
 
@@ -181,6 +232,13 @@ namespace TicketJam.DAL.DAO
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Inserts a ticket using events ID to connec them in database
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="ticket"></param>
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if it fails
         public void InsertTicketWithEventId(int eventId, Ticket ticket)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);

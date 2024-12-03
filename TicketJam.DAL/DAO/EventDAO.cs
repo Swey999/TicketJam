@@ -50,6 +50,15 @@ public class EventDAO : IEventDAO, IDAO<Event>
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Gets Event from database using ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// Takes parameter ID
+    /// <returns></returns>
+    /// Returns Event if found using ID
+    /// <exception cref="Exception"></exception>
+    /// Throws exception if nothing was found or failing to connect to database
     public Event GetById(int id)
     {
         using IDbConnection connection = new SqlConnection(_connectionString);
@@ -73,6 +82,15 @@ public class EventDAO : IEventDAO, IDAO<Event>
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Retrieves Event from database and fills out TicketList, Section, Venue, Address and Tickets using ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// Takes parameter ID
+    /// <returns></returns>
+    /// Returns Event if found in database
+    /// <exception cref="Exception"></exception>
+    /// Throws exception if error with database or nothing was found
     public Event GetEventAndJoinData(int id)
     {
 
@@ -102,28 +120,38 @@ public class EventDAO : IEventDAO, IDAO<Event>
         }
     }
 
-
-    public int InsertEvent(Event Event, int organizerId, int VenueId)
+    /// <summary>
+    /// Receives Event together with Organizer ID and Venue ID to create Event in database
+    /// </summary>
+    /// <param name="eventToInsert"></param>
+    /// <param name="organizerId"></param>
+    /// <param name="venueId"></param>
+    /// <returns></returns>
+    /// Returns ID used for connecting tickets to Event
+    /// <exception cref="Exception"></exception>
+    /// Throws exception if no connection to databse or problem with inserting
+    public int InsertEvent(Event eventToInsert, int organizerId, int venueId)
     {
         using IDbConnection connection = new SqlConnection(_connectionString);
         //TODO, make with less chance of duplicate, probably uuid ish
         Random random = new Random();
-        Event.EventNo = random.Next();
+        eventToInsert.EventNo = random.Next();
         connection.Open();
         try
         {
             //Cannot pass parameter Event as parameter in ExecuteScalar because it does not 1:1 match database, so we create empty object and assign the values
-            Event.Id = connection.ExecuteScalar<int>(_INSERT_SQL, new
+            eventToInsert.Id = connection.ExecuteScalar<int>(_INSERT_SQL, new
             {
-                Description = Event.Description,
-                Name = Event.Name,
-                TotalAmount = Event.TotalAmount,
-                StartDate = Event.StartDate,
-                EndDate = Event.EndDate,
-                EventNo = Event.EventNo,
+                Description = eventToInsert.Description,
+                Name = eventToInsert.Name,
+                TotalAmount = eventToInsert.TotalAmount,
+                StartDate = eventToInsert.StartDate,
+                EndDate = eventToInsert.EndDate,
+                EventNo = eventToInsert.EventNo,
                 OrganizerId = organizerId,
-                VenueId = VenueId
+                VenueId = venueId
             });
+            return eventToInsert.Id;
         }
         catch (SqlException e)
         {
@@ -132,9 +160,15 @@ public class EventDAO : IEventDAO, IDAO<Event>
         {
             connection.Close();
         }
-
-        return Event.Id;
     }
+
+    /// <summary>
+    /// Returns all events together with their venues and addresses
+    /// </summary>
+    /// <returns></returns>
+    /// Returns IEnumerable<Event> of all events in database
+    /// <exception cref="ApplicationException"></exception>
+    /// Throws Exception if error with connecting to database
     public IEnumerable<Event> Read()
     {
         using IDbConnection connection = new SqlConnection(_connectionString);
@@ -162,10 +196,13 @@ public class EventDAO : IEventDAO, IDAO<Event>
 
             return events;
         }
-        catch (Exception ex)
+        catch (SqlException e)
         {
             // Handle or log exceptions
-            throw new ApplicationException("An error occurred while reading events.", ex);
+            throw new Exception("An error occurred while reading events.", e);
+        } finally
+        {
+            connection.Close();
         }
     }
 

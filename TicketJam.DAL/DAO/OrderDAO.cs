@@ -37,7 +37,16 @@ namespace TicketJam.DAL.DAO
             this._connectionString = connectionStringns;
             _ticketDao = new TicketDAO(_connectionString);
         }
-        public Order Create(Order entity)
+
+        /// <summary>
+        /// Inserts an Order and its orderlines and updates Ticket Count in database to ensure too many tickets weren't sold
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        /// Returns an Order with its identity ID
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if error with connecting with database or problem inserting
+        public Order Create(Order order)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
@@ -45,21 +54,20 @@ namespace TicketJam.DAL.DAO
 
             //TODO: Change random to something more unique.
             Random random = new Random();
-            entity.OrderNo = random.Next();
-
+            order.OrderNo = random.Next();
 
             try
             {
                 var parameters = new
                 {
-                    orderNo = entity.OrderNo,
-                    customerId = entity.CustomerId
+                    orderNo = order.OrderNo,
+                    customerId = order.CustomerId
                 };
 
-                entity.Id = connection.ExecuteScalar<int>(_INSERT_ORDER_QUERY, parameters, transaction);
-                foreach (OrderLine orderline in entity.OrderLines)
+                order.Id = connection.ExecuteScalar<int>(_INSERT_ORDER_QUERY, parameters, transaction);
+                foreach (OrderLine orderline in order.OrderLines)
                 {
-                    connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = entity.Id, quantity = orderline.Quantity , ticketId = orderline.TicketId}, transaction);
+                    connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = order.Id, quantity = orderline.Quantity , ticketId = orderline.TicketId}, transaction);
                     if(_ticketDao.Update(orderline.Quantity, orderline.TicketId) != true)
                     {
                         transaction.Rollback();
@@ -69,16 +77,23 @@ namespace TicketJam.DAL.DAO
             }
             catch (SqlException e)
             {
-                throw new Exception ($"There was an issue inserting order, error message was {e.Message}", e);
                 transaction.Rollback();
+                throw new Exception ($"There was an issue inserting order, error message was {e.Message}", e);
             } finally
             {
                 connection.Close();
             }
-
-            return entity;
+            return order;
         }
 
+        /// <summary>
+        /// Deletes an order using ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// Returns bool telling if action successful
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if not able to delete order, order doesn't exist or problem connecting with database
         public bool Delete(int id)
         {
             
@@ -91,23 +106,29 @@ namespace TicketJam.DAL.DAO
             {
                 connection.Execute(_DELETE_ORDERLINES_QUERY, new { Id = id }, transaction);
                 connection.Execute(_DELETE_ORDER_QUERY, new { Id = id }, transaction);
-
                 transaction.Commit();
                 return true;
             }
 
-            catch (Exception ex)
+            catch (SqlException e)
             {
                 transaction.Rollback();
                 return false;
-                throw new Exception($"Couldn't delete Order on ID: {id}, the error was: {ex.Message}", ex);
+                throw new Exception($"Couldn't delete Order on ID: {id}, the error was: {e.Message}", e);
             } finally
             {
                 connection.Close();
             }
         }
 
-
+        /// <summary>
+        /// Retrieves an order using ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// Returns an order with its orderlines
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if error finding order or problem connecting to database
         public Order GetById(int id)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -126,6 +147,11 @@ namespace TicketJam.DAL.DAO
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public IEnumerable<Order> Read()
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -143,32 +169,40 @@ namespace TicketJam.DAL.DAO
                 connection.Close();
             }
         }
+
+        /// <summary>
+        /// Retrives all orders that a specified Customer has placed
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        /// Returns an IEnumerable of all orders a Customer has placed
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if not able to find any orders made by Customer or issues connecting to database
         public IEnumerable<Order> GetOrdersByCustomer(int customerId)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
             try
             {
                 var orders = connection.Query<Order>(_GET_ORDERS_BY_CUSTOMERID, new { CustomerId = customerId }).ToList();
-
                 foreach (var order in orders)
                 {
                     // Get order lines for each order
                     order.OrderLines = connection.Query<OrderLine>(_ORDERLINE_JOIN_QUERY, new { orderId = order.Id }).ToList();
                 }
-                
-
                 return orders;
             }
             catch (SqlException e)
             {
                 throw new Exception($"Error fetching orders for customer with ID: {customerId}. {e.Message}", e);
+            } finally
+            {
+                connection.Close();
             }
         }
 
-
         public Order Update(Order entity)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

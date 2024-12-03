@@ -22,7 +22,16 @@ namespace TicketJam.DAL.DAO
             _connectionString = connectionString;
         }
 
-        public Customer Create(Customer entity)
+        /// <summary>
+        /// Used to insert a Customer into database and returns said Customer with their identity ID
+        /// </summary>
+        /// <param name="customer"></param>
+        /// Takes parameter customer
+        /// <returns></returns>
+        /// Returns Customer with identity ID
+        /// <exception cref="Exception"></exception>
+        /// Throws Exception if insert fails
+        public Customer Create(Customer customer)
         {
             //Using realses all resources
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -32,15 +41,19 @@ namespace TicketJam.DAL.DAO
 
             try
             {
-                entity.CustomerNo = random.Next();
-                entity.Id = connection.ExecuteScalar<int>(_createCustomerSQL, entity);
+                customer.CustomerNo = random.Next();
+                customer.Id = connection.ExecuteScalar<int>(_createCustomerSQL, customer);
             }
-            catch (Exception ex)
+            catch (SqlException e)
             {
-                throw new Exception($"An error has occured while trying to insert customer into Customer table, the error reads: {ex.Message}", ex);
+                throw new Exception($"An error has occured while trying to insert customer into Customer table, the error reads: {e.Message}", e);
+            }
+            finally
+            {
+                connection.Close();
             }
 
-            return entity;
+            return customer;
         }
 
         public bool Delete(int id)
@@ -48,6 +61,15 @@ namespace TicketJam.DAL.DAO
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Gets a Customer using their ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// Takes parameter ID to find Customer
+        /// <returns></returns>
+        /// Returns Customer object with said ID
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if nothing is found or database connection fails
         public Customer GetById(int id)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -65,6 +87,15 @@ namespace TicketJam.DAL.DAO
             }
         }
 
+        /// <summary>
+        /// Finds Customer using Email
+        /// </summary>
+        /// <param name="email"></param>
+        /// Takes parameter email to find Customer
+        /// <returns></returns>
+        /// Returns Customer object if found
+        /// <exception cref="Exception"></exception>
+        /// Throws Exception if nothing found or error with database
         public Customer GetCustomerByEmail(string email)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -78,6 +109,10 @@ namespace TicketJam.DAL.DAO
             {
 
                 throw new Exception($"There was an issue finding a customer using Email: {email}, error message was {e.Message}", e);
+            }
+            finally 
+            {
+                connection.Close();
             }
         }
 

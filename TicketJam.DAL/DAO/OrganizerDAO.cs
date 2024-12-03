@@ -23,6 +23,14 @@ namespace TicketJam.DAL.DAO
             _connectionString = connectionString;
         }
 
+        /// <summary>
+        /// Creates an Organizer and returns their new created ID while hashing and salting their password
+        /// </summary>
+        /// <param name="organizer"></param>
+        /// <returns></returns>
+        /// Returns identity ID created from database
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if error inserting into database or issues connecting to database
         public int CreateOrganizerAndReturnIdentity(Organizer organizer)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -45,7 +53,7 @@ namespace TicketJam.DAL.DAO
             }
             catch (SqlException e)
             {
-                throw new Exception($"There was an issue connecting to database and inserting organizer, exception was {e.Message}", e);
+                throw new Exception($"There was an issue connecting to database or inserting organizer, exception was {e.Message}", e);
             } finally
             {
                 connection.Close();
@@ -53,9 +61,18 @@ namespace TicketJam.DAL.DAO
 
         }
 
+        /// <summary>
+        /// Takes an Organizer and checks if matching in database
+        /// </summary>
+        /// <param name="organizer"></param>
+        /// <returns></returns>
+        /// Returns empty Organizer if not correct email and password
+        /// ReturnsOrganizer without password if email and password matches
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if password is wrong for a valid email
+        /// Throws exception if not able to connect to database
         public Organizer Login(Organizer organizer)
         {
-
             using IDbConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             //Set empty Organizer to return to ensure no leak on data

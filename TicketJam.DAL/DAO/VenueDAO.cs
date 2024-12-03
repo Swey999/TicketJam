@@ -33,6 +33,14 @@ namespace TicketJam.DAL.DAO
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Retrieves Venue using its ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// Returns a Venue with correct ID
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if issue finding specific venue or connecting to database
         public Venue GetById(int id)
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
@@ -50,7 +58,13 @@ namespace TicketJam.DAL.DAO
             }
         }
 
-
+        /// <summary>
+        /// Finds all venues
+        /// </summary>
+        /// <returns></returns>
+        /// Returns IEnumerable of venues
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if not able to find all venues or connect to database
         public IEnumerable<Venue> Read()
         {
             using IDbConnection connection = new SqlConnection(_connectionString);
