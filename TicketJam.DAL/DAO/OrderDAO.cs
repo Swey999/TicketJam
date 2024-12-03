@@ -68,16 +68,21 @@ namespace TicketJam.DAL.DAO
                 foreach (OrderLine orderline in order.OrderLines)
                 {
                     connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = order.Id, quantity = orderline.Quantity , ticketId = orderline.TicketId}, transaction);
-                    if(_ticketDao.Update(orderline.Quantity, orderline.TicketId) != true)
+                    if (_ticketDao.Update(orderline.Quantity, orderline.TicketId, connection, transaction) != true)
                     {
                         transaction.Rollback();
+                        order.Id = 0;
+                    }
+                    else
+                    {
+                        transaction.Commit();
                     }
                 }
-                transaction.Commit();
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
                 transaction.Rollback();
+                order.Id = 0;
                 throw new Exception ($"There was an issue inserting order, error message was {e.Message}", e);
             } finally
             {
@@ -158,7 +163,6 @@ namespace TicketJam.DAL.DAO
             try
             {
                 return connection.Query<Order>(_GET_ID_FROM_ORDER_QUERY);
-
             }
             catch (SqlException e)
             {

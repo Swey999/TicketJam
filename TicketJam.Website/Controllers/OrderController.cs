@@ -110,18 +110,7 @@ namespace TicketJam.Website.Controllers
                 order.OrderNo = 1492;
                 order.CustomerId = customer.Id;
 
-                //Count ticketAmount on Section down and ticketamount on Event.
-                //TODO: ADD IFSTATEMENT SO THAT THE TICKETS ONLY GETS REMOVED IF THE ORDER TRANSACTION SUCCEDS.
                 order = OrderAPIConsumer.Add(order);
-
-                //foreach(var orderline in order.OrderLines)
-                //{
-                //    Ticket ticket = _ticketAPIConsumer.GetTicketWithSectionAndEvent(orderline.TicketId);
-                    
-                //    ticket.Section.TicketAmount -= orderline.Quantity;
-                //    ticket.Event.TotalAmount -= orderline.Quantity;
-                //    _ticketAPIConsumer.Update(ticket);
-                //}
 
                 var ticketDetailsSerialized = TempData["TicketDetails"] as string;
                 var ticketDetails = string.IsNullOrEmpty(ticketDetailsSerialized)
@@ -129,7 +118,13 @@ namespace TicketJam.Website.Controllers
                     : JsonSerializer.Deserialize<List<Ticket>>(ticketDetailsSerialized);
                 ViewBag.TicketDetails = ticketDetails;
 
-                return View("Confirmation", order);
+                if (order.Id != 0)
+                {
+                    return View("Confirmation", order); 
+                } else
+                {
+                    return Ok(new { success = false, message = "Order failed, please try again" });
+                }
             }
             catch
             {

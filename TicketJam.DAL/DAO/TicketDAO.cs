@@ -153,12 +153,8 @@ namespace TicketJam.DAL.DAO
         /// <exception cref="Exception"></exception>
         /// Throws exception if unable to find ticket
         /// Throws exception if problem contacting database
-        public bool Update(int quantity, int ticketId)
+        public bool Update(int quantity, int ticketId, IDbConnection connection, IDbTransaction transaction)
         {
-            using DbConnection connection = new SqlConnection(_connectionString);
-            connection.Open();
-            IDbTransaction transaction = connection.BeginTransaction();
-
             try
             {
                 Ticket ticket = GetTicketWithSectionAndEvent(ticketId);
@@ -201,12 +197,10 @@ namespace TicketJam.DAL.DAO
                 // Commit the transaction if both updates were successful
                 if(ticket.Event.TotalAmount - quantity < 0 || ticket.Section.TicketAmount - quantity < 0)
                 {
-                    transaction.Rollback();
                     return false;
                 }
                 else
                 {
-                transaction.Commit();
                 return true; // Return true if both were updated
                 }
               
@@ -214,12 +208,8 @@ namespace TicketJam.DAL.DAO
             catch (SqlException e)
             {
                 // Rollback if something goes wrong
-                transaction.Rollback();
                 throw new Exception($"Failed to update TicketAmount and TotalAmount. Error message was {e.Message}", e);
-            } finally
-            {
-                connection.Close();
-            }
+            } 
             }
             catch (Exception e)
             {
