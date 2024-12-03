@@ -25,8 +25,28 @@ namespace TicketJam.Website.Controllers
         // GET: CustomerController/Create
         public ActionResult Create()
         {
-            return View();
+            try
+            {
+                // Get the email from the authenticated user's claims
+                string email = User.FindFirst(System.Security.Claims.ClaimTypes.Email).Value;
+
+                // Create a new customer instance and populate the email
+                var customer = new APIClient.DTO.Customer
+                {
+                    Email = email
+                };
+
+                // Pass the customer object to the view
+                return View(customer);
+            }
+            catch
+            {
+                // Handle any errors and return the view without a model
+                return View();
+            }
         }
+
+
 
         // POST: CustomerController/Create
         [HttpPost]
