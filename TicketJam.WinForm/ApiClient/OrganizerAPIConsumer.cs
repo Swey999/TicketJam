@@ -21,7 +21,14 @@ namespace TicketJam.WinForm.ApiClient
             this.restClient = new RestSharp.RestClient(baseURI);
         }
 
-        public OrganizerDto AddEvent(OrganizerDto organizer)
+        /// <summary>
+        /// Registers an organizer and adds organizer to JSON for transfer
+        /// </summary>
+        /// <param name="organizer"></param>
+        /// Takes organizer created in Create Organizer 
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if unable to contact API server
+        public OrganizerDto AddOrganizer(OrganizerDto organizer)
         {
             var request = new RestRequest().AddJsonBody(organizer);
             var client = new RestClient(BaseURI);
@@ -36,6 +43,12 @@ namespace TicketJam.WinForm.ApiClient
             return response.Data;
         }
 
+        /// <summary>
+        /// Takes organizer login info to attempt to login
+        /// </summary>
+        /// <param name="organizerDto"></param>
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if unabble to connect to API server
         public OrganizerDto Login(OrganizerDto organizerDto)
         {
             var request = new RestRequest().AddJsonBody(organizerDto);

@@ -16,6 +16,7 @@ namespace TicketJam.WinForm
 {
     public partial class RegisterOrganizer : Form
     {
+        //TODO: Add dependency injection
         private OrganizerAPIConsumer _organizerAPIConsumer = new OrganizerAPIConsumer("https://localhost:7280/api/v1/Organizer", "https://localhost:7280/api/v1/Login");
         public RegisterOrganizer()
         {
@@ -27,14 +28,20 @@ namespace TicketJam.WinForm
             PressedBtnSubmit();
         }
 
+        /// <summary>
+        /// Creates a new organizer and sends to database for hashing and salting of password
+        /// TODO: Encryption for password in transfer
+        /// </summary>
         private void PressedBtnSubmit()
         {
+            //Check if all information is filled out
             if (txtEmailWrite.Text == "" || txtPhoneNoWrite.Text == "" || txtPasswordWrite.Text == "")
             {
                 MessageBox.Show("Please fill out all fields", "Please fill out all fields", MessageBoxButtons.OK);
                 return;
             }
-            OrganizerDto organizerDto = new OrganizerDto();
+
+            //Check if email is in valid format
             try
             {
                 var mailAddress = new MailAddress(txtEmailWrite.Text);
@@ -44,14 +51,20 @@ namespace TicketJam.WinForm
                 MessageBox.Show("Not a valid email", "Email is not correct format", MessageBoxButtons.OK);
                 return;
             }
+
+            //Set organizerDto information
+            OrganizerDto organizerDto = new OrganizerDto();
             organizerDto.Email = txtEmailWrite.Text;
             organizerDto.PhoneNo = txtPhoneNoWrite.Text;
             organizerDto.Password = txtPasswordWrite.Text;
 
-            _organizerAPIConsumer.AddEvent(organizerDto);
+            //Adds organizer to database
+            _organizerAPIConsumer.AddOrganizer(organizerDto);
 
+            //Display to show success
             MessageBox.Show("Account created!", "Account created!", MessageBoxButtons.OK);
 
+            //Redirects to login and removes this window
             OrganizerLogin organizerLogin = new OrganizerLogin();
             this.Hide();
             organizerLogin.ShowDialog();

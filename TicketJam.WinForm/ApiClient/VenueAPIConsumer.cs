@@ -20,6 +20,9 @@ namespace TicketJam.WinForm.ApiClient
             this.restClient = new RestSharp.RestClient(baseURI);
         }
 
+        /// <summary>
+        /// Retrieves all venues from database
+        /// </summary>
         public IEnumerable<VenueDto> GetVenues()
         {
             var request = new RestRequest("", Method.Get);
@@ -30,8 +33,8 @@ namespace TicketJam.WinForm.ApiClient
             {
                 throw new Exception("Unable to call something something");
             }
+
             return response.Data;
         }
-
     }
 }

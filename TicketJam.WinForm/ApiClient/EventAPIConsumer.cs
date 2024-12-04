@@ -22,6 +22,13 @@ namespace TicketJam.WinForm.ApiClient
             this.restClient = new RestSharp.RestClient(baseURI);
         }
 
+        /// <summary>
+        /// Sends Event to API for insertion into database
+        /// </summary>
+        /// <returns></returns>
+        /// The event with further information, is not currently used
+        /// <exception cref="Exception"></exception>
+        /// Throws exception if not able to contact API or other error occurs
         public EventDto AddEvent (EventDto Event)
         {
             var request = new RestRequest().AddJsonBody(Event);
@@ -31,7 +38,7 @@ namespace TicketJam.WinForm.ApiClient
 
             if (!response.IsSuccessful)
             {
-                throw new Exception("Fail");
+                throw new Exception("Unable to contact API");
             }
 
             return response.Data;

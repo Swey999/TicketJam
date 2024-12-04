@@ -29,30 +29,38 @@ namespace TicketJam.WinForm
             submitButtonPressed();
         }
 
+        /// <summary>
+        /// Fills out all information needed to transfer ticket into binding list for display and further handling in Create Event
+        /// </summary>
         private void submitButtonPressed()
         {
-            if (txtTicketDescription.Text != "" && txtPrice.Text != "")
+            //Check if fields are not filled before continuing
+            if (txtTicketDescription.Text == "" || txtPrice.Text == "")
             {
-                TicketDto ticketDto = new TicketDto();
-                ticketDto.Description = txtTicketDescription.Text;
-                try
-                {
-                    ticketDto.Price = decimal.Parse(txtPrice.Text);
-                }
-                catch (FormatException)
-                {
-                    MessageBox.Show("Please make sure price is a numerical value", "Wrong input", MessageBoxButtons.OK);
-                    return;
-                }
-                ticketDto.TimeCreated = DateTime.Now;
-                TicketDto tempObject = (TicketDto)comboBoxTicketCategory.SelectedItem;
-                ticketDto.TicketCategory = tempObject.TicketCategory;
-                _bindingList.Add(ticketDto);
-                MessageBox.Show("Good job!", "Created new ticket!", MessageBoxButtons.OK);
-                this.Close(); 
+                MessageBox.Show("Please ensure all fields are filled out", "Failed to create new ticket", MessageBoxButtons.OK);
+                return;
             }
+
+            TicketDto ticketDto = new TicketDto();
+
+            // Try to parse, catch FormatException if fails and display to user
+            try
+            {
+                ticketDto.Price = decimal.Parse(txtPrice.Text);
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Please make sure price is a numerical value", "Wrong input", MessageBoxButtons.OK);
+                return;
+            }
+
+            ticketDto.Description = txtTicketDescription.Text;
+            ticketDto.TimeCreated = DateTime.Now;
+            TicketDto tempObject = (TicketDto)comboBoxTicketCategory.SelectedItem;
+            ticketDto.TicketCategory = tempObject.TicketCategory;
+            _bindingList.Add(ticketDto);
+            MessageBox.Show("Ticket created!", "Created new ticket!", MessageBoxButtons.OK);
+            this.Close();
         }
-
-
     }
 }

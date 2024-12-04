@@ -98,6 +98,7 @@ namespace TicketJam.Website.Controllers
                     throw new Exception("User email not found. Please ensure the user is logged in and authenticated.");
                 }
 
+                //Find customer
                 Customer customer = customerAPIConsumer.GetCustomerByEmail(userEmail);
                 if (customer == null)
                 {
@@ -112,18 +113,22 @@ namespace TicketJam.Website.Controllers
 
                 order = OrderAPIConsumer.Add(order);
 
+                //Save ticketDetails in viewbag for display in confirmation
                 var ticketDetailsSerialized = TempData["TicketDetails"] as string;
                 var ticketDetails = string.IsNullOrEmpty(ticketDetailsSerialized)
                     ? new List<Ticket>()
                     : JsonSerializer.Deserialize<List<Ticket>>(ticketDetailsSerialized);
                 ViewBag.TicketDetails = ticketDetails;
 
+                // API returns order ID as 0 if order failed at any step, so we check to ensure customer gets feedback
                 if (order.Id != 0)
                 {
-                    return View("Confirmation", order); 
-                } else
+                    return View("Confirmation", order);
+                }
+                else
                 {
-                    return Ok(new { success = false, message = "Order failed, please try again" });
+                    ViewBag.ErrorMessage = "Order failed! Please validate tickets are still available";
+                    return View(order);
                 }
             }
             catch

@@ -160,4 +160,9 @@
     }
 }
 
-
+@if (ViewBag.ErrorMessage != null)
+{
+    <script>
+        alert("@ViewBag.ErrorMessage");
+    </script>
+}

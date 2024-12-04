@@ -18,8 +18,9 @@ namespace TicketJam.WinForm.ApiClient
             BaseURI = baseURI;
             this.restClient = new RestSharp.RestClient(baseURI);
         }
-
-
+        /// <summary>
+        /// Retrieves all tickets - Is no longer used
+        /// </summary>
         public IEnumerable<TicketDto> GetTickets()
         {
             var request = new RestRequest("", Method.Get);
@@ -30,6 +31,7 @@ namespace TicketJam.WinForm.ApiClient
             {
                 throw new Exception($"Unable to get all ticket");
             }
+
             return response.Data;
         }
     }

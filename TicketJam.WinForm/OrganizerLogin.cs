@@ -25,7 +25,10 @@ namespace TicketJam.WinForm
         {
             btnLoginClicked();
         }
-
+        /// <summary>
+        /// Sends login information for validation in database
+        /// TODO: Implement encryption in transfer
+        /// </summary>
         private void btnLoginClicked()
         {
             OrganizerDto organizerDto = new OrganizerDto();
@@ -51,8 +54,8 @@ namespace TicketJam.WinForm
             else
             {
                 MessageBox.Show("Login succesful!");
-                CreateEvent form1 = new CreateEvent(organizerDto);
-                form1.Show();
+                CreateEvent createEvent = new CreateEvent(organizerDto);
+                createEvent.Show();
             }
         }
 
@@ -61,6 +64,9 @@ namespace TicketJam.WinForm
             NotAlreadyRegistedClicked();
         }
 
+        /// <summary>
+        /// Redirects to Register Organizer
+        /// </summary>
         private void NotAlreadyRegistedClicked()
         {
             RegisterOrganizer registerOrganizer = new RegisterOrganizer();
