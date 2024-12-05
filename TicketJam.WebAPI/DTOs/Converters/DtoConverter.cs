@@ -260,5 +260,11 @@ namespace TicketJam.WebAPI.DTOs.Converters
             return order;
         }
 
+        public static DAL.Model.Ticket FromDto(this TicketDtoForeignKeys ticketDtoToConvert)
+        {
+            var Ticket = new DAL.Model.Ticket();
+            ticketDtoToConvert.CopyPropertiesTo(Ticket);
+            return Ticket;
+        }
     }
 }

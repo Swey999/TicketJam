@@ -1,6 +1,6 @@
 ﻿namespace TicketJam.WebAPI.DTOs
 {
-    public class CustomerDto
+    public class TicketDtoForeignKeys
     {
         public string Description { get; set; }
         public float Price { get; set; }
