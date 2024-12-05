@@ -250,6 +250,10 @@ namespace TicketJam.WebAPI.DTOs.Converters
         {
             var orderDto = new OrderDto();
             orderToConvert.CopyPropertiesTo(orderDto);
+            if (orderToConvert.OrderLines != null && orderToConvert.OrderLines.Count != 0)
+            {
+                orderDto.OrderLines = orderToConvert.OrderLines.ToDtos().ToList();
+            }
             return orderDto;
         }
 
@@ -257,6 +261,12 @@ namespace TicketJam.WebAPI.DTOs.Converters
         {
             var order = new DAL.Model.Order();
             orderDtoToConvert.CopyPropertiesTo(order);
+
+            if (orderDtoToConvert.OrderLines != null && orderDtoToConvert.OrderLines.Count != 0)
+            {
+                order.OrderLines = orderDtoToConvert.OrderLines.FromDtos().ToList();
+            }
+
             return order;
         }
 
@@ -265,6 +275,36 @@ namespace TicketJam.WebAPI.DTOs.Converters
             var Ticket = new DAL.Model.Ticket();
             ticketDtoToConvert.CopyPropertiesTo(Ticket);
             return Ticket;
+        }
+
+        public static IEnumerable<OrderLine> FromDtos(this IEnumerable<OrderLineDto> orderLinesToConvert)
+        {
+            foreach (var orderLinesDto in orderLinesToConvert)
+            {
+                yield return orderLinesDto.FromDto();
+            }
+        }
+
+        public static DAL.Model.OrderLine FromDto(this OrderLineDto orderLineDtoToConvert)
+        {
+            var orderLine = new DAL.Model.OrderLine();
+            orderLineDtoToConvert.CopyPropertiesTo(orderLine);
+            return orderLine;
+        }
+
+        public static OrderLineDto ToDto(this DAL.Model.OrderLine orderLineToConvert)
+        {
+            var orderLineDto = new OrderLineDto();
+            orderLineToConvert.CopyPropertiesTo(orderLineDto);
+            return orderLineDto;
+        }
+
+        public static IEnumerable<OrderLineDto> ToDtos(this IEnumerable<OrderLine> orderLinesToConvert)
+        {
+            foreach (var orderLinesDto in orderLinesToConvert)
+            {
+                yield return orderLinesDto.ToDto();
+            }
         }
     }
 }

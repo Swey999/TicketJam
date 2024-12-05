@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 using RestSharp;
+using System.Text.Json;
 using TicketJam.Website.APIClient.DTO;
 
 namespace TicketJam.Website.APIClient;
@@ -58,6 +59,8 @@ public class OrderAPIConsumer : IRestClient<Order>
 
         try
         {
+            string json = JsonSerializer.Serialize(orderToAdd);
+
             var request = new RestRequest().AddJsonBody(orderToAdd);
 
             var client = new RestClient(BaseURI);

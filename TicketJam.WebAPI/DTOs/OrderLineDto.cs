@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
-        public TicketDto Ticket { get; set; }
+        public int TicketId { get; set; }
     }
 }
