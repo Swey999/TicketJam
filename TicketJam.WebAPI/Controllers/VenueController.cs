@@ -28,9 +28,9 @@ namespace TicketJam.WebAPI.Controllers
 
         // GET api/<VenueControllerAPI>/5
         [HttpGet("{id}")]
-        public ActionResult<Venue> GetById(int id)
+        public ActionResult<VenueDto> GetById(int id)
         {
-            Venue venue = _venueDAO.GetById(id);
+            VenueDto venue = _venueDAO.GetById(id).ToDto();
             if (venue == null)
             {
                 return NotFound();

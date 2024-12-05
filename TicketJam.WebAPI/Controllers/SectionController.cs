@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
+using TicketJam.WebAPI.DTOs;
+using TicketJam.WebAPI.DTOs.Converters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,16 +22,16 @@ namespace TicketJam.WebAPI.Controllers
         }
         // GET: api/<SectionControllerAPI>
         [HttpGet]
-        public ActionResult<IEnumerable<Section>> Get()
+        public ActionResult<IEnumerable<TicketJam.WebAPI.DTOs.SectionDto>> Get()
         {
-            return Ok(_sectionDAO.Read());
+            return Ok(_sectionDAO.Read().ToDtos());
         }
 
         // GET api/<SectionControllerAPI>/5
         [HttpGet("{id}")]
-        public ActionResult<Section> GetById(int id)
+        public ActionResult<TicketJam.WebAPI.DTOs.SectionDto> GetById(int id)
         {
-            Section section = _sectionDAO.GetById(id);
+            SectionDto section = _sectionDAO.GetById(id).ToDto();
             if (section == null)
             {
                 return NotFound();
@@ -62,7 +64,7 @@ namespace TicketJam.WebAPI.Controllers
         [HttpGet("{id}/sections")]
         public ActionResult<IEnumerable<Section>> GetSectionsByVenueId(int id)
         {
-            var sections = _sectionDAO2.GetSectionsByVenue(id);
+            var sections = _sectionDAO2.GetSectionsByVenue(id).ToDtos();
             if (sections == null || !sections.Any())
             {
                 return NotFound($"No sections found for venue ID {id}.");
