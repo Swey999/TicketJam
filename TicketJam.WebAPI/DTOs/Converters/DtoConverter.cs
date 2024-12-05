@@ -117,6 +117,14 @@ namespace TicketJam.WebAPI.DTOs.Converters
             return Section;
         }
 
+        public static IEnumerable<SectionDto> ToDtos(this IEnumerable<DAL.Model.Section> sectionToConvert)
+        {
+            foreach (var Section in sectionToConvert)
+            {
+                yield return Section.ToDto();
+            }
+        }
+
         public static IEnumerable<EventDto> ToDtos(this IEnumerable<DAL.Model.Event> eventToConvert)
         {
             foreach (var Event in eventToConvert)

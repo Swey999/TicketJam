@@ -32,9 +32,9 @@ namespace TicketJam.WebAPI.Controllers
 
         // GET api/<TicketController>/5
         [HttpGet("{id}")]
-        public ActionResult<Ticket> GetById(int id)
+        public ActionResult<TicketDto> GetById(int id)
         {
-            Ticket ticket = _ticketDAO.GetById(id);
+            TicketDto ticket = _ticketDAO.GetById(id).ToDto();
             if (ticket == null)
             {
                 return NotFound();
@@ -61,9 +61,9 @@ namespace TicketJam.WebAPI.Controllers
         }
 
         [HttpGet("TicketsFromOrder/{id}")]
-        public ActionResult<Ticket> TicketWithSectionAndEvent(int Id)
+        public ActionResult<TicketDto> TicketWithSectionAndEvent(int Id)
         {
-            Ticket ticket = _ITicketDAO.TicketWithSectionAndEvent(Id);
+            TicketDto ticket = _ITicketDAO.TicketWithSectionAndEvent(Id).ToDto();
             if (ticket == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace TicketJam.WebAPI.Controllers
 
         // PUT api/<TicketController>/5
         [HttpPut("{id}")]
-        public ActionResult Put(int id, Ticket ticket)
+        public ActionResult Put(int id, TicketDto ticket)
         {
             if (id != ticket.Id)
             {
@@ -98,7 +98,7 @@ namespace TicketJam.WebAPI.Controllers
                 return NotFound();
             }
 
-            _ticketDAO.Update(ticket);
+            _ticketDAO.Update(ticket.FromDto());
             return Ok();
         }
 
