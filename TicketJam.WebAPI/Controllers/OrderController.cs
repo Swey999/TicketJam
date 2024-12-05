@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
+using TicketJam.WebAPI.DTOs;
+using TicketJam.WebAPI.DTOs.Converters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,14 +23,14 @@ namespace TicketJam.WebAPI.Controllers
 
         // GET: api/<OrderControllerAPI>
         [HttpGet]
-        public ActionResult<IEnumerable<Order>> GetAll()
+        public ActionResult<IEnumerable<OrderDto>> GetAll()
         {
-            return Ok(_orderDAO.Read());
+            return Ok(_orderDAO.Read().ToDtos());
         }
 
         // GET api/<OrderControllerAPI>/5
         [HttpGet("{id}")]
-        public ActionResult<Order> GetById(int id)
+        public ActionResult<OrderDto> GetById(int id)
         {
             Order order = _orderDAO.GetById(id);
             if (order == null)
@@ -37,24 +39,24 @@ namespace TicketJam.WebAPI.Controllers
             }
             else
             {
-                return Ok(order);
+                return Ok(order.ToDto());
             }
         }
 
         // POST api/<OrderControllerAPI>
         [HttpPost]
-        public ActionResult<Order> Post(Order order)
+        public ActionResult<OrderDto> Post(OrderDto order)
         {
-            _orderDAO.Create(order);
-            return Ok(order);
+            Order orderDtoToConvert = _orderDAO.Create(order.FromDto());
+            return Ok(orderDtoToConvert.ToDto());
         }
 
 
         // PUT api/<OrderControllerAPI>/5
         [HttpPut("{id}")]
-        public ActionResult Put(Order order)
+        public ActionResult Put(OrderDto order)
         {
-            _orderDAO.Update(order);
+            _orderDAO.Update(order.FromDto());
             if (order == null)
             {
                 return NotFound();
@@ -81,14 +83,14 @@ namespace TicketJam.WebAPI.Controllers
 
         // GET api/v1/OrderControllerAPI/orders/{customerId}/purchases
         [HttpGet("orders/{customerId}/purchases")]
-        public ActionResult<IEnumerable<Order>> GetOrdersByCustomer(int customerId)
+        public ActionResult<IEnumerable<OrderDto>> GetOrdersByCustomer(int customerId)
         {
             var orders = _orderDAO2.GetOrdersByCustomer(customerId);
             if (orders == null || !orders.Any())
             {
                 return NotFound($"No orders found for customer with ID {customerId}");
             }
-            return Ok(orders);
+            return Ok(orders.ToDtos());
 
         }
     }

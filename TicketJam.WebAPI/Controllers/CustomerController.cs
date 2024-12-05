@@ -2,6 +2,7 @@
 using TicketJam.DAL.DAO;
 using TicketJam.DAL.Model;
 using TicketJam.WebAPI.DTOs;
+using TicketJam.WebAPI.DTOs.Converters;
 
 namespace TicketJam.WebAPI.Controllers
 {
@@ -19,7 +20,7 @@ namespace TicketJam.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Customer> GetById(int id)
+        public ActionResult<CustomerDto> GetById(int id)
         {
             Customer customer = _customerDAO.GetById(id);
             if (customer == null)
@@ -28,21 +29,21 @@ namespace TicketJam.WebAPI.Controllers
             }
             else
             {
-                return Ok(customer);
+                return Ok(customer.ToDto());
             }
         }
 
 
         // POST api/<OrderControllerAPI>
         [HttpPost]
-        public ActionResult<Customer> Post(Customer customer)
+        public ActionResult<CustomerDto> Post(CustomerDto customer)
         {
-            _customerDAO.Create(customer);
-            return Ok(customer);
+            Customer customerDtoToConvert = _customerDAO.Create(customer.FromDto());
+            return Ok(customerDtoToConvert.ToDto());
         }
 
         [HttpGet("by-email/{email}")]
-        public ActionResult<Customer> GetCustomerByEmail([FromRoute] string email)
+        public ActionResult<CustomerDto> GetCustomerByEmail([FromRoute] string email)
         {
             Customer customer = new Customer();
             customer = _icustDAO.GetCustomerByEmail(email);
@@ -52,11 +53,8 @@ namespace TicketJam.WebAPI.Controllers
             }
             else
             {
-                return Ok(customer);
+                return Ok(customer.ToDto());
             }
         }
-
-
-
     }
 }

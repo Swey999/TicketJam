@@ -216,11 +216,41 @@ namespace TicketJam.WebAPI.DTOs.Converters
             }
         }
 
-        public static DAL.Model.Ticket FromDto(this TicketDtoForeignKeys ticketDtoToConvert)
+        public static DAL.Model.Customer FromDto(this CustomerDto CustomerDtoToConvert)
         {
-            var Ticket = new DAL.Model.Ticket();
-            ticketDtoToConvert.CopyPropertiesTo(Ticket);
-            return Ticket;
+            var Customer = new DAL.Model.Customer();
+            CustomerDtoToConvert.CopyPropertiesTo(Customer);
+            return Customer;
         }
+
+        public static CustomerDto ToDto(this DAL.Model.Customer customerToConvert)
+        {
+            var CustomerDto = new CustomerDto();
+            customerToConvert.CopyPropertiesTo(CustomerDto);
+            return CustomerDto;
+        }
+
+        public static IEnumerable<OrderDto> ToDtos(this IEnumerable<DAL.Model.Order> ordersToConvert)
+        {
+            foreach (var Order in ordersToConvert)
+            {
+                yield return Order.ToDto();
+            }
+        }
+
+        public static OrderDto ToDto(this DAL.Model.Order orderToConvert)
+        {
+            var orderDto = new OrderDto();
+            orderToConvert.CopyPropertiesTo(orderDto);
+            return orderDto;
+        }
+
+        public static DAL.Model.Order FromDto(this OrderDto orderDtoToConvert)
+        {
+            var order = new DAL.Model.Order();
+            orderDtoToConvert.CopyPropertiesTo(order);
+            return order;
+        }
+
     }
 }
