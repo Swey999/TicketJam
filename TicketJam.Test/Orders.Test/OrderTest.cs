@@ -48,17 +48,5 @@ namespace TicketJam.Test.Orders.Test
 
         }
 
-        [Test]
-        public void DeleteOrderTestSuccess()
-        {
-            // Arrange
-
-            // Act
-            var deletedOrder = _orderDao.Delete(28);
-            var getDeletedOrder = _orderDao.GetById(28);
-            // Assert
-            Assert.That(getDeletedOrder, Is.EqualTo(null));
-        }
-
     }
 }

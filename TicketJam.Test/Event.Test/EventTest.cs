@@ -19,17 +19,18 @@ public class EventTest
     public void SetUp()
     {
         _eventDAO = new EventDAO("Server=hildur.ucn.dk;Database=DMA-CSD-S232_10503088;User Id=DMA-CSD-S232_10503088;Password=Password1!;; TrustServerCertificate=True");
+        _eventDAOTwo = new EventDAO("Server=hildur.ucn.dk;Database=DMA-CSD-S232_10503088;User Id=DMA-CSD-S232_10503088;Password=Password1!;; TrustServerCertificate=True");
     }
 
     [Test]
     public void CreateEventTestSuccess()
     {
-        //// ARRANGE
-        //Event Event = new() { EventNo = 2988, Description = "Beat up William", TotalAmount = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now, VenueId = 1, OrganizerId = 1 };
-        //// ACT
-        //var test = _eventDAO2.InsertEvent(Event);
-        //// ASSERT
-        //Assert.That(test, Is.GreaterThan(0));
+        // ARRANGE
+        Event Event = new() { EventNo = 2988, Description = "Beat up William", TotalAmount = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now};
+        // ACT
+        var test = _eventDAOTwo.InsertEvent(Event, 1, 1);
+        // ASSERT
+        Assert.That(test, Is.GreaterThan(0));
 
 
     }
@@ -58,7 +59,7 @@ public class EventTest
         IEnumerable<Event> foundEvents = _eventDAO.Read();
         foreach (Event e in foundEvents)
         {
-            Console.WriteLine(foundEvents);
+            Console.WriteLine(e.Name);
         }
 
         // Assert

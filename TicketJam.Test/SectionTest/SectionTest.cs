@@ -33,7 +33,7 @@ namespace TicketJam.Test.SectionTest
             IEnumerable<Section> foundSections = _sectionDAO.Read();
             foreach (Section s in foundSections)
             {
-                Console.WriteLine(foundSections);
+                Console.WriteLine(s.Description);
             }
 
             // Assert

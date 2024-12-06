@@ -21,26 +21,25 @@ public class CustomerTest
     }
 
 
-    //[Test]
-    //public void CreateCustomerAndInsertIntoDatabaseTestSuccess()
-    //{
-        
-        // Arrange
-        //Address address = new Address() { City = "London", StreetName = "LondonStreet", HouseNo = "36", Zip = "9283" };
-        //Customer customer = new Customer() { FirstName = "Bobby", LastName = "Olsen", Email = "bobby@hotmail.com", PhoneNo = "28734633", Address = address };
+    [Test]
+    public void CreateCustomerAndInsertIntoDatabaseTestSuccess()
+    {
+        //Arrange
+        Address address = new Address() { City = "London", StreetName = "LondonStreet", HouseNo = "36", Zip = "9283" };
+        Customer customer = new Customer() { FirstName = "Karl", LastName = "Olsen", Email = "karl@hotmail.com", PhoneNo = "28734633", Address = address };
 
-    //    // Act
-    //    var insertIntoDatabase = _customerDAO.Create(customer);
+        // Act
+        var insertIntoDatabase = _customerDAO.Create(customer);
 
-    //    // Assert
-    //    Assert.That(insertIntoDatabase, Is.Not.Null);
-    //}
+        // Assert
+        Assert.That(insertIntoDatabase, Is.Not.Null);
+    }
 
     [Test]
     public void FindCustomerOnIdTestSuccess()
     {
         // Arrange
-        int customerId = 10;
+        int customerId = 1;
 
         // Act
         var getCustomerById = _customerDAO.GetById(customerId);

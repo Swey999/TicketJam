@@ -14,7 +14,7 @@ namespace TicketJam.DAL.DAO
     {
         private string _connectionString;
         private string GETALLSECTIONS_SQL = "SELECT Id, Description, TicketAmount, Venue_ID_FK FROM Section;";
-        private string GETSECTIONBYID_SQL = "SELECT Id FROM Section WHERE Id=@Id";
+        private string GETSECTIONBYID_SQL = "SELECT Id, TicketAmount FROM Section WHERE Id=@Id";
         private string GETSECTIONBYVENUEID_SQL = "SELECT Id, Description, TicketAmount, Venue_ID_FK FROM Section WHERE Venue_ID_FK = @Venue_ID_FK";
 
         public SectionDAO(String connectionStringns)

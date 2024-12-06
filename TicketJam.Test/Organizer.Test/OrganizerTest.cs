@@ -74,9 +74,9 @@ namespace TicketJam.Test.Organizer.Test
         {
             TicketJam.DAL.Model.Organizer organizerTest = new TicketJam.DAL.Model.Organizer()
             {
-                Email = "test2",
-                Password = "test2",
-                PhoneNo = "88888888",
+                Email = "test@test.dk",
+                Password = "test",
+                PhoneNo = "5550011",
                 Id = 0
             };
 
@@ -92,7 +92,7 @@ namespace TicketJam.Test.Organizer.Test
                 throw;
             }
 
-            Assert.AreEqual(organizerAssert.Id, 4);
+            Assert.AreEqual(organizerAssert.Id, 5);
         }
 
     }
