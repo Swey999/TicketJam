@@ -194,15 +194,8 @@ namespace TicketJam.DAL.DAO
                     Quantity = quantity
                 }, transaction);
 
-                // Commit the transaction if both updates were successful
-                if(ticket.Event.TotalAmount - quantity < 0 || ticket.Section.TicketAmount - quantity < 0)
-                {
-                    return false;
-                }
-                else
-                {
-                return true; // Return true if both were updated
-                }
+                    // Commit the transaction if both updates were successful
+                    return true;
               
             }
             catch (SqlException e)
