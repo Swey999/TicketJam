@@ -67,7 +67,7 @@ public class TransactionTest
     }
 
 
-[Test]
+    [Test]
     public void PurchaseTicketsFromSectionCantGoBelowZeroTestFailed()
     {
         //Test First
@@ -106,6 +106,62 @@ public class TransactionTest
         Assert.AreEqual(startTicket, _sectionDAO.GetById(2).TicketAmount, "Billetterne er de samme efter rollback");
         Console.WriteLine($"Slut mængde af tickets: {section.TicketAmount}");
     }
+
+    [Test]
+    public void MulitplePurchaseOfSingleTicketTest()
+    {
+        // Arrange
+        var section = _sectionDAO.GetById(1); 
+        int initialTicketCount = section.TicketAmount;
+
+        Console.WriteLine($"Initial ticket count: {initialTicketCount}");
+
+        // Act
+        Task<Order> user1 = Task.Run(() =>
+        {
+            var order = new Order
+            {
+                CustomerId = 1,
+                OrderLines = new List<OrderLine>
+            {
+                new OrderLine { TicketId = 1, Quantity = 1 }
+            }
+            };
+
+            return _orderDAO.Create(order);
+        });
+
+        Task<Order> user2 = Task.Run(() =>
+        {
+            var order = new Order
+            {
+                CustomerId = 2,
+                OrderLines = new List<OrderLine>
+            {
+                new OrderLine { TicketId = 1, Quantity = 1 }
+            }
+            };
+
+            return _orderDAO.Create(order);
+        });
+
+        Task.WaitAll(user1, user2);
+
+        // Assert
+        int finalTicketCount = _sectionDAO.GetById(1).TicketAmount;
+
+        Assert.AreEqual(initialTicketCount - 1, finalTicketCount, "The ticket count should decrease by exactly one.");
+
+        Assert.IsTrue(
+            (user1.Result.Id > 0 && user2.Result.Id == 0) || (user1.Result.Id == 0 && user2.Result.Id > 0),
+            "Only one user's order should succeed."
+        );
+
+        Console.WriteLine($"Final ticket count: {finalTicketCount}");
+        Console.WriteLine($"User 1 Order Success: {user1.Result.Id > 0}");
+        Console.WriteLine($"User 2 Order Success: {user2.Result.Id > 0}");
+    }
+
 
 
 
