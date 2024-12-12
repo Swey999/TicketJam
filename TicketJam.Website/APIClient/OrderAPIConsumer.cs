@@ -59,8 +59,6 @@ public class OrderAPIConsumer : IRestClient<Order>
 
         try
         {
-            string json = JsonSerializer.Serialize(orderToAdd);
-
             var request = new RestRequest().AddJsonBody(orderToAdd);
 
             var client = new RestClient(BaseURI);

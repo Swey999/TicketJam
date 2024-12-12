@@ -10,12 +10,12 @@ namespace TicketJam.WinForm.ApiClient
 {
     public class TicketApiConsumer
     {
-        private string BaseURI;
+        private string _baseURI;
         private RestSharp.RestClient restClient;
 
         public TicketApiConsumer(string baseURI)
         {
-            BaseURI = baseURI;
+            _baseURI = baseURI;
             this.restClient = new RestSharp.RestClient(baseURI);
         }
         /// <summary>

@@ -29,9 +29,9 @@ namespace TicketJam.WinForm.ApiClient
         /// The event with further information, is not currently used
         /// <exception cref="Exception"></exception>
         /// Throws exception if not able to contact API or other error occurs
-        public EventDto AddEvent (EventDto Event)
+        public EventDto AddEvent (EventDto eventDto)
         {
-            var request = new RestRequest().AddJsonBody(Event);
+            var request = new RestRequest().AddJsonBody(eventDto);
             var client = new RestClient(BaseURI);
 
             var response = client.ExecutePost<EventDto>(request);
