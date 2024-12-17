@@ -16,18 +16,13 @@ namespace TicketJam.DAL.DAO;
 public class EventDAO : IEventDAO, IDAO<Event>
 {
     private readonly string _connectionString;
-    private string _INSERT_SQL = "INSERT INTO Event (Description, Name, TotalAmount, StartDate, EndDate, EventNo, Organizer_ID_FK, Venue_ID_FK) VALUES (@Description, @Name, @TotalAmount, @StartDate, @EndDate, @EventNo, @OrganizerId, @VenueId) SELECT CAST(SCOPE_IDENTITY() as int)";
+    private string _insertSQL = "INSERT INTO Event (Description, Name, TotalAmount, StartDate, EndDate, EventNo, Organizer_ID_FK, Venue_ID_FK) VALUES (@Description, @Name, @TotalAmount, @StartDate, @EndDate, @EventNo, @OrganizerId, @VenueId) SELECT CAST(SCOPE_IDENTITY() as int)";
 
-    private string _GETBYID_SQL = "SELECT Id, Name, Description, TotalAmount, EventNo, StartDate, EndDate, Venue_ID_FK, Organizer_ID_FK FROM Event WHERE Id = @id";
-    private string _GET_EVENT_FROM_ID_SQL = "SELECT Id, EventNo, TotalAmount, StartDate, EndDate, Name FROM Event WHERE Id = @id";
-    private string _GET_EVENT_SQL = "SELECT Id, Name, Description, TotalAmount, EventNo, StartDate, EndDate, Venue_ID_FK, Organizer_ID_FK FROM Event";
-    private string _GET_ADDRESS_ON_EVENT_SQL = "SELECT Venue.Id, Venue.Name, Address.Id, Address.StreetName, Address.City, Address.Zip, Address.HouseNo FROM Event JOIN Venue ON Event.Venue_ID_FK = Venue.Id JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Event.Id = @EventId";
+    private string _getByIdSQL = "SELECT Id, Name, Description, TotalAmount, EventNo, StartDate, EndDate, Venue_ID_FK, Organizer_ID_FK FROM Event WHERE Id = @id";
+    private string _getEventSQL = "SELECT Id, Name, Description, TotalAmount, EventNo, StartDate, EndDate, Venue_ID_FK, Organizer_ID_FK FROM Event";
+    private string _getAddressOnEventSQL = "SELECT Venue.Id, Venue.Name, Address.Id, Address.StreetName, Address.City, Address.Zip, Address.HouseNo FROM Event JOIN Venue ON Event.Venue_ID_FK = Venue.Id JOIN Address ON Venue.Address_ID_FK = Address.Id WHERE Event.Id = @EventId";
 
-   
-
-    //TODO: * skal rettes så vi ikke henter ALT op fra databasen. Det bliver en senere opgave. 
-
-    private string _JOIN_SQL = "SELECT DISTINCT Ticket.*, Section.*, Venue.*, Address.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Address ON Address.Id = Venue.Address_ID_FK WHERE Ticket.Event_ID_FK = @EventId";
+    private string _joinSQL = "SELECT DISTINCT Ticket.*, Section.*, Venue.*, Address.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Venue ON Venue.Id = Section.Venue_ID_FK JOIN Address ON Address.Id = Venue.Address_ID_FK WHERE Ticket.Event_ID_FK = @EventId";
 
 
     public EventDAO(string connectionString)
@@ -65,7 +60,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
         connection.Open();
         try
         {
-            return connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
+            return connection.QuerySingle<Event>(_getByIdSQL, new { id = id });
         }
         catch (SqlException e)
         {
@@ -97,9 +92,9 @@ public class EventDAO : IEventDAO, IDAO<Event>
         using IDbConnection connection = new SqlConnection(_connectionString);
         try
         {
-            Event Event = connection.QuerySingle<Event>(_GETBYID_SQL, new { id = id });
+            Event Event = connection.QuerySingle<Event>(_getByIdSQL, new { id = id });
 
-            Event.TicketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(_JOIN_SQL, (t, s, v, a) =>
+            Event.TicketList = connection.Query<Ticket, Section, Venue, Address, Ticket>(_joinSQL, (t, s, v, a) =>
             {
                 t.Section = s;
                 t.Section.Venue = v;
@@ -140,7 +135,7 @@ public class EventDAO : IEventDAO, IDAO<Event>
         try
         {
             //Cannot pass parameter Event as parameter in ExecuteScalar because it does not 1:1 match database, so we create empty object and assign the values
-            eventToInsert.Id = connection.ExecuteScalar<int>(_INSERT_SQL, new
+            eventToInsert.Id = connection.ExecuteScalar<int>(_insertSQL, new
             {
                 Description = eventToInsert.Description,
                 Name = eventToInsert.Name,
@@ -175,13 +170,13 @@ public class EventDAO : IEventDAO, IDAO<Event>
         try
         {
             // Fetch the main Event entities
-            var events = connection.Query<Event>(_GET_EVENT_SQL).ToList();
+            var events = connection.Query<Event>(_getEventSQL).ToList();
 
             foreach (var eventEntity in events)
             {
                 // Fetch related Venue and Address for each Event
                 var venue = connection.Query<Venue, Address, Venue>(
-                    _GET_ADDRESS_ON_EVENT_SQL,
+                    _getAddressOnEventSQL,
                     (venue, address) =>
                     {
                         venue.Address = address;

@@ -16,19 +16,19 @@ namespace TicketJam.DAL.DAO
     public class OrderDAO : IDAO<Order>, IOrderDAO
     {
         private string _connectionString;
-        private string _INSERT_ORDER_QUERY = "INSERT INTO Orders (OrderNo, Customer_ID_FK) VALUES (@OrderNo, @CustomerId); SELECT CAST(SCOPE_IDENTITY() as int)";
-        private string _INSERT_ORDERLINE_QUERY = "INSERT INTO Orderline (Quantity, Ticket_ID_FK, Order_ID_FK) VALUES (@Quantity, @TicketId, @OrderId); SELECT CAST(SCOPE_IDENTITY() as int)";
+        private string _insertOrderSQL = "INSERT INTO Orders (OrderNo, Customer_ID_FK) VALUES (@OrderNo, @CustomerId); SELECT CAST(SCOPE_IDENTITY() as int)";
+        private string _insertOrderLineSQL = "INSERT INTO Orderline (Quantity, Ticket_ID_FK, Order_ID_FK) VALUES (@Quantity, @TicketId, @OrderId); SELECT CAST(SCOPE_IDENTITY() as int)";
 
-        private string _DELETE_ORDER_QUERY = "DELETE FROM Orders WHERE Id = @id";
-        private string _DELETE_ORDERLINES_QUERY = "DELETE FROM OrderLines WHERE OrderId = @id";
+        private string _deleteOrderSQL = "DELETE FROM Orders WHERE Id = @id";
+        private string _deleteOrderLineSQL = "DELETE FROM OrderLines WHERE OrderId = @id";
 
-        private string _GET_ORDER_FROM_ID_QUERY = "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
-        private string _GET_ID_FROM_ORDER_QUERY = "SELECT Id FROM Orders";
-        private string _GET_ORDERS_BY_CUSTOMERID = "SELECT * FROM Orders WHERE Customer_ID_FK = @CustomerId";
+        private string _getOrderByIdSQL= "SELECT Id, OrderNo FROM Orders WHERE Id = @id";
+        private string _getIdByOrderSQL = "SELECT Id FROM Orders";
+        private string _getOrdersByCustomerId = "SELECT * FROM Orders WHERE Customer_ID_FK = @CustomerId";
 
         //TODO: * skal rettes så vi ikke henter ALT op fra databasen. Det bliver en senere opgave. 
 
-        private string _ORDERLINE_JOIN_QUERY = "SELECT DISTINCT OL.*, T.*, S.*, V.*, E.*, A.* FROM Orderline OL JOIN Ticket T ON T.Id = OL.Ticket_ID_FK JOIN Section S ON S.Id = T.Section_ID_FK JOIN Venue V ON V.Id = S.Venue_ID_FK JOIN Event E ON E.Id = T.Event_ID_FK JOIN Address A ON A.Id = V.Address_ID_FK WHERE OL.Order_ID_FK = @orderId;\r\n\r\n\r\n\r\n\r\n\r\n";
+        private string _orderLIneJoinSQL = "SELECT DISTINCT OL.*, T.*, S.*, V.*, E.*, A.* FROM Orderline OL JOIN Ticket T ON T.Id = OL.Ticket_ID_FK JOIN Section S ON S.Id = T.Section_ID_FK JOIN Venue V ON V.Id = S.Venue_ID_FK JOIN Event E ON E.Id = T.Event_ID_FK JOIN Address A ON A.Id = V.Address_ID_FK WHERE OL.Order_ID_FK = @orderId;";
 
         private TicketDAO _ticketDao;
 
@@ -64,13 +64,12 @@ namespace TicketJam.DAL.DAO
                     customerId = order.CustomerId
                 };
 
-                order.Id = connection.ExecuteScalar<int>(_INSERT_ORDER_QUERY, parameters, transaction);
+                order.Id = connection.ExecuteScalar<int>(_insertOrderSQL, parameters, transaction);
                 foreach (OrderLine orderline in order.OrderLines)
                 {
-                    connection.Execute(_INSERT_ORDERLINE_QUERY, new { orderId = order.Id, quantity = orderline.Quantity , ticketId = orderline.TicketId}, transaction);
+                    connection.Execute(_insertOrderLineSQL, new { orderId = order.Id, quantity = orderline.Quantity , ticketId = orderline.TicketId}, transaction);
                     if (_ticketDao.Update(orderline.Quantity, orderline.TicketId, connection, transaction) != true)
                     {
-                        transaction.Rollback();
                         order.Id = 0;
                     }
                     else
@@ -109,8 +108,8 @@ namespace TicketJam.DAL.DAO
 
             try
             {
-                connection.Execute(_DELETE_ORDERLINES_QUERY, new { Id = id }, transaction);
-                connection.Execute(_DELETE_ORDER_QUERY, new { Id = id }, transaction);
+                connection.Execute(_deleteOrderLineSQL, new { Id = id }, transaction);
+                connection.Execute(_deleteOrderSQL, new { Id = id }, transaction);
                 transaction.Commit();
                 return true;
             }
@@ -139,8 +138,8 @@ namespace TicketJam.DAL.DAO
             using IDbConnection connection = new SqlConnection(_connectionString);
             try
             {
-                Order order = connection.QuerySingle<Order>(_GET_ORDER_FROM_ID_QUERY, new { id = id });
-                order.OrderLines = connection.Query<OrderLine>(_ORDERLINE_JOIN_QUERY, new { orderId = order.Id }).ToList();
+                Order order = connection.QuerySingle<Order>(_getOrderByIdSQL, new { id = id });
+                order.OrderLines = connection.Query<OrderLine>(_orderLIneJoinSQL, new { orderId = order.Id }).ToList();
                 return order;
             }
             catch (SqlException e)
@@ -162,12 +161,11 @@ namespace TicketJam.DAL.DAO
             using IDbConnection connection = new SqlConnection(_connectionString);
             try
             {
-                return connection.Query<Order>(_GET_ID_FROM_ORDER_QUERY);
+                return connection.Query<Order>(_getIdByOrderSQL);
             }
             catch (SqlException e)
             {
-                //TODO fix exception when method is done
-                throw new Exception ($"", e);
+                throw new Exception ($"An error occurred while reading Order.", e);
             } finally
             {
                 connection.Close();
@@ -187,11 +185,11 @@ namespace TicketJam.DAL.DAO
             using IDbConnection connection = new SqlConnection(_connectionString);
             try
             {
-                var orders = connection.Query<Order>(_GET_ORDERS_BY_CUSTOMERID, new { CustomerId = customerId }).ToList();
+                var orders = connection.Query<Order>(_getOrdersByCustomerId, new { CustomerId = customerId }).ToList();
                 foreach (var order in orders)
                 {
                     // Get order lines for each order
-                    order.OrderLines = connection.Query<OrderLine>(_ORDERLINE_JOIN_QUERY, new { orderId = order.Id }).ToList();
+                    order.OrderLines = connection.Query<OrderLine>(_orderLIneJoinSQL, new { orderId = order.Id }).ToList();
                 }
                 return orders;
             }

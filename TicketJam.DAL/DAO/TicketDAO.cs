@@ -9,18 +9,20 @@ using TicketJam.DAL.Model;
 using Dapper;
 using System.Data.Common;
 using System.Transactions;
+using System.Threading.Channels;
 
 namespace TicketJam.DAL.DAO
 {
     public class TicketDAO : IDAO<Ticket>, ITicketDAO
     {
-        public string updateAccountSQL = "UPDATE Ticket SET WHERE id=@id";
         private string _connectionString;
-        private string _GET_BY_ID = "SELECT Id, Description, TicketId, Price, TicketCategory, MaxAmount, TimeCreated, Section_ID_FK, Event_ID_FK from Ticket WHERE id = @id";
+        private string _getTicketByIdSQL = "SELECT Id, Description, TicketId, Price, TicketCategory, MaxAmount, TimeCreated, Section_ID_FK, Event_ID_FK from Ticket WHERE id = @id";
         private string _updateTicketAmountSQL = "UPDATE Section SET TicketAmount = @TicketAmount FROM Section JOIN Ticket ON Ticket.Section_ID_FK = Section.Id WHERE Section.Id = @SectionId;";
-        private string _GET_TICKET_FROM_ID_JOIN = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE Ticket.Id = @TicketId";
-        private string _GET_TICKET_FROM_TICKETID_JOIN = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE TicketId = @TicketId";
-        private string _InsertTicket = "insert into Ticket (Description, TicketId, Price, TicketCategory, TimeCreated, Section_ID_FK, Event_ID_FK, MaxAmount) values (@Description, @TicketId, @Price, @TicketCategory, @TimeCreated, @SectionId, @EventId, @MaxAmount)";
+        private string _getTicketByIdJoinSQL = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE Ticket.Id = @TicketId";
+        private string _getTicketByTicketIdJoinSQL = @"SELECT Ticket.*, Section.*, Event.* FROM Ticket JOIN Section ON Section.Id = Ticket.Section_ID_FK JOIN Event ON Event.Id = Ticket.Event_ID_FK WHERE TicketId = @TicketId";
+        private string _InsertTicketSQL = "insert into Ticket (Description, TicketId, Price, TicketCategory, TimeCreated, Section_ID_FK, Event_ID_FK, MaxAmount) values (@Description, @TicketId, @Price, @TicketCategory, @TimeCreated, @SectionId, @EventId, @MaxAmount)";
+        private string _updateSectionSQL = @"UPDATE Section SET TicketAmount -= @Quantity WHERE Id = @SectionId;";
+        private string _updateEventSQL = @"UPDATE Event SET TotalAmount -= @Quantity WHERE Id = @EventId;";
 
         public TicketDAO(String connectionStringns)
         {
@@ -56,7 +58,7 @@ namespace TicketJam.DAL.DAO
 
                 // Execute query and map the result
                 var ticket = connection.Query<Ticket, Section, Event, Ticket>(
-                    _GET_TICKET_FROM_ID_JOIN,
+                    _getTicketByIdJoinSQL,
                     (t, s, e) =>
                     {
                         t.Section = s;
@@ -71,9 +73,10 @@ namespace TicketJam.DAL.DAO
             catch (SqlException e)
             {
                 throw new Exception($"Error retrieving ticket with ID: {ticketId}, error: {e.Message}", e);
-            } finally
+            }
+            finally
             {
-               connection.Close();
+                connection.Close();
             }
         }
 
@@ -93,7 +96,7 @@ namespace TicketJam.DAL.DAO
 
                 // Execute query and map the result
                 var ticket = connection.Query<Ticket, Section, Event, Ticket>(
-                    _GET_TICKET_FROM_TICKETID_JOIN,
+                    _getTicketByTicketIdJoinSQL,
                     (t, s, e) =>
                     {
                         t.Section = s;
@@ -108,6 +111,10 @@ namespace TicketJam.DAL.DAO
             catch (SqlException ex)
             {
                 throw new Exception($"Error retrieving ticket with ID: {ticketId}, error: {ex.Message}", ex);
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
@@ -125,7 +132,7 @@ namespace TicketJam.DAL.DAO
             connection.Open();
             try
             {
-                return connection.QuerySingle<Ticket>(_GET_BY_ID, new { Id = id });
+                return connection.QuerySingle<Ticket>(_getTicketByIdSQL, new { Id = id });
             }
             catch (SqlException e)
             {
@@ -158,51 +165,35 @@ namespace TicketJam.DAL.DAO
             try
             {
                 Ticket ticket = GetTicketWithSectionAndEvent(ticketId);
-            
 
-            // SQL for updating TicketAmount in Section
-            const string updateSectionSQL = @"
-        UPDATE Section
-        SET TicketAmount -= @Quantity
-        WHERE Id = @SectionId;";
 
-            // SQL for updating TotalAmount in Event
-            const string updateEventSQL = @"
-        UPDATE Event
-        SET TotalAmount -= @Quantity
-        WHERE Id = @EventId;";
 
-            try
-            {
-                // Checks before running to ensure not contacting database for no reason
-                if (ticket.Event.TotalAmount - quantity < 0 || ticket.Section.TicketAmount - quantity < 0)
+                try
                 {
-                    return false;
-                }
+                    if (ticket.Event.TotalAmount - quantity < 0 || ticket.Section.TicketAmount - quantity < 0)
+                    {
+                        return false;
+                    }
 
-                // Execute the first update on Section
-                int sectionRowsAffected = connection.Execute(updateSectionSQL, new
-                {
-                    SectionId = ticket.Section.Id,
-                    Quantity = quantity
-                }, transaction);
+                    int sectionRowsAffected = connection.Execute(_updateSectionSQL, new
+                    {
+                        SectionId = ticket.Section.Id,
+                        Quantity = quantity
+                    }, transaction);
 
-                // Execute the second update on Event
-                int eventRowsAffected = connection.Execute(updateEventSQL, new
-                {
-                    EventId = ticket.Event.Id,  // Assuming EventId is related to SectionId or you can pass it separately
-                    Quantity = quantity
-                }, transaction);
+                    int eventRowsAffected = connection.Execute(_updateEventSQL, new
+                    {
+                        EventId = ticket.Event.Id,
+                        Quantity = quantity
+                    }, transaction);
 
-                    // Commit the transaction if both updates were successful
                     return true;
-              
-            }
-            catch (SqlException e)
-            {
-                // Rollback if something goes wrong
-                throw new Exception($"Failed to update TicketAmount and TotalAmount. Error message was {e.Message}", e);
-            } 
+
+                }
+                catch (SqlException e)
+                {
+                    throw new Exception($"Failed to update TicketAmount and TotalAmount. Error message was {e.Message}", e);
+                }
             }
             catch (Exception e)
             {
@@ -233,7 +224,7 @@ namespace TicketJam.DAL.DAO
             {
                 //Cannot pass parameter ticket as parameter in Execute because it does not 1:1 match database, so we create empty object and assign the values
                 //Hardcoded SectionId to be implemente later, same with maxamount
-                ticket.Id = connection.Execute(_InsertTicket, new
+                ticket.Id = connection.Execute(_InsertTicketSQL, new
                 {
                     Description = ticket.Description,
                     TicketId = ticket.TicketId,
@@ -253,7 +244,7 @@ namespace TicketJam.DAL.DAO
             {
                 connection.Close();
             }
-            
+
         }
     }
 }

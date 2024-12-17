@@ -15,9 +15,8 @@ namespace TicketJam.DAL.DAO
         private string _connectionString;
 
         //TODO: * skal rettes så vi ikke henter ALT op fra databasen. Det bliver en senere opgave.
-        private string GETALLVENUES_SQL = "SELECT DISTINCT Venue.*, Address.* FROM Address JOIN Venue on Address.id = Venue.Address_ID_FK";
-        private string GETVENUEBYID_SQL = "SELECT DISTINCT Venue.*, Address.* FROM Address JOIN Venue on Address.id = Venue.Address_ID_FK WHERE Venue.id = @Id";
-        // private string GETALLVENUESWITHOUTADDRESS_SQL = "SELECT * FROM VENUE";
+        private string _getAllVenuesSQL = "SELECT DISTINCT Venue.*, Address.* FROM Address JOIN Venue on Address.id = Venue.Address_ID_FK";
+        private string _getVenueByIdSQL = "SELECT DISTINCT Venue.*, Address.* FROM Address JOIN Venue on Address.id = Venue.Address_ID_FK WHERE Venue.id = @Id";
 
         public VenueDAO(string connectionStringns)
         {
@@ -47,7 +46,7 @@ namespace TicketJam.DAL.DAO
             connection.Open();
             try
             {
-                return connection.QuerySingle<Venue>(GETVENUEBYID_SQL, new { Id = id });
+                return connection.QuerySingle<Venue>(_getVenueByIdSQL, new { Id = id });
             }
             catch (SqlException e)
             {
@@ -70,7 +69,7 @@ namespace TicketJam.DAL.DAO
             using IDbConnection connection = new SqlConnection(_connectionString);
             try
             {
-                return connection.Query<Venue>(GETALLVENUES_SQL);
+                return connection.Query<Venue>(_getAllVenuesSQL);
             }
             catch (SqlException e)
             {
@@ -81,24 +80,6 @@ namespace TicketJam.DAL.DAO
                 connection.Close();
             }
         }
-
-        //Is not used currently, might be used later
-        //public IEnumerable<Venue> ReadWithoutAddress()
-        //{
-        //    using IDbConnection connection = new SqlConnection(_connectionString);
-        //    try
-        //    {
-        //        return connection.Query<Venue>(GETALLVENUESWITHOUTADDRESS_SQL);
-        //    }
-        //    catch (SqlException e)
-        //    {
-        //        throw new Exception($"There was an issue finding all venues, error message was {e.Message}", e);
-        //    }
-        //    finally
-        //    {
-        //        connection.Close();
-        //    }
-        //}
 
         public Venue Update(Venue entity)
         {

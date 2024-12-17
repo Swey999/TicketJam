@@ -32,65 +32,86 @@ namespace TicketJam.Website.APIClient
 
         public Ticket GetById(int id)
         {
-            var client = new RestClient($"{BaseURI}/{id}");
-
-            var response = client.ExecuteGet<Ticket>(new RestRequest());
-
-            if (!response.IsSuccessful || response == null)
+            try
             {
-                throw new Exception("Unable to call that thing that thing");
-            }
+                var client = new RestClient($"{BaseURI}/{id}");
 
-            return response.Data;
+                var response = client.ExecuteGet<Ticket>(new RestRequest());
+
+                if (!response.IsSuccessful || response == null)
+                {
+                    throw new Exception($"Unable to fetch ticket by id {id}. Error: {response?.StatusDescription}");
+                }
+
+                return response.Data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to get ticket by id {ex.Message}", ex);
+            }
         }
 
         public Ticket GetTicketWithSectionAndEvent(int id)
         {
+            try
+            {
             var client = new RestClient($"{BaseURI}/get-ticket-joined/{id}");
 
             var response = client.ExecuteGet<Ticket>(new RestRequest());
 
             if (!response.IsSuccessful || response == null)
             {
-                throw new Exception("Unable to call that thing that thing");
+                    throw new Exception($"Unable to fetch ticket with section and event {id}. Error: {response?.StatusDescription}");
             }
 
-            return response.Data;
+                return response.Data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to get ticket with section and event by id {ex.Message}", ex);
+            }
         }
 
         public Ticket TicketWithSectionAndEvent(int id)
         {
-            var client = new RestClient($"{BaseURI}/TicketsFromOrder/{id}");
-
-            var response = client.ExecuteGet<Ticket>(new RestRequest());
-
-            if (!response.IsSuccessful || response == null)
+            try
             {
-                throw new Exception("Unable to call that thing that thing");
-            }
+                var client = new RestClient($"{BaseURI}/TicketsFromOrder/{id}");
 
-            return response.Data;
+                var response = client.ExecuteGet<Ticket>(new RestRequest());
+
+                if (!response.IsSuccessful || response == null)
+                {
+                    throw new Exception($"Unable to fetch ticket with section and event {id}. Error: {response?.StatusDescription}");
+                }
+
+                return response.Data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to get ticket with section and event by id {ex.Message}", ex);
+            }
         }
 
         public Ticket Update(Ticket ticketToUpdate)
         {
-            // Ensure BaseURI includes the correct base URL
-            var client = new RestClient(BaseURI);
-
-            // Append only the ID to the base URL
-            var request = new RestRequest($"{ticketToUpdate.Id}")
-                .AddJsonBody(ticketToUpdate);
-
-            // Execute the PUT request and get the response
-            var response = client.Execute<Ticket>(request, Method.Put);
-
-            // Check if the response is successful
-            if (!response.IsSuccessful)
+            try
             {
-                throw new Exception($"Failed to update Ticket: {response.ErrorMessage}");
-            }
+                var client = new RestClient(BaseURI);
+                var request = new RestRequest($"{ticketToUpdate.Id}")
+                    .AddJsonBody(ticketToUpdate);
+                var response = client.Execute<Ticket>(request, Method.Put);
+                if (!response.IsSuccessful)
+                {
+                    throw new Exception($"Failed to update Ticket: {response.ErrorMessage}");
+                }
 
-            return ticketToUpdate;
+                return ticketToUpdate;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to update ticket {ex.Message}", ex);
+            }
         }
 
 

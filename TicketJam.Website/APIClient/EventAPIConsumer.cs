@@ -16,29 +16,42 @@ namespace TicketJam.Website.APIClient
 
         public IEnumerable<Event> GetAll()
         {
-            var request = new RestRequest("", Method.Get);
-
-            var response = restClient.Execute<IEnumerable<Event>>(new RestRequest());
-
-            if (!response.IsSuccessful || response == null)
+            try
             {
-                throw new Exception("Unable to call something something");
+                var request = new RestRequest("", Method.Get);
+
+                var response = restClient.Execute<IEnumerable<Event>>(new RestRequest());
+
+                if (!response.IsSuccessful || response == null)
+                {
+                    throw new Exception($"Unable to get data from Event {response}");
+                }
+                return response.Data;
             }
-            return response.Data;
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to fetch all Events {ex.Message}", ex);
+            }
         }
 
         public Event GetById(int id)
         {
-            var client = new RestClient($"{BaseURI}/{id}");
-
-            var response = client.ExecuteGet<Event>(new RestRequest());
-
-            if (!response.IsSuccessful || response == null)
+            try
             {
-                throw new Exception("Unable to call that thing that thing");
-            }
+                var client = new RestClient($"{BaseURI}/{id}");
 
-            return response.Data;
+                var response = client.ExecuteGet<Event>(new RestRequest());
+
+                if (!response.IsSuccessful || response == null)
+                {
+                    throw new Exception($"Unable to get data from Event by id {response}");
+                }
+                return response.Data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to fetch Event by id {ex.Message}", ex);
+            }
         }
 
         public bool Delete(int id)

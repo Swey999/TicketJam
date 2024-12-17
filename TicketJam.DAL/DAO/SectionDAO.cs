@@ -13,9 +13,9 @@ namespace TicketJam.DAL.DAO
     public class SectionDAO : IDAO<Section>, ISectionDAO
     {
         private string _connectionString;
-        private string GETALLSECTIONS_SQL = "SELECT Id, Description, TicketAmount, Venue_ID_FK FROM Section;";
-        private string GETSECTIONBYID_SQL = "SELECT Id, TicketAmount FROM Section WHERE Id=@Id";
-        private string GETSECTIONBYVENUEID_SQL = "SELECT Id, Description, TicketAmount, Venue_ID_FK FROM Section WHERE Venue_ID_FK = @Venue_ID_FK";
+        private string _getAllSectionsSQL = "SELECT Id, Description, TicketAmount, Venue_ID_FK FROM Section;";
+        private string _getSectionByIdSQL = "SELECT Id, TicketAmount FROM Section WHERE Id=@Id";
+        private string _getSectionByVenueIdSQL = "SELECT Id, Description, TicketAmount, Venue_ID_FK FROM Section WHERE Venue_ID_FK = @Venue_ID_FK";
 
         public SectionDAO(String connectionStringns)
         {
@@ -45,7 +45,7 @@ namespace TicketJam.DAL.DAO
             connection.Open();
             try
             {
-                return connection.QuerySingle<Section>(GETSECTIONBYID_SQL, new { Id = id });
+                return connection.QuerySingle<Section>(_getSectionByIdSQL, new { Id = id });
             }
             catch (SqlException e)
             {
@@ -68,7 +68,7 @@ namespace TicketJam.DAL.DAO
             using IDbConnection connection = new SqlConnection(_connectionString);
             try
             {
-                return connection.Query<Section>(GETALLSECTIONS_SQL);
+                return connection.Query<Section>(_getAllSectionsSQL);
             }
             catch (SqlException e)
             {
@@ -98,7 +98,7 @@ namespace TicketJam.DAL.DAO
             using IDbConnection connection = new SqlConnection(_connectionString);
             try
             {
-                return connection.Query<Section>(GETSECTIONBYVENUEID_SQL, new { Venue_ID_FK = id });
+                return connection.Query<Section>(_getSectionByVenueIdSQL, new { Venue_ID_FK = id });
             }
             catch (SqlException e)
             {

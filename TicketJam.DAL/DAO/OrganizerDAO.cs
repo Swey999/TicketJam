@@ -15,8 +15,8 @@ namespace TicketJam.DAL.DAO
     public class OrganizerDAO : IOrganizerDAO
     {
         private readonly string _connectionString;
-        private readonly string _insertOrganizer_SQL = "Insert into Organizer (Password, Email, PhoneNo) values (@Password, @Email, @PhoneNo); SELECT CAST(SCOPE_IDENTITY() as int)";
-        private readonly string _Login_SQL = "select Id, PhoneNo, Email, Password from Organizer where Email = @Email";
+        private readonly string _insertOrganizerSQL = "Insert into Organizer (Password, Email, PhoneNo) values (@Password, @Email, @PhoneNo); SELECT CAST(SCOPE_IDENTITY() as int)";
+        private readonly string _loginSQL = "select Id, PhoneNo, Email, Password from Organizer where Email = @Email";
 
         public OrganizerDAO(string connectionString)
         {
@@ -40,7 +40,7 @@ namespace TicketJam.DAL.DAO
 
             try
             {
-                organizer.Id = connection.ExecuteScalar<int>(_insertOrganizer_SQL, organizer, transaction);
+                organizer.Id = connection.ExecuteScalar<int>(_insertOrganizerSQL, organizer, transaction);
                 //TODO: Hardcoded test data to ensure it does not save in database, could be optimized
                 if (organizer.Email == "Testmailer@gmail.com")
                 {
@@ -80,12 +80,11 @@ namespace TicketJam.DAL.DAO
 
             try
             {
-                Organizer organizerFromDB = connection.QueryFirstOrDefault<Organizer>(_Login_SQL, new { Email = organizer.Email });
+                Organizer organizerFromDB = connection.QueryFirstOrDefault<Organizer>(_loginSQL, new { Email = organizer.Email });
                 //Check if result was null, if that's the case throw exception for handling
                 if (organizerFromDB.Password == null)
                 {
                     throw new Exception($"Not correct password for {organizer.Email}");
-                    return ReturnOrganizer;
                 }
                 //Check if passwords match, will not be reached unless email could be found in database
                 if (BCryptTool.ValidatePassword(organizer.Password, organizerFromDB.Password))

@@ -57,7 +57,6 @@ namespace TicketJam.WebAPI.Controllers
         public ActionResult<IEnumerable<EventDto>> GetAll()
         {
             var events = _iDAO.Read().ToDtos();// Ensure this includes Venue via eager loading.
-            ///var eventDtos = events.ToDtos(); // Proper conversion of Venue to VenueDto happens here.
             return Ok(events);
         }
 

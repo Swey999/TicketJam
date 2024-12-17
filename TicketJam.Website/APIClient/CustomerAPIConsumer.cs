@@ -28,7 +28,7 @@ namespace TicketJam.Website.APIClient
             catch (Exception ex)
             {
 
-                throw new Exception($"The Order failed to Post{ex.Message}", ex);
+                throw new Exception($"The Customer failed to Post{ex.Message}", ex);
             }
 
 
@@ -47,9 +47,18 @@ namespace TicketJam.Website.APIClient
 
         public Customer GetById(int id)
         {
-            var request = new RestRequest($"Customer/{id}", RestSharp.Method.Get);
-            var response = restClient.Execute<Customer>(request);
-            return response.Data;
+            try
+            {
+                var request = new RestRequest($"Customer/{id}", RestSharp.Method.Get);
+                var response = restClient.Execute<Customer>(request);
+                return response.Data;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"Failed to fetch Customer By Id {ex.Message}", ex);
+            }
         }
         public Customer Update(Customer OrderToUpdate)
         {
@@ -58,10 +67,19 @@ namespace TicketJam.Website.APIClient
 
         public Customer GetCustomerByEmail(string userEmail)
         {
-            var encodedEmail = Uri.EscapeDataString(userEmail); // Encodes '@' to '%40'
-            var request = new RestRequest($"/by-email/{encodedEmail}", RestSharp.Method.Get);
-            var response = restClient.Execute<Customer>(request);
-            return response.Data;
+            try
+            {
+                var encodedEmail = Uri.EscapeDataString(userEmail); // Encodes '@' to '%40'
+                var request = new RestRequest($"/by-email/{encodedEmail}", RestSharp.Method.Get);
+                var response = restClient.Execute<Customer>(request);
+                return response.Data;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception($"Failed to fetch Customer By Email {ex.Message}", ex);
+            }
+
         }
     }
 }

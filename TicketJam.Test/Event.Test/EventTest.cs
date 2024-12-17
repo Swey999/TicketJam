@@ -26,7 +26,7 @@ public class EventTest
     public void CreateEventTestSuccess()
     {
         // ARRANGE
-        Event Event = new() { EventNo = 2988, Description = "Beat up William", TotalAmount = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now};
+        Event Event = new() { EventNo = 2988, Description = "MongoMediaCorporation", TotalAmount = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now};
         // ACT
         var test = _eventDAOTwo.InsertEvent(Event, 1, 1);
         // ASSERT
