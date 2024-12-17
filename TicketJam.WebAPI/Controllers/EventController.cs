@@ -23,7 +23,11 @@ namespace TicketJam.WebAPI.Controllers
         }
 
 
-
+        /// <summary>
+        /// Retrives event using ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 
         // GET api/<EventControllerAPI>/5
         [HttpGet("{id}")]
@@ -40,6 +44,12 @@ namespace TicketJam.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds event to database
+        /// </summary>
+        /// <param name="eventObject"></param>
+        /// <returns></returns>
+
         [HttpPost]
         public ActionResult<Event> AddEvent (EventDtoForeignKeys eventObject)
         {
@@ -52,6 +62,11 @@ namespace TicketJam.WebAPI.Controllers
             }
             return Ok(eventObject);
         }
+
+        /// <summary>
+        /// Gets all events to display
+        /// </summary>
+        /// <returns></returns>
 
         [HttpGet]
         public ActionResult<IEnumerable<EventDto>> GetAll()

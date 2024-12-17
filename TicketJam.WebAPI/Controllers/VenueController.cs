@@ -20,13 +20,23 @@ namespace TicketJam.WebAPI.Controllers
             _venueDAO = venueDAO;
         }
 
+        /// <summary>
+        /// Gets all venues
+        /// </summary>
+        /// <returns></returns>
+
         [HttpGet]
         public ActionResult<IEnumerable<VenueDto>> Get()
         {
             return Ok(_venueDAO.Read().ToDtos());
         }
 
-        // GET api/<VenueControllerAPI>/5
+        /// <summary>
+        /// Get venue with parameter id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         [HttpGet("{id}")]
         public ActionResult<VenueDto> GetById(int id)
         {
@@ -41,22 +51,22 @@ namespace TicketJam.WebAPI.Controllers
             }
         }
 
-        // POST api/<VenueControllerAPI>
         [HttpPost]
         public void Post([FromBody] string value)
         {
+            throw new NotImplementedException();
         }
 
-        // PUT api/<VenueControllerAPI>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+            throw new NotImplementedException();
         }
 
-        // DELETE api/<VenueControllerAPI>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            throw new NotImplementedException();
         }
 
 

@@ -17,6 +17,12 @@ namespace TicketJam.WebAPI.Controllers
             _organizerDAO = organizerDAO;
         }
 
+        /// <summary>
+        /// Checks if email and password matches an organizer in database, if not reponds with unauthorized
+        /// </summary>
+        /// <param name="organizerDto"></param>
+        /// <returns></returns>
+
         [HttpPost]
         public ActionResult<OrganizerDto> Post([FromBody]OrganizerDto organizerDto)
         {

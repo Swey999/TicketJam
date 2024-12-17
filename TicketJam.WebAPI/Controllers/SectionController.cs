@@ -20,14 +20,24 @@ namespace TicketJam.WebAPI.Controllers
             this._sectionDAO = iDAO;
             this._sectionDAO2 = sectionDAO;
         }
-        // GET: api/<SectionControllerAPI>
+
+        /// <summary>
+        /// Gets all sections
+        /// </summary>
+        /// <returns></returns>
+
         [HttpGet]
         public ActionResult<IEnumerable<TicketJam.WebAPI.DTOs.SectionDto>> Get()
         {
             return Ok(_sectionDAO.Read().ToDtos());
         }
 
-        // GET api/<SectionControllerAPI>/5
+        /// <summary>
+        /// Gets all sections matching event id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         [HttpGet("{id}")]
         public ActionResult<TicketJam.WebAPI.DTOs.SectionDto> GetById(int id)
         {
@@ -42,25 +52,35 @@ namespace TicketJam.WebAPI.Controllers
             }
         }
 
-        // POST api/<SectionControllerAPI>
+        /// <summary>
+        /// Not used
+        /// </summary>
+        /// <param name="value"></param>
+
         [HttpPost]
         public void Post([FromBody] string value)
         {
+            throw new NotImplementedException();
         }
 
-        // PUT api/<SectionControllerAPI>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+            throw new NotImplementedException();
         }
 
-        // DELETE api/<SectionControllerAPI>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            throw new NotImplementedException();
         }
 
-        // GET: api/VenueControllerAPI/5/sections
+        /// <summary>
+        /// Gets sections matching venue id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// 
         [HttpGet("{id}/sections")]
         public ActionResult<IEnumerable<Section>> GetSectionsByVenueId(int id)
         {

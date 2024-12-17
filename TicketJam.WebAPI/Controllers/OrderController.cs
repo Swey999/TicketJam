@@ -21,6 +21,11 @@ namespace TicketJam.WebAPI.Controllers
             _orderDAO2 = orderDAO;
         }
 
+        /// <summary>
+        /// Returns list of all orders
+        /// </summary>
+        /// <returns></returns>
+
         // GET: api/<OrderControllerAPI>
         [HttpGet]
         public ActionResult<IEnumerable<OrderDto>> GetAll()
@@ -28,7 +33,12 @@ namespace TicketJam.WebAPI.Controllers
             return Ok(_orderDAO.Read().ToDtos());
         }
 
-        // GET api/<OrderControllerAPI>/5
+        /// <summary>
+        /// Returns order matching ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         [HttpGet("{id}")]
         public ActionResult<OrderDto> GetById(int id)
         {
@@ -43,7 +53,12 @@ namespace TicketJam.WebAPI.Controllers
             }
         }
 
-        // POST api/<OrderControllerAPI>
+        /// <summary>
+        /// Creates an order
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+
         [HttpPost]
         public ActionResult<OrderDto> Post(OrderDto order)
         {
@@ -51,8 +66,12 @@ namespace TicketJam.WebAPI.Controllers
             return Ok(orderDtoToConvert.ToDto());
         }
 
+        /// <summary>
+        /// Updates order given an order object
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
 
-        // PUT api/<OrderControllerAPI>/5
         [HttpPut("{id}")]
         public ActionResult Put(OrderDto order)
         {
@@ -67,7 +86,12 @@ namespace TicketJam.WebAPI.Controllers
             }
         }
 
-        // DELETE api/<OrderControllerAPI>/5
+        /// <summary>
+        /// Deletes an order with given id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
@@ -81,7 +105,12 @@ namespace TicketJam.WebAPI.Controllers
             }
         }
 
-        // GET api/v1/OrderControllerAPI/orders/{customerId}/purchases
+        /// <summary>
+        /// Gets all orders associated with customer id input
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+
         [HttpGet("orders/{customerId}/purchases")]
         public ActionResult<IEnumerable<OrderDto>> GetOrdersByCustomer(int customerId)
         {

@@ -19,6 +19,12 @@ namespace TicketJam.WebAPI.Controllers
             _icustDAO = icustDAO;
         }
 
+        /// <summary>
+        /// Retrives a Customer object using ID and converts into DTO
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         [HttpGet("{id}")]
         public ActionResult<CustomerDto> GetById(int id)
         {
@@ -33,6 +39,11 @@ namespace TicketJam.WebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a customer using CustomerDto
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
 
         // POST api/<OrderControllerAPI>
         [HttpPost]
@@ -41,6 +52,12 @@ namespace TicketJam.WebAPI.Controllers
             Customer customerDtoToConvert = _customerDAO.Create(customer.FromDto());
             return Ok(customerDtoToConvert.ToDto());
         }
+
+        /// <summary>
+        /// Retrives Customer using email and converts to DTO
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
 
         [HttpGet("by-email/{email}")]
         public ActionResult<CustomerDto> GetCustomerByEmail([FromRoute] string email)

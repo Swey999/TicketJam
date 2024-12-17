@@ -18,6 +18,12 @@ namespace TicketJam.WebAPI.Controllers
             _organizerDAO = organizerDAO;
         }
 
+        /// <summary>
+        /// Creates an organizer
+        /// </summary>
+        /// <param name="organizer"></param>
+        /// <returns></returns>
+
         [HttpPost]
         public ActionResult<Organizer> AddOrganizer(OrganizerDto organizer)
         {

@@ -30,6 +30,12 @@ namespace TicketJam.WebAPI.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        /// <summary>
+        /// Gets ticket using id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         // GET api/<TicketController>/5
         [HttpGet("{id}")]
         public ActionResult<TicketDto> GetById(int id)
@@ -44,6 +50,12 @@ namespace TicketJam.WebAPI.Controllers
                 return Ok(ticket);
             }
         }
+
+        /// <summary>
+        /// Gets ticket with section and event joined using id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
 
         [HttpGet("get-ticket-joined/{id}")]
         public ActionResult<TicketDto> GetTicketWithSectionAndEvent(int Id)
@@ -60,6 +72,12 @@ namespace TicketJam.WebAPI.Controllers
 
         }
 
+        /// <summary>
+        /// Gets  ticket with section and event using id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         [HttpGet("TicketsFromOrder/{id}")]
         public ActionResult<TicketDto> TicketWithSectionAndEvent(int id)
         {
@@ -75,12 +93,11 @@ namespace TicketJam.WebAPI.Controllers
 
         }
 
-
-
         // POST api/<TicketController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
+            throw new NotImplementedException();
         }
 
         // PUT api/<TicketController>/5
@@ -102,11 +119,11 @@ namespace TicketJam.WebAPI.Controllers
             return Ok();
         }
 
-
         // DELETE api/<TicketController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            throw new NotImplementedException();
         }
     }
 }
