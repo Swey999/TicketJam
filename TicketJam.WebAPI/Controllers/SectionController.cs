@@ -15,10 +15,10 @@ namespace TicketJam.WebAPI.Controllers
         public IDAO<Section> _sectionDAO;
         public ISectionDAO _sectionDAO2;
 
-        public SectionController(IDAO<Section> IDAO, ISectionDAO SectionDAO)
+        public SectionController(IDAO<Section> iDAO, ISectionDAO sectionDAO)
         {
-            this._sectionDAO = IDAO;
-            this._sectionDAO2 = SectionDAO;
+            this._sectionDAO = iDAO;
+            this._sectionDAO2 = sectionDAO;
         }
         // GET: api/<SectionControllerAPI>
         [HttpGet]

@@ -61,9 +61,9 @@ namespace TicketJam.WebAPI.Controllers
         }
 
         [HttpGet("TicketsFromOrder/{id}")]
-        public ActionResult<TicketDto> TicketWithSectionAndEvent(int Id)
+        public ActionResult<TicketDto> TicketWithSectionAndEvent(int id)
         {
-            TicketDto ticket = _ITicketDAO.TicketWithSectionAndEvent(Id).ToDto();
+            TicketDto ticket = _ITicketDAO.TicketWithSectionAndEvent(id).ToDto();
             if (ticket == null)
             {
                 return NotFound();

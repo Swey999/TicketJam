@@ -15,7 +15,7 @@ namespace TicketJam.WinForm.ApiClient
             throw new NotImplementedException();
         }
 
-        public void CreateEvent(EventDto Event)
+        public void CreateEvent(EventDto eventDto)
         {
             throw new NotImplementedException();
         }

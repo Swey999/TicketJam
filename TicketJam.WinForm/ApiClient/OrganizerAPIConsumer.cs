@@ -10,14 +10,14 @@ namespace TicketJam.WinForm.ApiClient
 {
     public class OrganizerAPIConsumer
     {
-        private string BaseURI;
-        private string BaseURILogin;
+        private string _baseURI;
+        private string _baseURILogin;
         private RestSharp.RestClient restClient;
 
         public OrganizerAPIConsumer(string baseURI, string baseURILogin)
         {
-            BaseURI = baseURI;
-            BaseURILogin = baseURILogin;
+            _baseURI = baseURI;
+            _baseURILogin = baseURILogin;
             this.restClient = new RestSharp.RestClient(baseURI);
         }
 
@@ -31,7 +31,7 @@ namespace TicketJam.WinForm.ApiClient
         public OrganizerDto AddOrganizer(OrganizerDto organizer)
         {
             var request = new RestRequest().AddJsonBody(organizer);
-            var client = new RestClient(BaseURI);
+            var client = new RestClient(_baseURI);
 
             var response = client.ExecutePost<OrganizerDto>(request);
 
@@ -52,7 +52,7 @@ namespace TicketJam.WinForm.ApiClient
         public OrganizerDto Login(OrganizerDto organizerDto)
         {
             var request = new RestRequest().AddJsonBody(organizerDto);
-            var client = new RestClient(BaseURILogin);
+            var client = new RestClient(_baseURILogin);
 
             var response = client.ExecutePost<OrganizerDto>(request);
 
